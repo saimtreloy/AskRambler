@@ -1,23 +1,19 @@
 package com.synergyinterface.askrambler.Activity;
 
-import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
-import com.synergyinterface.askrambler.FragmentAllPost;
-import com.synergyinterface.askrambler.Model.ModelPost;
+import com.synergyinterface.askrambler.Fragment.FragmentAllPost;
+import com.synergyinterface.askrambler.Fragment.FragmentLogin;
 import com.synergyinterface.askrambler.R;
-import com.synergyinterface.askrambler.Util.SharedPrefDatabase;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -40,7 +36,6 @@ public class HomeActivity extends AppCompatActivity {
     public void Initialization() {
         toolbar = (Toolbar) findViewById(R.id.toolbarHome);
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Bangla Musics");
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         actionBarDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
@@ -62,6 +57,30 @@ public class HomeActivity extends AppCompatActivity {
             Toast.makeText(getApplicationContext(), "Drawer Open", Toast.LENGTH_LONG).show();
         }
 
-        //NavigationItemClicked();
+        NavigationItemClicked();
+    }
+
+
+    public void NavigationItemClicked() {
+        navigationView = (NavigationView) findViewById(R.id.navigationView);
+        navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if (item.getItemId() == R.id.btnMenuSignIn) {
+                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_container, new FragmentLogin());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    drawerLayout.closeDrawers();
+                } /*else if (item.getItemId() == R.id.btbMenuPopular) {
+                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_container, new PopularFragment());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    drawerLayout.closeDrawers();
+                } */
+                return false;
+            }
+        });
     }
 }
