@@ -8,4 +8,6 @@ public class ApiURL {
 
     public static String getLatLongFromLocation = "http://maps.google.com/maps/api/geocode/json?address=";
 
+    public static String getAllPost = "http://askrambler.com/Android_API/getAllPost.php";
+
 }
