@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
+import com.synergyinterface.askrambler.Activity.HomeActivity;
 import com.synergyinterface.askrambler.R;
 
 
@@ -30,7 +31,7 @@ public class FragmentLogin extends Fragment {
 
     //Signup Layout Attributes
     TextView txtRegSignin;
-    EditText inputRegFullName, inputRegEmail, inputRegMobile, inputRegAddress, inputRegPassword;
+    EditText inputRegFullName, inputRegEmail, inputRegMobile, inputRegPassword;
     Button btnRegSignUp;
 
     public FragmentLogin() {
@@ -48,6 +49,8 @@ public class FragmentLogin extends Fragment {
     }
 
     public void init(){
+        HomeActivity.toolbar.setTitle("User Login");
+
         cardLogin = (CardView) view.findViewById(R.id.cardLogin);
         cardSignup = (CardView) view.findViewById(R.id.cardSignup);
 
@@ -63,7 +66,6 @@ public class FragmentLogin extends Fragment {
         inputRegFullName = (EditText) view.findViewById(R.id.inputRegFullName);
         inputRegEmail = (EditText) view.findViewById(R.id.inputRegEmail);
         inputRegMobile = (EditText) view.findViewById(R.id.inputRegMobile);
-        inputRegAddress = (EditText) view.findViewById(R.id.inputRegAddress);
         inputRegPassword = (EditText) view.findViewById(R.id.inputRegPassword);
         btnRegSignUp = (Button) view.findViewById(R.id.btnRegSignUp);
 

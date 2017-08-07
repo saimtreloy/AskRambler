@@ -13,6 +13,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="36dp"
         android:gravity="center"
+        android:visibility="gone"
         android:orientation="vertical"
         app:cardCornerRadius="6dp"
         app:cardBackgroundColor="#66F6B81F">
@@ -147,7 +148,6 @@
         android:layout_height="wrap_content"
         android:layout_margin="36dp"
         android:gravity="center"
-        android:visibility="gone"
         android:orientation="vertical"
         app:cardCornerRadius="6dp"
         app:cardBackgroundColor="#66F6B81F">
@@ -233,22 +233,20 @@
                     android:background="@drawable/ic_round"/>
 
                 <EditText
-                    android:id="@+id/inputRegAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="35dp"
-                    android:layout_marginTop="6dp"
-                    android:hint="Location"
-                    android:inputType="phone"
-                    android:textSize="12dp"
-                    android:focusable="false"
-                    android:background="@drawable/ic_round"/>
-
-                <EditText
                     android:id="@+id/inputRegPassword"
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginTop="6dp"
                     android:hint="Password"
+                    android:textSize="12dp"
+                    android:background="@drawable/ic_round"/>
+
+                <EditText
+                    android:id="@+id/inputRegPasswordC"
+                    android:layout_width="match_parent"
+                    android:layout_height="35dp"
+                    android:layout_marginTop="6dp"
+                    android:hint="Confirm Password"
                     android:textSize="12dp"
                     android:background="@drawable/ic_round"/>
 
@@ -258,7 +256,7 @@
                     android:layout_height="35dp"
                     android:layout_marginTop="8dp"
                     android:gravity="center"
-                    android:text="Sign Up"
+                    android:text="Register Now"
                     android:textColor="@color/colorAccent"
                     android:background="@drawable/ic_round"/>
 

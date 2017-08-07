@@ -1,0 +1,235 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/ic_back_signin2"
+    tools:context="com.synergyinterface.askrambler.Fragment.FragmentAddPost">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cardLogin"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_margin="16dp"
+        android:gravity="center"
+        android:orientation="vertical"
+        app:cardBackgroundColor="#99F6B81F"
+        app:cardCornerRadius="6dp">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+
+            <LinearLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <Button
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_campanion"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Companion"
+                    android:textColor="@color/colorAccent"
+                    android:drawableTint="@color/colorAccent"
+                    android:textSize="10sp" />
+
+                <Button
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_baggage"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Baggage"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_popular_trip"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Trips"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+                <Button
+                    style="@style/Widget.AppCompat.Button.Borderless"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:drawableTop="@drawable/ic_host"
+                    android:gravity="center"
+                    android:padding="10dp"
+                    android:text="Host"
+                    android:textSize="10sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+            <View android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="#66FFFFFF"
+                android:layout_below="@id/linearLayout"/>
+
+            <RelativeLayout
+                android:id="@+id/layoutAddPostCompanion"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/linearLayout">
+
+                <ScrollView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:padding="16dp">
+
+                        <EditText
+                            android:id="@+id/inputAddComFrom"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:background="@drawable/ic_round"
+                            android:hint="Eg. Melbourn, Australia"
+                            android:textSize="12dp" />
+
+                        <EditText
+                            android:id="@+id/inputAddComTo"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="6dp"
+                            android:background="@drawable/ic_round"
+                            android:hint="Eg. New York, United State"
+                            android:textSize="12dp" />
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/inputAddConExpectedDate"
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"
+                                android:layout_marginRight="2dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/ic_round"
+                                android:hint="Expected Travel Date"
+                                android:textSize="12dp" />
+
+                            <EditText
+                                android:id="@+id/inputAddComPayment"
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"
+                                android:layout_marginLeft="2dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/ic_round"
+                                android:hint="Payment Category"
+                                android:textSize="12dp" />
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:orientation="horizontal">
+
+                            <EditText
+                                android:id="@+id/inputAddComGender"
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"
+                                android:layout_marginRight="2dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/ic_round"
+                                android:hint="Gender"
+                                android:textSize="12dp" />
+
+                            <EditText
+                                android:id="@+id/inputAddComTravelBy"
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"
+                                android:layout_marginLeft="2dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/ic_round"
+                                android:hint="Traveling By"
+                                android:textSize="12dp" />
+
+                        </LinearLayout>
+
+                        <EditText
+                            android:id="@+id/inputAddComContact"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/ic_round"
+                            android:hint="Eg. +8801711415554"
+                            android:textSize="12dp" />
+
+                        <EditText
+                            android:id="@+id/inputAddComImage"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/ic_round"
+                            android:hint="Select Image"
+                            android:drawableRight="@drawable/ic_image"
+                            android:textSize="12dp" />
+
+                        <EditText
+                            android:id="@+id/inputAddComDescription"
+                            android:layout_width="match_parent"
+                            android:layout_height="70dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/ic_round"
+                            android:hint="Describe your add"
+                            android:inputType="textMultiLine"
+                            android:textSize="12dp" />
+
+                        <Button
+                            android:id="@+id/btnAddComPostAdd"
+                            android:layout_width="match_parent"
+                            android:layout_height="40dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/ic_round"
+                            android:elevation="4dp"
+                            android:gravity="center"
+                            android:text="Post Advertise"
+                            android:textColor="@color/colorAccent" />
+
+
+                    </LinearLayout>
+
+
+                </ScrollView>
+
+            </RelativeLayout>
+
+        </RelativeLayout>
+
+
+    </android.support.v7.widget.CardView>
+
+</RelativeLayout>

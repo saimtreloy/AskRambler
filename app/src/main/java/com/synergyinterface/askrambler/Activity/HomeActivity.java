@@ -11,8 +11,10 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
+import com.synergyinterface.askrambler.Fragment.FragmentAddPost;
 import com.synergyinterface.askrambler.Fragment.FragmentAllPost;
 import com.synergyinterface.askrambler.Fragment.FragmentLogin;
+import com.synergyinterface.askrambler.Fragment.FragmentProfile;
 import com.synergyinterface.askrambler.R;
 
 public class HomeActivity extends AppCompatActivity {
@@ -72,15 +74,31 @@ public class HomeActivity extends AppCompatActivity {
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                     drawerLayout.closeDrawers();
-                } /*else if (item.getItemId() == R.id.btbMenuPopular) {
+                } else if (item.getItemId() == R.id.btnMenuProfile) {
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
-                    fragmentTransaction.replace(R.id.main_container, new PopularFragment());
+                    fragmentTransaction.replace(R.id.main_container, new FragmentProfile());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                     drawerLayout.closeDrawers();
-                } */
+                } else if (item.getItemId() == R.id.btnMenuAddPost) {
+                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_container, new FragmentAddPost());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    drawerLayout.closeDrawers();
+                }
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (getSupportFragmentManager().getBackStackEntryCount() == 1){
+            toolbar.setTitle(getResources().getString(R.string.app_name));
+            super.onBackPressed();
+        }else {
+            super.onBackPressed();
+        }
     }
 }
