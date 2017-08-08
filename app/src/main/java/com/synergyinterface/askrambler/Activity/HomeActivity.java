@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.synergyinterface.askrambler.Fragment.FragmentAddPost;
+import com.synergyinterface.askrambler.Fragment.FragmentAdvancedSearch;
 import com.synergyinterface.askrambler.Fragment.FragmentAllPost;
 import com.synergyinterface.askrambler.Fragment.FragmentLogin;
 import com.synergyinterface.askrambler.Fragment.FragmentProfile;
@@ -83,6 +84,12 @@ public class HomeActivity extends AppCompatActivity {
                 } else if (item.getItemId() == R.id.btnMenuAddPost) {
                     fragmentTransaction = getSupportFragmentManager().beginTransaction();
                     fragmentTransaction.replace(R.id.main_container, new FragmentAddPost());
+                    fragmentTransaction.addToBackStack(null);
+                    fragmentTransaction.commit();
+                    drawerLayout.closeDrawers();
+                } else if (item.getItemId() == R.id.btnMenuAdvancedSearch) {
+                    fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                    fragmentTransaction.replace(R.id.main_container, new FragmentAdvancedSearch());
                     fragmentTransaction.addToBackStack(null);
                     fragmentTransaction.commit();
                     drawerLayout.closeDrawers();
