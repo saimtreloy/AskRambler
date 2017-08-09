@@ -25,7 +25,7 @@ public class HomeActivity extends AppCompatActivity {
     DrawerLayout drawerLayout;
     NavigationView navigationView;
     android.support.v7.app.ActionBarDrawerToggle actionBarDrawerToggle;
-    android.support.v4.app.FragmentTransaction fragmentTransaction;
+    public static android.support.v4.app.FragmentTransaction fragmentTransaction;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

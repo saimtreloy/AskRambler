@@ -1,7 +1,9 @@
 package com.synergyinterface.askrambler.Adapter;
 
 import android.content.Context;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,9 +14,15 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
 import com.bumptech.glide.request.target.Target;
+import com.synergyinterface.askrambler.Activity.HomeActivity;
+import com.synergyinterface.askrambler.Activity.Splash;
+import com.synergyinterface.askrambler.Fragment.FragmentPostDetail;
+import com.synergyinterface.askrambler.Fragment.FragmentProfile;
 import com.synergyinterface.askrambler.Model.ModelPost;
+import com.synergyinterface.askrambler.Model.ModelPostShort;
 import com.synergyinterface.askrambler.R;
 
+import java.security.PublicKey;
 import java.util.ArrayList;
 
 /**
@@ -23,14 +31,16 @@ import java.util.ArrayList;
 
 public class AdapterPost extends RecyclerView.Adapter<AdapterPost.PostViewHolder>{
 
-    ArrayList<ModelPost> adapterList = new ArrayList<>();
+    ArrayList<ModelPostShort> adapterList = new ArrayList<>();
     Context mContext;
 
-    public AdapterPost(ArrayList<ModelPost> adapterList) {
+    public static String post_id = "";
+
+    public AdapterPost(ArrayList<ModelPostShort> adapterList) {
         this.adapterList = adapterList;
     }
 
-    public AdapterPost(ArrayList<ModelPost> adapterList, Context mContext) {
+    public AdapterPost(ArrayList<ModelPostShort> adapterList, Context mContext) {
         this.adapterList = adapterList;
         this.mContext = mContext;
     }
@@ -83,7 +93,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.PostViewHolder
 
         @Override
         public void onClick(View v) {
-
+            post_id = adapterList.get(getAdapterPosition()).ads_id;
+            Log.d("SAIM POST ID", post_id);
+            ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new FragmentPostDetail()).addToBackStack(null).commit();
         }
     }
 }
