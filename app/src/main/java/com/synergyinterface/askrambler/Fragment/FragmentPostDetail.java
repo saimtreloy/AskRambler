@@ -9,6 +9,9 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
@@ -16,6 +19,10 @@ import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.daimajia.slider.library.Animations.DescriptionAnimation;
 import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
@@ -49,7 +56,12 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
     String from_where, to_where, from_date, to_date, payment_category, gender, traveling_by, isType,
             baggage_type, baggage_weight, trip_category, trip_category_id, transport_type, trip_duration,
             location, travelers, offers_1, offers_2, offers_3, smoking_habit, alcohol_habit, images,
-            contacts, details, ad_type, ad_type_id, date, status, user_id, user_photo, vote_count;
+            contacts, details, ad_type, ad_type_id, date, status, user_id, user_photo, vote_count, user_name, user_email, user_phone, user_verify;
+
+    public TextView txtPDDetail, txtPDLocation, txtPDService, txtPDHost, txtPDTraveler, txtPDOffering,
+            txtPDSmocking, txtPDAlcohol, txtPDUserName, txtPDUserEmail, txtPDUserPhone;
+    public ImageView imgPDStatus, imgPDUser;
+    public RatingBar ratingBar;
 
     public FragmentPostDetail() {
     }
@@ -72,7 +84,57 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
 
         mDemoSlider = (SliderLayout) view.findViewById(R.id.slider);
 
+        txtPDDetail = (TextView) view.findViewById(R.id.txtPDDetail);
+        txtPDLocation = (TextView) view.findViewById(R.id.txtPDLocation);
+        txtPDService = (TextView) view.findViewById(R.id.txtPDService);
+        txtPDHost = (TextView) view.findViewById(R.id.txtPDHost);
+        txtPDTraveler = (TextView) view.findViewById(R.id.txtPDTraveler);
+        txtPDOffering = (TextView) view.findViewById(R.id.txtPDOffering);
+        txtPDSmocking = (TextView) view.findViewById(R.id.txtPDSmocking);
+        txtPDAlcohol = (TextView) view.findViewById(R.id.txtPDAlcohol);
+        txtPDUserName = (TextView) view.findViewById(R.id.txtPDUserName);
+        txtPDUserEmail = (TextView) view.findViewById(R.id.txtPDUserEmail);
+        txtPDUserPhone = (TextView) view.findViewById(R.id.txtPDUserPhone);
+
+        imgPDStatus = (ImageView) view.findViewById(R.id.imgPDStatus);
+        imgPDUser = (ImageView) view.findViewById(R.id.imgPDUser);
+
         SaveGetPostInformation();
+    }
+
+    public void PopulateInformation(){
+        txtPDDetail.setText(details);
+        txtPDLocation.setText(to_where);
+        txtPDService.setText(payment_category);
+        txtPDHost.setText(isType);
+        txtPDTraveler.setText(travelers);
+        txtPDOffering.setText(offers_1);
+        txtPDSmocking.setText(smoking_habit);
+        txtPDAlcohol.setText(alcohol_habit);
+        txtPDUserName.setText(user_name);
+        txtPDUserEmail.setText(user_email);
+        txtPDUserPhone.setText(user_phone);
+
+        if (user_verify.equals("1")){
+            imgPDStatus.setImageResource(R.drawable.ic_verified_user);
+        }else if (user_verify.equals("0")){
+            imgPDStatus.setImageResource(R.drawable.ic_not_varified_user);
+        }
+
+        Glide.with(getContext())
+                .load(user_photo)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(imgPDUser);
     }
 
     public void PopulateSlider() {
@@ -138,9 +200,9 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d("SAIM RESPONSE", response);
                         progressDialog.dismiss();
                         try {
-                            Log.d("SAIM RESPONSE", response);
                             JSONObject jsonObject = new JSONObject(response);
                             String code = jsonObject.getString("code");
                             if (code.equals("success")) {
@@ -178,9 +240,13 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
                                 user_id = jsonObjectList.getString("user_id");
                                 user_photo = jsonObjectList.getString("user_photo");
                                 vote_count = jsonObjectList.getString("vote_count");
+                                user_name = jsonObjectList.getString("user_name");
+                                user_email = jsonObjectList.getString("user_email");
+                                user_phone = jsonObjectList.getString("user_phone");
+                                user_verify = jsonObjectList.getString("user_verify");
                             }
                             PopulateSlider();
-                            Log.d("Saim Link", bannerImage.toString());
+                            PopulateInformation();
                         } catch (Exception e) {
 
                         }

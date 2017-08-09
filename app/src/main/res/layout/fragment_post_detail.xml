@@ -39,6 +39,7 @@
                     android:background="@android:color/holo_green_dark"/>
 
                 <TextView
+                    android:id="@+id/txtPDDetail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="Donec leo eros, malesuada ac consequat vitae, bibendum at turpis. Curabitur facilisis ex ac dui volutpat rutrum. Fusce vitae malesuada libero. Donec sapien nulla, facilisis sit amet bibendum ac, posuere sit amet augue. Pellentesque turpis eros, auctor vel lectus aliquam, tristique malesuada massa. Quisque sem diam, pharetra at gravida id, interdum quis velit. Quisque eu ex a lacus condimentum lobortis in in lacus. "/>
@@ -46,44 +47,269 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/layoutDetail4"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/layoutDetail2"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal"
+                android:background="@android:color/holo_green_dark"/>
+
+            <LinearLayout
                 android:id="@+id/layoutDetail3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_below="@id/layoutDetail2">
+                android:layout_marginTop="6dp"
+                android:layout_below="@id/layoutDetail4">
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_weight="3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Location "/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text=": "/>
+                    <TextView
+                        android:id="@+id/txtPDLocation"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cox's Bazar, Chittagong, Bangladesh"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_weight="3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Service"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text=": "/>
+                    <TextView
+                        android:id="@+id/txtPDService"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Pay for Staying"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_weight="3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Host "/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text=": "/>
+                    <TextView
+                        android:id="@+id/txtPDHost"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="I want to host"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_weight="3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Travelers "/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text=": "/>
+                    <TextView
+                        android:id="@+id/txtPDTraveler"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="4"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_weight="3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Offering "/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text=": "/>
+                    <TextView
+                        android:id="@+id/txtPDOffering"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Food , Internet , Transport"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_weight="3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Smoking"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text=": "/>
+                    <TextView
+                        android:id="@+id/txtPDSmocking"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Any"/>
+
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_weight="3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text="Alcohol"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textStyle="bold"
+                        android:text=": "/>
+                    <TextView
+                        android:id="@+id/txtPDAlcohol"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Any"/>
+
+                </LinearLayout>
 
             </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutDetail5"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/layoutDetail3"
+                android:layout_marginTop="6dp"
+                android:orientation="horizontal"
+                android:background="@android:color/holo_green_dark"/>
 
             <LinearLayout
                 android:id="@+id/layoutDetail1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:layout_below="@id/layoutDetail3"
+                android:layout_marginTop="6dp"
+                android:layout_below="@id/layoutDetail5"
                 android:orientation="horizontal">
 
                 <ImageView
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
+                    android:id="@+id/imgPDUser"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
                     android:scaleType="fitXY"
                     android:src="@drawable/ic_background"/>
 
-                <TextView
-                    android:layout_weight="1"
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:paddingLeft="8dp"
-                    android:gravity="center_vertical"
-                    android:textStyle="bold"
-                    android:textSize="18sp"
-                    android:text="Mrs Smith"/>
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
 
-                <ImageView
-                    android:layout_width="20dp"
-                    android:layout_height="20dp"
-                    android:scaleType="fitXY"
-                    android:src="@drawable/ic_verified_user"/>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        <TextView
+                            android:id="@+id/txtPDUserName"
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:paddingLeft="8dp"
+                            android:gravity="center_vertical"
+                            android:textStyle="bold"
+                            android:drawableLeft="@drawable/ic_user"
+                            android:text="Mrs Smith"/>
+                        <ImageView
+                            android:id="@+id/imgPDStatus"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:scaleType="fitXY"
+                            android:src="@drawable/ic_verified_user"/>
+                    </LinearLayout>
+                    <TextView
+                        android:id="@+id/txtPDUserEmail"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="8dp"
+                        android:gravity="center_vertical"
+                        android:textStyle="italic"
+                        android:textColor="@android:color/holo_blue_dark"
+                        android:drawableLeft="@drawable/ic_email"
+                        android:text="streloy@gmail.com"/>
+                    <TextView
+                        android:id="@+id/txtPDUserPhone"
+                        android:layout_weight="1"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:paddingLeft="8dp"
+                        android:gravity="center_vertical"
+                        android:textStyle="italic"
+                        android:drawableLeft="@drawable/ic_phone"
+                        android:text="+8801711415554"/>
+                    <RatingBar
+                        android:id="@+id/ratingBar"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
 
             </LinearLayout>
 
