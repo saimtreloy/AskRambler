@@ -2,26 +2,44 @@ package com.synergyinterface.askrambler.Fragment;
 
 
 import android.animation.Animator;
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.synergyinterface.askrambler.Activity.HomeActivity;
 import com.synergyinterface.askrambler.R;
+import com.synergyinterface.askrambler.Util.ApiURL;
+import com.synergyinterface.askrambler.Util.MySingleton;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
 
 
 public class FragmentLogin extends Fragment {
 
     View view;
 
+    ProgressDialog progressDialog;
     CardView cardLogin, cardSignup;
 
     //Login Layout Attributes
@@ -51,6 +69,7 @@ public class FragmentLogin extends Fragment {
     public void init(){
         HomeActivity.toolbar.setTitle("User Login");
 
+        progressDialog = new ProgressDialog(getContext());
         cardLogin = (CardView) view.findViewById(R.id.cardLogin);
         cardSignup = (CardView) view.findViewById(R.id.cardSignup);
 
@@ -70,6 +89,7 @@ public class FragmentLogin extends Fragment {
         btnRegSignUp = (Button) view.findViewById(R.id.btnRegSignUp);
 
         ButtonAction();
+        SaveUserLogin2("asasa", "sasa");
     }
 
 
@@ -77,7 +97,14 @@ public class FragmentLogin extends Fragment {
         btnLoginLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                if (!inputLoginEmailOrMobile.getText().toString().isEmpty() && !inputLoginPassword.getText().toString().isEmpty()){
+                    progressDialog.setTitle("Login");
+                    progressDialog.setMessage("Please wait...");
+                    progressDialog.show();
+                    SaveUserLogin2(inputLoginEmailOrMobile.getText().toString(), inputLoginPassword.getText().toString());
+                }else {
+                    Toast.makeText(getContext(), "Email or Password filed can not be empty!!!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -117,7 +144,6 @@ public class FragmentLogin extends Fragment {
             }
         });
 
-
         txtRegSignin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -147,5 +173,44 @@ public class FragmentLogin extends Fragment {
             }
         });
 
+    }
+
+
+    public void SaveUserLogin2(final String email, final String pass) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.getLogin,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String code = jsonObject.getString("code");
+                            String message = jsonObject.getString("message");
+                            if (code.equals("success")){
+
+                            }else {
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }catch (Exception e){
+                            Log.d("HDHD ", e.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("email", "Sasas");
+                params.put("password", "sasas");
+
+                return params;
+            }
+        };
+        stringRequest.setShouldCache(false);
+        MySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
     }
 }

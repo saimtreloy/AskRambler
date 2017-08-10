@@ -5,6 +5,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -22,6 +23,8 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Splash extends AppCompatActivity {
 
@@ -61,9 +64,9 @@ public class Splash extends AppCompatActivity {
                                     ModelPostShort modelPostShort = new ModelPostShort(ads_id, to_where, to_date,ad_type, details, full_name, user_photo);
                                     modelPostsList.add(modelPostShort);
                                 }
-                                finish();
-                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+
                             }
+                            SaveUserLogin();
                         } catch (Exception e) {
 
                         }
@@ -74,7 +77,41 @@ public class Splash extends AppCompatActivity {
 
             }
         });
+        stringRequest.setShouldCache(false);
         MySingleton.getInstance(Splash.this).addToRequestQueue(stringRequest);
 
+    }
+
+
+    public void SaveUserLogin() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.getLogin,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("SAIM LOGIN INFO", response);
+                        try {
+                            startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                            finish();
+                        }catch (Exception e){
+                            Log.d("HDHD ", e.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("email", "saim.treloy@gmail.com");
+                params.put("password", "Saim123");
+
+                return params;
+            }
+        };
+        stringRequest.setShouldCache(false);
+        MySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
     }
 }

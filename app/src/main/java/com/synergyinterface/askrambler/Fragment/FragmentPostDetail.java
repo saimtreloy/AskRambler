@@ -261,6 +261,7 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
 
             }
         });
+        stringRequest.setShouldCache(false);
         MySingleton.getInstance(getActivity()).addToRequestQueue(stringRequest);
     }
 }
