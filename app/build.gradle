@@ -20,6 +20,8 @@ android {
 }
 repositories {
     maven { url "https://jitpack.io" }
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
@@ -40,5 +42,6 @@ dependencies {
     compile 'com.squareup.picasso:picasso:2.3.2'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.slider:library:1.1.5@aar'
+    compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
     testCompile 'junit:junit:4.12'
 }

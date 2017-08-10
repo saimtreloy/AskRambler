@@ -10,8 +10,10 @@
         android:layout_height="match_parent">
 
         <RelativeLayout
+            android:id="@+id/layoutPostDetailMain"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:visibility="invisible"
             android:padding="16dp">
 
             <com.daimajia.slider.library.SliderLayout

@@ -3,35 +3,39 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:padding="8dp"
     tools:context="com.synergyinterface.askrambler.Fragment.FragmentAllPost">
-
-    <FrameLayout
-        android:layout_width="120dp"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:padding="8dp"
-        android:background="@drawable/ic_round_fab"
-        android:elevation="8dp"
-        android:layout_marginBottom="26dp">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:text="Create Post"
-            android:textSize="18sp"
-            android:gravity="center"
-            android:textColor="@android:color/white"/>
-    </FrameLayout>
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/recyclerViewAllPost"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
+        android:layout_height="match_parent">
 
     </android.support.v7.widget.RecyclerView>
+
+    <FrameLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:clickable="true"
+        android:layout_marginBottom="26dp">
+
+        <Button
+            android:id="@+id/btnFabCreatePost"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:paddingLeft="26dp"
+            android:paddingRight="26dp"
+            android:layout_height="45dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:textColor="@android:color/white"
+            android:background="@drawable/ic_round_fab"
+            android:textAllCaps="false"
+            android:text="Create Post" />
+
+    </FrameLayout>
 
 </RelativeLayout>

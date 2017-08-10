@@ -10,7 +10,7 @@ import android.preference.PreferenceManager;
 
 public class SharedPrefDatabase {
 
-    public static final String KEY_GET_ALL_POST = "KEY_GET_ALL_POST";
+    public static final String KEY_GET_LOGIN_INFO = "KEY_GET_LOGIN_INFO";
 
 
     SharedPreferences sharedPreferences;
@@ -22,12 +22,12 @@ public class SharedPrefDatabase {
         editor = sharedPreferences.edit();
     }
 
-    public void StoreGetAllPost(String data){
-        editor.putString(KEY_GET_ALL_POST, data);
+    public void StoreGetLoginInfo(String data){
+        editor.putString(KEY_GET_LOGIN_INFO, data);
         editor.commit();
     }
-    public String RetriveGetAllPost(){
-        String text = sharedPreferences.getString(KEY_GET_ALL_POST, null);
+    public String RetriveGetLoginInfo(){
+        String text = sharedPreferences.getString(KEY_GET_LOGIN_INFO, null);
         return text;
     }
 }

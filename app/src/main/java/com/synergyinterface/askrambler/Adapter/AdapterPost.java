@@ -54,6 +54,9 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.PostViewHolder
 
     @Override
     public void onBindViewHolder(PostViewHolder holder, int position) {
+        holder.txtListUser.setText(adapterList.get(position).getFull_name());
+        holder.txtListCategory.setText(adapterList.get(position).getAd_type());
+        holder.txtListDetail.setText(adapterList.get(position).getDetails());
         holder.txtToWhere.setText(adapterList.get(position).getTo_where());
         holder.txtToDate.setText(adapterList.get(position).getTo_date());
         Glide.with(holder.txtToWhere.getContext())
@@ -80,12 +83,15 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.PostViewHolder
     public class PostViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         ImageView imgAllPostList;
-        TextView txtToDate, txtToWhere;
+        TextView txtListUser,txtListCategory,txtListDetail, txtToDate, txtToWhere;
 
         public PostViewHolder(View itemView) {
             super(itemView);
 
             imgAllPostList = (ImageView) itemView.findViewById(R.id.imgAllPostList);
+            txtListUser = (TextView) itemView.findViewById(R.id.txtListUser);
+            txtListCategory = (TextView) itemView.findViewById(R.id.txtListCategory);
+            txtListDetail = (TextView) itemView.findViewById(R.id.txtListDetail);
             txtToWhere = (TextView) itemView.findViewById(R.id.txtToWhere);
             txtToDate = (TextView) itemView.findViewById(R.id.txtToDate);
             itemView.setOnClickListener(this);

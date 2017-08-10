@@ -53,9 +53,12 @@ public class Splash extends AppCompatActivity {
                                     String ads_id = jsonObjectList.getString("add_id");
                                     String to_where = jsonObjectList.getString("to_where");
                                     String to_date = jsonObjectList.getString("to_date");
+                                    String ad_type = jsonObjectList.getString("ad_type");
+                                    String details = jsonObjectList.getString("details");
+                                    String full_name = jsonObjectList.getString("full_name");
                                     String user_photo = jsonObjectList.getString("user_photo");
 
-                                    ModelPostShort modelPostShort = new ModelPostShort(ads_id, to_where, to_date, user_photo);
+                                    ModelPostShort modelPostShort = new ModelPostShort(ads_id, to_where, to_date,ad_type, details, full_name, user_photo);
                                     modelPostsList.add(modelPostShort);
                                 }
                                 finish();

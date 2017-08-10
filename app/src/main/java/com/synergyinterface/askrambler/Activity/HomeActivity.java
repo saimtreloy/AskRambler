@@ -7,6 +7,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
@@ -66,6 +67,10 @@ public class HomeActivity extends AppCompatActivity {
 
     public void NavigationItemClicked() {
         navigationView = (NavigationView) findViewById(R.id.navigationView);
+
+        Menu nav_menu = navigationView.getMenu();
+        nav_menu.findItem(R.id.btnMenuProfile).setVisible(false);
+
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {

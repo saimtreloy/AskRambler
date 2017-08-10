@@ -5,11 +5,15 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.synergyinterface.askrambler.Activity.HomeActivity;
 import com.synergyinterface.askrambler.Activity.Splash;
@@ -30,6 +34,8 @@ public class FragmentAllPost extends Fragment {
     RecyclerView recyclerAllPost;
     RecyclerView.LayoutManager layoutManagerAllPost;
     RecyclerView.Adapter allPostAdapter;
+
+    Button btnFabCreatePost;
 
     public FragmentAllPost() {
 
@@ -52,6 +58,15 @@ public class FragmentAllPost extends Fragment {
         recyclerAllPost.setHasFixedSize(true);
         allPostAdapter = new AdapterPost(Splash.modelPostsList);
         recyclerAllPost.setAdapter(allPostAdapter);
+
+        btnFabCreatePost = (Button) view.findViewById(R.id.btnFabCreatePost);
+        btnFabCreatePost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new FragmentLogin()).addToBackStack(null).commit();
+
+            }
+        });
     }
 
 

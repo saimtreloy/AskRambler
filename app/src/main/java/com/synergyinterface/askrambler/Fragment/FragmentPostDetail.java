@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -50,6 +51,7 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
     View view;
 
     ProgressDialog progressDialog;
+    RelativeLayout layoutPostDetailMain;
     private SliderLayout mDemoSlider;
     public List<String> bannerImage = new ArrayList<>();
 
@@ -82,6 +84,7 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
+        layoutPostDetailMain = (RelativeLayout) view.findViewById(R.id.layoutPostDetailMain);
         mDemoSlider = (SliderLayout) view.findViewById(R.id.slider);
 
         txtPDDetail = (TextView) view.findViewById(R.id.txtPDDetail);
@@ -202,6 +205,7 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
                     public void onResponse(String response) {
                         Log.d("SAIM RESPONSE", response);
                         progressDialog.dismiss();
+                        layoutPostDetailMain.setVisibility(View.VISIBLE);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String code = jsonObject.getString("code");
