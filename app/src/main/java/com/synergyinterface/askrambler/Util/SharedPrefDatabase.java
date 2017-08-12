@@ -6,10 +6,10 @@ import android.preference.PreferenceManager;
 
 public class SharedPrefDatabase {
 
-    public static final String KEY_GET_LOGIN_INFO = "KEY_GET_LOGIN_INFO";
+    public static final String KEY_LOGIN = "KEY_LOGIN";
 
-    public static final String KEY_USER_EMAIL = "KEY_USER_EMAIL";
-    public static final String KEY_USER_PASSWORD = "KEY_USER_PASSWORD";
+    public static final String KEY_USER_FULLNAME = "KEY_USER_FULLNAME";
+    public static final String KEY_USER_PHOTO = "KEY_USER_PHOTO";
 
 
     SharedPreferences sharedPreferences;
@@ -21,30 +21,30 @@ public class SharedPrefDatabase {
         editor = sharedPreferences.edit();
     }
 
-    public void StoreLoginInfo(String data){
-        editor.putString(KEY_GET_LOGIN_INFO, data);
+    public void StoreLogin(String data){
+        editor.putString(KEY_LOGIN, data);
         editor.commit();
     }
-    public String RetriveLoginInfo(){
-        String text = sharedPreferences.getString(KEY_GET_LOGIN_INFO, null);
+    public String RetriveLogin(){
+        String text = sharedPreferences.getString(KEY_LOGIN, null);
         return text;
     }
 
-    public void StoreUserEmail(String data){
-        editor.putString(KEY_USER_EMAIL, data);
+    public void StoreUserFullName(String data){
+        editor.putString(KEY_USER_FULLNAME, data);
         editor.commit();
     }
-    public String RetriveUserEmail(){
-        String text = sharedPreferences.getString(KEY_USER_EMAIL, null);
+    public String RetriveUserFullName(){
+        String text = sharedPreferences.getString(KEY_USER_FULLNAME, null);
         return text;
     }
 
-    public void StoreUserPassword(String data){
-        editor.putString(KEY_USER_PASSWORD, data);
+    public void StoreUserPhoto(String data){
+        editor.putString(KEY_USER_PHOTO, data);
         editor.commit();
     }
-    public String RetriveUserPassword(){
-        String text = sharedPreferences.getString(KEY_USER_PASSWORD, null);
+    public String RetriveUserPhoto(){
+        String text = sharedPreferences.getString(KEY_USER_PHOTO, null);
         return text;
     }
 }

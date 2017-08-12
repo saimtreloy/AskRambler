@@ -28,7 +28,9 @@ import com.synergyinterface.askrambler.Activity.HomeActivity;
 import com.synergyinterface.askrambler.R;
 import com.synergyinterface.askrambler.Util.ApiURL;
 import com.synergyinterface.askrambler.Util.MySingleton;
+import com.synergyinterface.askrambler.Util.SharedPrefDatabase;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -89,7 +91,7 @@ public class FragmentLogin extends Fragment {
         btnRegSignUp = (Button) view.findViewById(R.id.btnRegSignUp);
 
         ButtonAction();
-        SaveUserLogin2("asasa", "sasa");
+        SaveUserLogin("asasa", "sasa");
     }
 
 
@@ -101,7 +103,7 @@ public class FragmentLogin extends Fragment {
                     progressDialog.setTitle("Login");
                     progressDialog.setMessage("Please wait...");
                     progressDialog.show();
-                    SaveUserLogin2(inputLoginEmailOrMobile.getText().toString(), inputLoginPassword.getText().toString());
+                    SaveUserLogin(inputLoginEmailOrMobile.getText().toString(), inputLoginPassword.getText().toString());
                 }else {
                     Toast.makeText(getContext(), "Email or Password filed can not be empty!!!", Toast.LENGTH_SHORT).show();
                 }
@@ -176,7 +178,7 @@ public class FragmentLogin extends Fragment {
     }
 
 
-    public void SaveUserLogin2(final String email, final String pass) {
+    public void SaveUserLogin(final String email, final String pass) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.getLogin,
                 new Response.Listener<String>() {
                     @Override
@@ -185,14 +187,54 @@ public class FragmentLogin extends Fragment {
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String code = jsonObject.getString("code");
-                            String message = jsonObject.getString("message");
                             if (code.equals("success")){
+                                JSONArray jsonArray = jsonObject.getJSONArray("list");
+                                JSONObject jsonObjectList = jsonArray.getJSONObject(0);
+
+                                String user_id = jsonObjectList.getString("user_id");
+                                String nationality = jsonObjectList.getString("nationality");
+                                String full_name = jsonObjectList.getString("full_name");
+                                String email = jsonObjectList.getString("email");
+                                String password = jsonObjectList.getString("password");
+                                String agreement = jsonObjectList.getString("agreement");
+                                String status = jsonObjectList.getString("status");
+                                String roll = jsonObjectList.getString("roll");
+                                String first_name = jsonObjectList.getString("first_name");
+                                String last_name = jsonObjectList.getString("last_name");
+                                String gander = jsonObjectList.getString("gander");
+                                String address = jsonObjectList.getString("address");
+                                String city = jsonObjectList.getString("city");
+                                String zip = jsonObjectList.getString("zip");
+                                String state = jsonObjectList.getString("state");
+                                String country = jsonObjectList.getString("country");
+                                String mobile = jsonObjectList.getString("mobile");
+                                String phone = jsonObjectList.getString("phone");
+                                String birth_date = jsonObjectList.getString("birth_date");
+                                String user_photo = jsonObjectList.getString("user_photo");
+                                String document = jsonObjectList.getString("document");
+                                String verify = jsonObjectList.getString("verify");
+                                String website = jsonObjectList.getString("website");
+                                String facebook = jsonObjectList.getString("facebook");
+                                String instagram = jsonObjectList.getString("instagram");
+                                String youtube = jsonObjectList.getString("youtube");
+                                String code1 = jsonObjectList.getString("code");
+                                String cornjob = jsonObjectList.getString("cornjob");
+                                String like_to = jsonObjectList.getString("like_to");
+                                String details = jsonObjectList.getString("details");
+                                String server_date = jsonObjectList.getString("server_date");
+
+                                new SharedPrefDatabase(getContext()).StoreLogin("Yes");
+                                new SharedPrefDatabase(getContext()).StoreUserFullName(full_name);
+                                new SharedPrefDatabase(getContext()).StoreUserPhoto(user_photo);
+
+                                getContext().sendBroadcast(new Intent("com.synergyinterface.askrambler.Activity.ChangeLayoutOnLogin"));
 
                             }else {
+                                String message = jsonObject.getString("message");
                                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                             }
                         }catch (Exception e){
-                            Log.d("HDHD ", e.toString());
+                            Log.d("HDHD 1", e.toString() + "\n" + response);
                         }
                     }
                 }, new Response.ErrorListener() {
@@ -204,8 +246,8 @@ public class FragmentLogin extends Fragment {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
-                params.put("email", "Sasas");
-                params.put("password", "sasas");
+                params.put("email", email);
+                params.put("password", pass);
 
                 return params;
             }

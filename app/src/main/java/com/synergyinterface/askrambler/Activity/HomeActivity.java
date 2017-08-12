@@ -1,5 +1,9 @@
 package com.synergyinterface.askrambler.Activity;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -7,17 +11,27 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.synergyinterface.askrambler.Fragment.FragmentAddPost;
 import com.synergyinterface.askrambler.Fragment.FragmentAdvancedSearch;
 import com.synergyinterface.askrambler.Fragment.FragmentAllPost;
 import com.synergyinterface.askrambler.Fragment.FragmentLogin;
 import com.synergyinterface.askrambler.Fragment.FragmentProfile;
 import com.synergyinterface.askrambler.R;
+import com.synergyinterface.askrambler.Util.SharedPrefDatabase;
+
+import org.w3c.dom.Text;
 
 public class HomeActivity extends AppCompatActivity {
 
@@ -68,8 +82,18 @@ public class HomeActivity extends AppCompatActivity {
     public void NavigationItemClicked() {
         navigationView = (NavigationView) findViewById(R.id.navigationView);
 
+        View headerView = navigationView.getHeaderView(0);
+
         Menu nav_menu = navigationView.getMenu();
-        nav_menu.findItem(R.id.btnMenuProfile).setVisible(false);
+        nav_menu.findItem(R.id.btnMenuSignIn).setVisible(false);
+
+        if (new SharedPrefDatabase(getApplicationContext()).RetriveLogin() == null){
+            PopulateViewOnNotLogin();
+        }else if (new SharedPrefDatabase(getApplicationContext()).RetriveLogin().toString().equals("Yes") ){
+            PopulateViewOnLogin();
+        }else {
+            PopulateViewOnNotLogin();
+        }
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -104,6 +128,64 @@ public class HomeActivity extends AppCompatActivity {
         });
     }
 
+    public void PopulateViewOnLogin(){
+        Menu nav_menu = navigationView.getMenu();
+        nav_menu.findItem(R.id.btnMenuSignIn).setVisible(false);
+        nav_menu.findItem(R.id.btnMenuProfile).setVisible(true);
+
+        View headerView = navigationView.getHeaderView(0);
+        ImageView imageViewHeader = (ImageView) headerView.findViewById(R.id.imageViewHeader);
+        ImageView imgLogoutHeader = (ImageView) headerView.findViewById(R.id.imgLogoutHeader);
+        TextView txtNameHeader = (TextView) headerView.findViewById(R.id.txtNameHeader);
+        TextView txtRatingHeader = (TextView) headerView.findViewById(R.id.txtRatingHeader);
+
+        Log.d("SAIM INFO CHECK", new SharedPrefDatabase(getApplicationContext()).RetriveUserFullName() + "\n" +
+        new SharedPrefDatabase(getApplicationContext()).RetriveUserPhoto());
+
+        Glide.with(getApplicationContext())
+                .load(new SharedPrefDatabase(getApplicationContext()).RetriveUserPhoto())
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(imageViewHeader);
+
+        txtNameHeader.setText(new SharedPrefDatabase(getApplicationContext()).RetriveUserFullName());
+
+        imgLogoutHeader.setVisibility(View.VISIBLE);
+        imgLogoutHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new SharedPrefDatabase(getApplicationContext()).StoreLogin("No");
+                sendBroadcast(new Intent("com.synergyinterface.askrambler.Activity.ChangeLayoutOnLogin"));
+            }
+        });
+    }
+
+    public void PopulateViewOnNotLogin(){
+        Menu nav_menu = navigationView.getMenu();
+        nav_menu.findItem(R.id.btnMenuProfile).setVisible(false);
+        nav_menu.findItem(R.id.btnMenuSignIn).setVisible(true);
+
+        View headerView = navigationView.getHeaderView(0);
+        ImageView imageViewHeader = (ImageView) headerView.findViewById(R.id.imageViewHeader);
+        ImageView imgLogoutHeader = (ImageView) headerView.findViewById(R.id.imgLogoutHeader);
+        TextView txtNameHeader = (TextView) headerView.findViewById(R.id.txtNameHeader);
+        TextView txtRatingHeader = (TextView) headerView.findViewById(R.id.txtRatingHeader);
+
+        imageViewHeader.setImageResource(R.drawable.ic_user);
+        imgLogoutHeader.setVisibility(View.GONE);
+        txtNameHeader.setText("Guest User");
+        txtRatingHeader.setText("5.00");
+    }
+
     @Override
     public void onBackPressed() {
         if (getSupportFragmentManager().getBackStackEntryCount() == 1){
@@ -112,5 +194,31 @@ public class HomeActivity extends AppCompatActivity {
         }else {
             super.onBackPressed();
         }
+    }
+
+    public BroadcastReceiver receiverChangeLayoutOnLogin = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (new SharedPrefDatabase(getApplicationContext()).RetriveLogin() == null){
+                PopulateViewOnNotLogin();
+            }else if (new SharedPrefDatabase(getApplicationContext()).RetriveLogin().toString().equals("Yes") ){
+                PopulateViewOnLogin();
+            }else {
+                PopulateViewOnNotLogin();
+            }
+        }
+    };
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        IntentFilter intentFilter = new IntentFilter("com.synergyinterface.askrambler.Activity.ChangeLayoutOnLogin");
+        registerReceiver(receiverChangeLayoutOnLogin, intentFilter);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        unregisterReceiver(receiverChangeLayoutOnLogin);
     }
 }

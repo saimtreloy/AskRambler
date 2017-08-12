@@ -9,6 +9,9 @@ public class ModelUser {
             mobile, phone, birth_date, user_photo, document, verify, website, facebook, instagram, youtube, code, cornjob, like_to, details, server_date;
 
 
+    public ModelUser() {
+    }
+
     public ModelUser(String user_id, String nationality, String full_name, String email, String password, String agreement, String status, String roll, String first_name, String last_name, String gander, String address, String city, String zip, String state, String country, String mobile, String phone, String birth_date, String user_photo, String document, String verify, String website, String facebook, String instagram, String youtube, String code, String cornjob, String like_to, String details, String server_date) {
         this.user_id = user_id;
         this.nationality = nationality;
