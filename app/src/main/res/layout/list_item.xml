@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <TextView
+    android:id="@+id/listAutoComplete"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:text="Hello Saim Kamon ASo"
-    android:textSize="16sp"
-    android:padding="6dp"
-    android:gravity="center"
+    android:textSize="10sp"
+    android:padding="8dp"
+    android:inputType="textMultiLine"
+    android:gravity="center_vertical"
     android:background="#11333333"
     android:drawableLeft="@drawable/ic_place"
     android:layout_marginBottom="2dp"/>

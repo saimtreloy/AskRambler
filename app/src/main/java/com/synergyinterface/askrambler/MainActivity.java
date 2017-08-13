@@ -1,14 +1,27 @@
 package com.synergyinterface.askrambler;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
+import android.util.TypedValue;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Filter;
 import android.widget.Filterable;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -20,24 +33,49 @@ import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class MainActivity extends AppCompatActivity implements AdapterView.OnItemClickListener {
+public class MainActivity extends AppCompatActivity{
 
     private static final String LOG_TAG = "Google Places Autocomplete";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
     private static final String API_KEY = "AIzaSyCBrJXQuoQXATq461rT-WoaO5Sd0c9aqTQ";
+    //https://maps.googleapis.com/maps/api/place/json?key=AIzaSyCBrJXQuoQXATq461rT-WoaO5Sd0c9aqTQ&components=country:bd&input=
+
+    ArrayAdapter<String> adapter;
+    AutoCompleteTextView autoCompView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AutoCompleteTextView autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+        autoCompView = (AutoCompleteTextView) findViewById(R.id.autoCompleteTextView);
+        autoCompView.setHint("Search Place...");
+        autoCompView.setThreshold(0);
+        //autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
+        autoCompView.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
-        autoCompView.setAdapter(new GooglePlacesAutocompleteAdapter(this, R.layout.list_item));
-        autoCompView.setOnItemClickListener(this);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() <= 3) {
+                    resultList = new ArrayList<String>();
+                    SaveFutureProject(s.toString());
+                }
+            }
+        });
+
     }
 
     ArrayList resultList = null;
@@ -55,9 +93,24 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
                             resultList = new ArrayList(predsJsonArray.length());
                             for (int i = 0; i < predsJsonArray.length(); i++) {
                                 System.out.println(predsJsonArray.getJSONObject(i).getString("description"));
-                                System.out.println("============================================================");
                                 resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
                             }
+                            adapter = new ArrayAdapter<String>(getApplicationContext(), android.R.layout.simple_list_item_1, resultList){
+                                @NonNull
+                                @Override
+                                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                                    TextView textView = (TextView) super.getView(position, convertView, parent);
+
+                                    //String currentLocation = resultList.get(position).toString();
+                                    textView.setTextColor(Color.BLACK);
+                                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+                                    textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_place, 0, 0, 0);
+
+                                    return textView;
+                                }
+                            };
+                            autoCompView.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
                         }catch (Exception e){
 
                         }
@@ -70,12 +123,6 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
         });
         MySingleton.getInstance(getApplicationContext()).addToRequestQueue(stringRequest);
         return resultList;
-    }
-
-
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-
     }
 
 
@@ -125,5 +172,8 @@ public class MainActivity extends AppCompatActivity implements AdapterView.OnIte
             };
             return filter;
         }
+
+
     }
+
 }

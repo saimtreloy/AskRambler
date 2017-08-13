@@ -164,6 +164,8 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 new SharedPrefDatabase(getApplicationContext()).StoreLogin("No");
+                new SharedPrefDatabase(getApplicationContext()).StoreUserFullName("Guest User");
+                new SharedPrefDatabase(getApplicationContext()).StoreUserPhoto("");
                 sendBroadcast(new Intent("com.synergyinterface.askrambler.Activity.ChangeLayoutOnLogin"));
             }
         });
@@ -203,7 +205,7 @@ public class HomeActivity extends AppCompatActivity {
                 PopulateViewOnNotLogin();
             }else if (new SharedPrefDatabase(getApplicationContext()).RetriveLogin().toString().equals("Yes") ){
                 PopulateViewOnLogin();
-            }else {
+            }else if (new SharedPrefDatabase(getApplicationContext()).RetriveLogin().toString().equals("No")){
                 PopulateViewOnNotLogin();
             }
         }

@@ -68,9 +68,13 @@ public class Splash extends AppCompatActivity {
                                     modelPostsList.add(modelPostShort);
                                 }
 
-                                if (new SharedPrefDatabase(getApplicationContext()).RetriveUserFullName() != null &&
-                                        new SharedPrefDatabase(getApplicationContext()).RetriveUserPhoto() !=null){
-                                    SaveUserLogin();
+                                if (new SharedPrefDatabase(getApplicationContext()).RetriveLogin() != null){
+                                    if (new SharedPrefDatabase(getApplicationContext()).RetriveLogin().equals("Yes")){
+                                        SaveUserLogin();
+                                    }else if (new SharedPrefDatabase(getApplicationContext()).RetriveLogin().equals("No")){
+                                        startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                                        finish();
+                                    }
                                 }else {
                                     startActivity(new Intent(getApplicationContext(), HomeActivity.class));
                                     finish();

@@ -51,11 +51,16 @@
             android:layout_gravity="bottom|center_vertical"
             android:clickable="true"
             android:orientation="vertical">
-            <!--<TextView
+            <TextView
                 android:id="@+id/footer_item_2"
                 android:layout_width="match_parent"
-                android:layout_height="48dp"
-                android:text="Footer Item 2" />-->
+                android:layout_height="wrap_content"
+                android:padding="16dp"
+                android:drawablePadding="26dp"
+                android:textColor="#000000"
+                android:gravity="center_vertical"
+                android:drawableLeft="@drawable/ic_tarms"
+                android:text="Tarms and Conditions" />
         </LinearLayout>
 
     </android.support.design.widget.NavigationView>

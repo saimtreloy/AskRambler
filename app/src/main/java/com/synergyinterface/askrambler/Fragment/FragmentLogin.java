@@ -6,6 +6,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -228,7 +229,7 @@ public class FragmentLogin extends Fragment {
                                 new SharedPrefDatabase(getContext()).StoreUserPhoto(user_photo);
 
                                 getContext().sendBroadcast(new Intent("com.synergyinterface.askrambler.Activity.ChangeLayoutOnLogin"));
-
+                                ((FragmentActivity) getContext()).getSupportFragmentManager().popBackStack();
                             }else {
                                 String message = jsonObject.getString("message");
                                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();

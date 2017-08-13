@@ -14,6 +14,7 @@ import android.widget.Button;
 import com.synergyinterface.askrambler.Activity.Splash;
 import com.synergyinterface.askrambler.Adapter.AdapterPost;
 import com.synergyinterface.askrambler.R;
+import com.synergyinterface.askrambler.Util.SharedPrefDatabase;
 
 public class FragmentAllPost extends Fragment {
 
@@ -51,8 +52,11 @@ public class FragmentAllPost extends Fragment {
         btnFabCreatePost.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new FragmentLogin()).addToBackStack(null).commit();
-
+                if (new SharedPrefDatabase(getContext()).RetriveLogin()!=null &&new SharedPrefDatabase(getContext()).RetriveLogin().equals("Yes")){
+                    ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new FragmentAddPost()).addToBackStack(null).commit();
+                }else {
+                    ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().replace(R.id.main_container, new FragmentLogin()).addToBackStack(null).commit();
+                }
             }
         });
     }
