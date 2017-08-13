@@ -22,6 +22,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Filter;
@@ -29,6 +30,7 @@ import android.widget.Filterable;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -81,6 +83,22 @@ public class FragmentAddPost extends Fragment {
     EditText inputAddBagExpectedDate, inputAddBagBaggageType, inputAddBagBaggageWeight, inputAddBagPaymentCategory, inputAddBagContactNo,
             inputAddBagImage, inputAddBagDescription;
     Button btnAddBagPostAdd;
+
+    //Trip
+    RadioButton radioAddTripArrageTrip, radioAddTripGoOn;
+    AutoCompleteTextView inputAddTripFrom, inputAddTripTo;
+    EditText inputAddTripExpectedDate, inputAddTripCategory, inputAddTripType,inputAddTripDuration, inputAddTripPayment, inputAddTripContactNo,
+            inputAddTripImage, inputAddTripDescription;
+    Button btnAddTripPostAdd;
+
+    //Host
+    RadioButton radioAddHostWantTo, radioAddHostNeedHost;
+    AutoCompleteTextView inputAddHostLocation;
+    EditText inputAddHostContactNo, inputAddHostPayment, inputAddHostHabitSmocking, inputAddHostHabitAlcohol, inputAddHostImage, inputAddHostDescription;
+    CheckBox checkBoxFood, checkBoxInternet, checkBoxTransport;
+    SeekBar seekBarNoTravelerHost;
+    TextView txtAddHostNoTraveler;
+    Button btnAddHostPostAdd;
 
 
     public FragmentAddPost() {
@@ -146,6 +164,51 @@ public class FragmentAddPost extends Fragment {
         btnAddBagPostAdd = (Button) view.findViewById(R.id.btnAddBagPostAdd);
 
         BaggageEditTextClick();
+
+
+        //Trip
+        inputAddTripFrom = (AutoCompleteTextView) view.findViewById(R.id.inputAddTripFrom);
+        inputAddTripTo = (AutoCompleteTextView) view.findViewById(R.id.inputAddTripTo);
+
+        radioAddTripArrageTrip = (RadioButton) view.findViewById(R.id.radioAddTripArrageTrip);
+        radioAddTripGoOn = (RadioButton) view.findViewById(R.id.radioAddTripGoOn);
+
+        inputAddTripExpectedDate = (EditText) view.findViewById(R.id.inputAddTripExpectedDate);
+        inputAddTripCategory = (EditText) view.findViewById(R.id.inputAddTripCategory);
+        inputAddTripType = (EditText) view.findViewById(R.id.inputAddTripType);
+        inputAddTripDuration = (EditText) view.findViewById(R.id.inputAddTripDuration);
+        inputAddTripPayment = (EditText) view.findViewById(R.id.inputAddTripPayment);
+        inputAddTripContactNo = (EditText) view.findViewById(R.id.inputAddTripContactNo);
+        inputAddTripImage = (EditText) view.findViewById(R.id.inputAddTripImage);
+        inputAddTripDescription = (EditText) view.findViewById(R.id.inputAddTripDescription);
+
+        btnAddTripPostAdd = (Button) view.findViewById(R.id.btnAddTripPostAdd);
+        TripEditTextClick();
+
+        //Host
+        inputAddHostLocation = (AutoCompleteTextView) view.findViewById(R.id.inputAddHostLocation);
+
+        radioAddHostWantTo = (RadioButton) view.findViewById(R.id.radioAddHostWantTo);
+        radioAddHostNeedHost = (RadioButton) view.findViewById(R.id.radioAddHostNeedHost);
+
+        inputAddHostContactNo = (EditText) view.findViewById(R.id.inputAddHostContactNo);
+        inputAddHostPayment = (EditText) view.findViewById(R.id.inputAddHostPayment);
+        inputAddHostHabitSmocking = (EditText) view.findViewById(R.id.inputAddHostHabitSmocking);
+        inputAddHostHabitAlcohol = (EditText) view.findViewById(R.id.inputAddHostHabitAlcohol);
+        inputAddHostImage = (EditText) view.findViewById(R.id.inputAddHostImage);
+        inputAddHostDescription = (EditText) view.findViewById(R.id.inputAddHostDescription);
+
+        checkBoxFood = (CheckBox) view.findViewById(R.id.checkBoxFood);
+        checkBoxInternet = (CheckBox) view.findViewById(R.id.checkBoxInternet);
+        checkBoxTransport = (CheckBox) view.findViewById(R.id.checkBoxTransport);
+
+        seekBarNoTravelerHost = (SeekBar) view.findViewById(R.id.seekBarNoTravelerHost);
+
+        txtAddHostNoTraveler = (TextView) view.findViewById(R.id.txtAddHostNoTraveler);
+
+        btnAddHostPostAdd = (Button) view.findViewById(R.id.btnAddHostPostAdd);
+
+        HostEditTextClick();
     }
 
     public void ButtonClickedTop(){
@@ -298,7 +361,6 @@ public class FragmentAddPost extends Fragment {
 
     }
 
-
     public void CompanionEditTextClick(){
         inputAddComFrom.addTextChangedListener(new TextWatcher() {
             @Override
@@ -441,9 +503,167 @@ public class FragmentAddPost extends Fragment {
         });
     }
 
+    public void TripEditTextClick(){
+        inputAddTripFrom.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() <= 3) {
+                    resultList = new ArrayList<String>();
+                    SaveFutureProject(s.toString(), inputAddTripFrom);
+                }
+            }
+        });
+        inputAddTripTo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() <= 3) {
+                    resultList = new ArrayList<String>();
+                    SaveFutureProject(s.toString(), inputAddTripTo);
+                }
+            }
+        });
+
+        radioAddTripArrageTrip.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radioAddTripArrageTrip.setChecked(true);
+                radioAddTripGoOn.setChecked(false);
+            }
+        });
+        radioAddTripGoOn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radioAddTripGoOn.setChecked(true);
+                radioAddTripArrageTrip.setChecked(false);
+            }
+        });
+
+        inputAddTripExpectedDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateSelectFromDatePicker(inputAddTripExpectedDate);
+            }
+        });
+
+        inputAddTripCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTripCategoryList("Select trip category", inputAddTripCategory);
+            }
+        });
+
+        inputAddTripType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTravelByList("Select trip transport type", inputAddTripType);
+            }
+        });
+
+        inputAddTripPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPaymentCategoryList("Select trip payment category", inputAddTripPayment);
+            }
+        });
+    }
+
+    public void HostEditTextClick(){
+        inputAddHostLocation.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() <= 3) {
+                    resultList = new ArrayList<String>();
+                    SaveFutureProject(s.toString(), inputAddHostLocation);
+                }
+            }
+        });
+
+        radioAddHostWantTo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radioAddHostWantTo.setChecked(true);
+                radioAddHostNeedHost.setChecked(false);
+            }
+        });
+        radioAddHostNeedHost.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                radioAddHostNeedHost.setChecked(true);
+                radioAddHostWantTo.setChecked(false);
+            }
+        });
+
+        inputAddHostPayment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPaymentCategoryList("Select trip payment category", inputAddHostPayment);
+            }
+        });
+
+        inputAddHostHabitSmocking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showSmockingHabitList("Select trip payment category", inputAddHostHabitSmocking);
+            }
+        });
+
+        inputAddHostHabitAlcohol.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showAlcoholHabitList("Select trip payment category", inputAddHostHabitAlcohol);
+            }
+        });
+        seekBarNoTravelerHost.setMax(20);
+        seekBarNoTravelerHost.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                txtAddHostNoTraveler.setText(progress+"");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
 
     //Google Autocomplete  Adapter
-
     public ArrayList SaveFutureProject(String place, final AutoCompleteTextView autoCompView) {
         String url = PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON + "?key=" + API_KEY + "&components=country:bd" + "&input=" + place;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
@@ -490,7 +710,6 @@ public class FragmentAddPost extends Fragment {
         MySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
         return resultList;
     }
-
 
     public void showPaymentCategoryList(String title, final EditText editText) {
 
@@ -577,6 +796,78 @@ public class FragmentAddPost extends Fragment {
 
         ListView listDialog = (ListView) infoDialogView.findViewById(R.id.listDialog);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.baggage_type));
+        listDialog.setAdapter(arrayAdapter);
+        listDialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                editText.setText((String)parent.getItemAtPosition(position));
+                infoDialog.dismiss();
+            }
+        });
+        infoDialog.show();
+    }
+
+    public void showTripCategoryList(String title, final EditText editText) {
+
+        LayoutInflater factory = LayoutInflater.from(getContext());
+        final View infoDialogView = factory.inflate(R.layout.dialog_list, null);
+        final AlertDialog infoDialog = new AlertDialog.Builder(getContext()).create();
+        infoDialog.setView(infoDialogView);
+        infoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        TextView txtDialog = (TextView) infoDialogView.findViewById(R.id.txtDialog);
+        txtDialog.setText(title);
+
+        ListView listDialog = (ListView) infoDialogView.findViewById(R.id.listDialog);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.trip_category));
+        listDialog.setAdapter(arrayAdapter);
+        listDialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                editText.setText((String)parent.getItemAtPosition(position));
+                infoDialog.dismiss();
+            }
+        });
+        infoDialog.show();
+    }
+
+    public void showSmockingHabitList(String title, final EditText editText) {
+
+        LayoutInflater factory = LayoutInflater.from(getContext());
+        final View infoDialogView = factory.inflate(R.layout.dialog_list, null);
+        final AlertDialog infoDialog = new AlertDialog.Builder(getContext()).create();
+        infoDialog.setView(infoDialogView);
+        infoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        TextView txtDialog = (TextView) infoDialogView.findViewById(R.id.txtDialog);
+        txtDialog.setText(title);
+
+        ListView listDialog = (ListView) infoDialogView.findViewById(R.id.listDialog);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.smoking_habit));
+        listDialog.setAdapter(arrayAdapter);
+        listDialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                editText.setText((String)parent.getItemAtPosition(position));
+                infoDialog.dismiss();
+            }
+        });
+        infoDialog.show();
+    }
+
+    public void showAlcoholHabitList(String title, final EditText editText) {
+
+        LayoutInflater factory = LayoutInflater.from(getContext());
+        final View infoDialogView = factory.inflate(R.layout.dialog_list, null);
+        final AlertDialog infoDialog = new AlertDialog.Builder(getContext()).create();
+        infoDialog.setView(infoDialogView);
+        infoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        TextView txtDialog = (TextView) infoDialogView.findViewById(R.id.txtDialog);
+        txtDialog.setText(title);
+
+        ListView listDialog = (ListView) infoDialogView.findViewById(R.id.listDialog);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(),android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.alcohol_habit));
         listDialog.setAdapter(arrayAdapter);
         listDialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

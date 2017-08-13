@@ -39,4 +39,29 @@
         <item>Stay And Help</item>
         <item>Pay for Staying </item>
     </string-array>
+
+    <string-array name="trip_category">
+        <item>Beach</item>
+        <item>Romantic</item>
+        <item>Mountains</item>
+        <item>Explore</item>
+        <item>Ice </item>
+        <item>Hill Tracking </item>
+        <item>Forest</item>
+        <item>River</item>
+        <item>Road Trip</item>
+        <item>Others</item>
+    </string-array>
+
+    <string-array name="smoking_habit">
+        <item>Smoker</item>
+        <item>Non-smoker</item>
+        <item>Any</item>
+    </string-array>
+
+    <string-array name="alcohol_habit">
+        <item>Alcoholic</item>
+        <item>Non-Alcoholic</item>
+        <item>Any</item>
+    </string-array>
 </resources>
