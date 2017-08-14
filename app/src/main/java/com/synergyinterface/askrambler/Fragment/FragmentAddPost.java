@@ -3,7 +3,6 @@ package com.synergyinterface.askrambler.Fragment;
 
 import android.animation.Animator;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -12,7 +11,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,14 +23,11 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -41,8 +36,6 @@ import com.android.volley.toolbox.StringRequest;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.synergyinterface.askrambler.Activity.HomeActivity;
-import com.synergyinterface.askrambler.Activity.Splash;
-import com.synergyinterface.askrambler.MainActivity;
 import com.synergyinterface.askrambler.R;
 import com.synergyinterface.askrambler.Util.MySingleton;
 
@@ -56,21 +49,17 @@ import java.util.Locale;
 
 public class FragmentAddPost extends Fragment {
 
-    View view;
-
-    Button btnAddPostCom, btnAddPostBag, btnAddPostTrip, btnAddPostHost;
-    RelativeLayout layoutAddPostCompanion, layoutAddPostBaggage, layoutAddPostTrip, layoutAddPostHost;
-
-    //Google Item
-    ArrayList resultList = null;
-    ArrayAdapter<String> adapter;
-
     private static final String LOG_TAG = "Google Places Autocomplete";
     private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
     private static final String API_KEY = "AIzaSyCBrJXQuoQXATq461rT-WoaO5Sd0c9aqTQ";
-
+    View view;
+    Button btnAddPostCom, btnAddPostBag, btnAddPostTrip, btnAddPostHost;
+    RelativeLayout layoutAddPostCompanion, layoutAddPostBaggage, layoutAddPostTrip, layoutAddPostHost;
+    //Google Item
+    ArrayList resultList = null;
+    ArrayAdapter<String> adapter;
     //Companion
     AutoCompleteTextView inputAddComFrom, inputAddComTo;
     EditText inputAddConExpectedDate, inputAddComPayment, inputAddComGender, inputAddComTravelBy, inputAddComContact,
@@ -664,7 +653,7 @@ public class FragmentAddPost extends Fragment {
 
 
     //Google Autocomplete  Adapter
-    public ArrayList SaveFutureProject(String place, final AutoCompleteTextView autoCompView) {
+    public ArrayList SaveFutureProject(String place, final AutoCompleteTextView auto) {
         String url = PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON + "?key=" + API_KEY + "&components=country:bd" + "&input=" + place;
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
@@ -695,7 +684,7 @@ public class FragmentAddPost extends Fragment {
                                     return textView;
                                 }
                             };
-                            autoCompView.setAdapter(adapter);
+                            auto.setAdapter(adapter);
                             adapter.notifyDataSetChanged();
                         }catch (Exception e){
 

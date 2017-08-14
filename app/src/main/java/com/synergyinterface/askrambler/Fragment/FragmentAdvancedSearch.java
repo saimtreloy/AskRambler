@@ -2,26 +2,83 @@ package com.synergyinterface.askrambler.Fragment;
 
 
 import android.animation.Animator;
+import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
+import android.widget.TextView;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.synergyinterface.askrambler.Activity.HomeActivity;
 import com.synergyinterface.askrambler.R;
+import com.synergyinterface.askrambler.Util.MySingleton;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Locale;
 
 public class FragmentAdvancedSearch extends Fragment {
 
+    private static final String LOG_TAG = "Google Places Autocomplete";
+    private static final String PLACES_API_BASE = "https://maps.googleapis.com/maps/api/place";
+    private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
+    private static final String OUT_JSON = "/json";
+    private static final String API_KEY = "AIzaSyCBrJXQuoQXATq461rT-WoaO5Sd0c9aqTQ";
     View view;
-
     Button btnSPostCom, btnSPostBag, btnSPostTrip, btnSPostHost;
     RelativeLayout layoutSPostCompanion, layoutSPostBaggage, layoutSPostTrip, layoutSPostHost;
+    //Google Item
+    ArrayList resultList = null;
+    ArrayAdapter<String> adapter;
+    //Companion Advanced Search
+    AutoCompleteTextView inputSComFrom, inputSComTo;
+    EditText inputSConExpectedDate, inputSComExpectedDate1, inputSComGender;
+    Button btnSComSearch;
+
+    //Baggage Advanced Search
+    AutoCompleteTextView inputSBagFrom, inputSBagTo;
+    EditText inputSBagExpectedDate, inputSBagExpectedDate1, inputSBagGender;
+    Button btnSBagSearchAdd;
+
+    //Trip Advanced Search
+    AutoCompleteTextView inputSTripFrom, inputSTripTo;
+    EditText inputSTripExpectedDate, inputSTripExpectedDate1, inputSTripTransportType;
+    Button btnSTripSearchAdd;
+
+    //Host Advanced Search
+    AutoCompleteTextView inputSHostFrom;
+    EditText inputSHostPaymentCategory;
+    TextView txtSHostNoTraveler;
+    SeekBar seekBarSHostNoTraveler;
+    Button btnSHostSearchAdd;
     
     public FragmentAdvancedSearch() {
 
@@ -51,6 +108,53 @@ public class FragmentAdvancedSearch extends Fragment {
         layoutSPostHost = (RelativeLayout) view.findViewById(R.id.layoutSPostHost);
 
         ButtonClickedTop();
+
+
+        //Companion Advanced Search
+        inputSComFrom = (AutoCompleteTextView) view.findViewById(R.id.inputSComFrom);
+        inputSComTo = (AutoCompleteTextView) view.findViewById(R.id.inputSComTo);
+
+        inputSConExpectedDate = (EditText) view.findViewById(R.id.inputSConExpectedDate);
+        inputSComExpectedDate1 = (EditText) view.findViewById(R.id.inputSComExpectedDate1);
+        inputSComGender = (EditText) view.findViewById(R.id.inputSComGender);
+
+        btnSComSearch = (Button) view.findViewById(R.id.btnSComSearch);
+
+        CompanionEditTextClicked();
+
+        //Baggage Advanced Search
+        inputSBagFrom = (AutoCompleteTextView) view.findViewById(R.id.inputSBagFrom);
+        inputSBagTo = (AutoCompleteTextView) view.findViewById(R.id.inputSBagTo);
+
+        inputSBagExpectedDate = (EditText) view.findViewById(R.id.inputSBagExpectedDate);
+        inputSBagExpectedDate1 = (EditText) view.findViewById(R.id.inputSBagExpectedDate1);
+        inputSBagGender = (EditText) view.findViewById(R.id.inputSBagGender);
+
+        btnSBagSearchAdd = (Button) view.findViewById(R.id.btnSBagSearchAdd);
+
+        BaggageEditTextClicked();
+
+
+        //Trip Advanced Search
+        inputSTripFrom = (AutoCompleteTextView) view.findViewById(R.id.inputSTripFrom);
+        inputSTripTo = (AutoCompleteTextView) view.findViewById(R.id.inputSTripTo);
+
+        inputSTripExpectedDate = (EditText) view.findViewById(R.id.inputSTripExpectedDate);
+        inputSTripExpectedDate1 = (EditText) view.findViewById(R.id.inputSTripExpectedDate1);
+        inputSTripTransportType = (EditText) view.findViewById(R.id.inputSTripTransportType);
+
+        btnSTripSearchAdd = (Button) view.findViewById(R.id.btnSTripSearchAdd);
+
+        TripEditTextClicked();
+
+        //Host Advanced Search
+        inputSHostFrom = (AutoCompleteTextView) view.findViewById(R.id.inputSHostFrom);
+        inputSHostPaymentCategory = (EditText) view.findViewById(R.id.inputSHostPaymentCategory);
+        txtSHostNoTraveler = (TextView) view.findViewById(R.id.txtSHostNoTraveler);
+        seekBarSHostNoTraveler = (SeekBar) view.findViewById(R.id.seekBarSHostNoTraveler);
+        btnSHostSearchAdd = (Button) view.findViewById(R.id.btnSHostSearchAdd);
+
+        TripEditTextClicked();
     }
 
     public void ButtonClickedTop(){
@@ -201,6 +305,382 @@ public class FragmentAdvancedSearch extends Fragment {
             }
         });
 
+    }
+
+    public void CompanionEditTextClicked() {
+
+        inputSComFrom.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() <= 3) {
+                    resultList = new ArrayList<String>();
+                    SaveFutureProject(s.toString(), inputSComFrom);
+                }
+            }
+        });
+        inputSComTo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() <= 3) {
+                    resultList = new ArrayList<String>();
+                    SaveFutureProject(s.toString(), inputSComTo);
+                }
+            }
+        });
+
+        inputSConExpectedDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateSelectFromDatePicker(inputSConExpectedDate);
+            }
+        });
+
+        inputSComExpectedDate1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateSelectFromDatePicker(inputSComExpectedDate1);
+            }
+        });
+
+        inputSComGender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showGenderList("Select Gender", inputSComGender);
+            }
+        });
+    }
+
+    public void BaggageEditTextClicked() {
+
+        inputSBagFrom.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() <= 3) {
+                    resultList = new ArrayList<String>();
+                    SaveFutureProject(s.toString(), inputSBagFrom);
+                }
+            }
+        });
+        inputSBagTo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() <= 3) {
+                    resultList = new ArrayList<String>();
+                    SaveFutureProject(s.toString(), inputSBagTo);
+                }
+            }
+        });
+
+        inputSBagExpectedDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateSelectFromDatePicker(inputSBagExpectedDate);
+            }
+        });
+
+        inputSBagExpectedDate1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateSelectFromDatePicker(inputSBagExpectedDate1);
+            }
+        });
+
+        inputSBagGender.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showGenderList("Select Gender", inputSBagGender);
+            }
+        });
+    }
+
+    public void TripEditTextClicked() {
+
+        inputSTripFrom.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() <= 3) {
+                    resultList = new ArrayList<String>();
+                    SaveFutureProject(s.toString(), inputSTripFrom);
+                }
+            }
+        });
+        inputSTripTo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() <= 3) {
+                    resultList = new ArrayList<String>();
+                    SaveFutureProject(s.toString(), inputSTripTo);
+                }
+            }
+        });
+
+        inputSTripExpectedDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateSelectFromDatePicker(inputSTripExpectedDate);
+            }
+        });
+
+        inputSTripExpectedDate1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dateSelectFromDatePicker(inputSTripExpectedDate1);
+            }
+        });
+
+        inputSTripTransportType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showTravelByList("Select Transport type", inputSTripTransportType);
+            }
+        });
+    }
+
+    public void HostEditTextClicked() {
+
+        inputSHostFrom.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if (s.toString().length() <= 3) {
+                    resultList = new ArrayList<String>();
+                    SaveFutureProject(s.toString(), inputSHostFrom);
+                }
+            }
+        });
+
+        inputSHostPaymentCategory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showPaymentCategoryList("Select payment category type", inputSHostPaymentCategory);
+            }
+        });
+        seekBarSHostNoTraveler.setMax(20);
+        seekBarSHostNoTraveler.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                txtSHostNoTraveler.setText(progress + "");
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+
+            }
+        });
+    }
+
+
+    //Google Autocomplete  Adapter
+    public ArrayList SaveFutureProject(String place, final AutoCompleteTextView auto) {
+        String url = PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON + "?key=" + API_KEY + "&components=country:bd" + "&input=" + place;
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            JSONObject jsonObj = new JSONObject(response);
+                            JSONArray predsJsonArray = jsonObj.getJSONArray("predictions");
+
+                            // Extract the Place descriptions from the results
+                            resultList = new ArrayList(predsJsonArray.length());
+                            for (int i = 0; i < predsJsonArray.length(); i++) {
+                                System.out.println(predsJsonArray.getJSONObject(i).getString("description"));
+                                System.out.println("============================================================");
+                                resultList.add(predsJsonArray.getJSONObject(i).getString("description"));
+                            }
+                            adapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, resultList) {
+                                @NonNull
+                                @Override
+                                public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+                                    TextView textView = (TextView) super.getView(position, convertView, parent);
+
+                                    //String currentLocation = resultList.get(position).toString();
+                                    textView.setTextColor(Color.BLACK);
+                                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+                                    textView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_place, 0, 0, 0);
+
+                                    return textView;
+                                }
+                            };
+                            auto.setAdapter(adapter);
+                            adapter.notifyDataSetChanged();
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        MySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
+        return resultList;
+    }
+
+    public void dateSelectFromDatePicker(final EditText editText) {
+        Calendar newCalendar = Calendar.getInstance();
+        final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        final DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
+            @Override
+            public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+                Calendar newDate = Calendar.getInstance();
+                newDate.set(year, month, dayOfMonth);
+                editText.setText(dateFormatter.format(newDate.getTime()));
+            }
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+        editText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                datePickerDialog.show();
+            }
+        });
+    }
+
+    public void showGenderList(String title, final EditText editText) {
+
+        LayoutInflater factory = LayoutInflater.from(getContext());
+        final View infoDialogView = factory.inflate(R.layout.dialog_list, null);
+        final AlertDialog infoDialog = new AlertDialog.Builder(getContext()).create();
+        infoDialog.setView(infoDialogView);
+        infoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        TextView txtDialog = (TextView) infoDialogView.findViewById(R.id.txtDialog);
+        txtDialog.setText(title);
+
+        ListView listDialog = (ListView) infoDialogView.findViewById(R.id.listDialog);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.gender));
+        listDialog.setAdapter(arrayAdapter);
+        listDialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                editText.setText((String) parent.getItemAtPosition(position));
+                infoDialog.dismiss();
+            }
+        });
+        infoDialog.show();
+    }
+
+    public void showTravelByList(String title, final EditText editText) {
+
+        LayoutInflater factory = LayoutInflater.from(getContext());
+        final View infoDialogView = factory.inflate(R.layout.dialog_list, null);
+        final AlertDialog infoDialog = new AlertDialog.Builder(getContext()).create();
+        infoDialog.setView(infoDialogView);
+        infoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        TextView txtDialog = (TextView) infoDialogView.findViewById(R.id.txtDialog);
+        txtDialog.setText(title);
+
+        ListView listDialog = (ListView) infoDialogView.findViewById(R.id.listDialog);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.transport_type));
+        listDialog.setAdapter(arrayAdapter);
+        listDialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                editText.setText((String) parent.getItemAtPosition(position));
+                infoDialog.dismiss();
+            }
+        });
+        infoDialog.show();
+    }
+
+    public void showPaymentCategoryList(String title, final EditText editText) {
+
+        LayoutInflater factory = LayoutInflater.from(getContext());
+        final View infoDialogView = factory.inflate(R.layout.dialog_list, null);
+        final AlertDialog infoDialog = new AlertDialog.Builder(getContext()).create();
+        infoDialog.setView(infoDialogView);
+        infoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        TextView txtDialog = (TextView) infoDialogView.findViewById(R.id.txtDialog);
+        txtDialog.setText(title);
+
+        ListView listDialog = (ListView) infoDialogView.findViewById(R.id.listDialog);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.payment_category));
+        listDialog.setAdapter(arrayAdapter);
+        listDialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                editText.setText((String) parent.getItemAtPosition(position));
+                infoDialog.dismiss();
+            }
+        });
+        infoDialog.show();
     }
 
 }

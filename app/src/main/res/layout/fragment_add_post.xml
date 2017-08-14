@@ -93,8 +93,8 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:visibility="visible"
-                android:layout_below="@+id/linearLayout">
+                android:layout_below="@+id/linearLayout"
+                android:visibility="visible">
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -109,7 +109,7 @@
                         <AutoCompleteTextView
                             android:id="@+id/inputAddComFrom"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:background="@drawable/ic_round"
                             android:hint="Eg. Melbourn, Australia"
@@ -118,7 +118,7 @@
                         <AutoCompleteTextView
                             android:id="@+id/inputAddComTo"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:background="@drawable/ic_round"
                             android:hint="Eg. New York, United State"
@@ -136,8 +136,8 @@
                                 android:layout_height="35dp"
                                 android:layout_marginRight="2dp"
                                 android:layout_weight="1"
-                                android:focusable="false"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Expected Travel Date"
                                 android:textSize="12dp" />
 
@@ -147,8 +147,8 @@
                                 android:layout_height="35dp"
                                 android:layout_marginLeft="2dp"
                                 android:layout_weight="1"
-                                android:focusable="false"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Payment Category"
                                 android:textSize="12dp" />
 
@@ -166,8 +166,8 @@
                                 android:layout_height="35dp"
                                 android:layout_marginRight="2dp"
                                 android:layout_weight="1"
-                                android:focusable="false"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Gender"
                                 android:textSize="12dp" />
 
@@ -177,8 +177,8 @@
                                 android:layout_height="35dp"
                                 android:layout_marginLeft="2dp"
                                 android:layout_weight="1"
-                                android:focusable="false"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Traveling By"
                                 android:textSize="12dp" />
 
@@ -191,9 +191,9 @@
                             android:layout_marginRight="2dp"
                             android:layout_marginTop="6dp"
                             android:layout_weight="1"
-                            android:inputType="number"
                             android:background="@drawable/ic_round"
                             android:hint="Eg. +8801711415554"
+                            android:inputType="number"
                             android:textSize="12dp" />
 
                         <EditText
@@ -285,7 +285,7 @@
                         <AutoCompleteTextView
                             android:id="@+id/inputAddBagFrom"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:background="@drawable/ic_round"
                             android:hint="Eg. New York, United State"
@@ -294,7 +294,7 @@
                         <AutoCompleteTextView
                             android:id="@+id/inputAddBagTo"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:background="@drawable/ic_round"
                             android:hint="Eg. New York, United State"
@@ -312,8 +312,8 @@
                                 android:layout_height="35dp"
                                 android:layout_marginRight="2dp"
                                 android:layout_weight="1"
-                                android:focusable="false"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Travel Date"
                                 android:textSize="12dp" />
 
@@ -324,8 +324,8 @@
                                 android:layout_marginLeft="2dp"
                                 android:layout_marginRight="2dp"
                                 android:layout_weight="1"
-                                android:focusable="false"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Baggage Type"
                                 android:textSize="12dp" />
 
@@ -353,8 +353,8 @@
                                 android:layout_height="35dp"
                                 android:layout_marginRight="2dp"
                                 android:layout_weight="1"
-                                android:focusable="false"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Payment Category"
                                 android:textSize="12dp" />
 
@@ -364,9 +364,9 @@
                                 android:layout_height="35dp"
                                 android:layout_marginLeft="2dp"
                                 android:layout_weight="1"
-                                android:inputType="number"
                                 android:background="@drawable/ic_round"
                                 android:hint="Contact No"
+                                android:inputType="number"
                                 android:textSize="12dp" />
 
                         </LinearLayout>
@@ -443,8 +443,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Arraging trip"
                                 android:checked="true"
+                                android:text="Arraging trip"
                                 android:textColor="#FFF" />
 
                             <RadioButton
@@ -459,7 +459,7 @@
                         <AutoCompleteTextView
                             android:id="@+id/inputAddTripFrom"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:background="@drawable/ic_round"
                             android:hint="Eg. New York, United State"
@@ -468,7 +468,7 @@
                         <AutoCompleteTextView
                             android:id="@+id/inputAddTripTo"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:background="@drawable/ic_round"
                             android:hint="Eg. New York, United State"
@@ -498,8 +498,8 @@
                                 android:layout_marginLeft="2dp"
                                 android:layout_marginRight="2dp"
                                 android:layout_weight="1"
-                                android:focusable="false"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Category"
                                 android:textSize="12dp" />
 
@@ -509,8 +509,8 @@
                                 android:layout_height="35dp"
                                 android:layout_marginLeft="2dp"
                                 android:layout_weight="1"
-                                android:focusable="false"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Type"
                                 android:textSize="12dp" />
 
@@ -539,8 +539,8 @@
                                 android:layout_marginLeft="2dp"
                                 android:layout_marginRight="2dp"
                                 android:layout_weight="1"
-                                android:focusable="false"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Payment"
                                 android:textSize="12dp" />
 
@@ -606,8 +606,8 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:visibility="gone"
-                android:layout_below="@+id/linearLayout">
+                android:layout_below="@+id/linearLayout"
+                android:visibility="gone">
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -645,7 +645,7 @@
                         <AutoCompleteTextView
                             android:id="@+id/inputAddHostLocation"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:background="@drawable/ic_round"
                             android:hint="Eg. New York, United State"
@@ -673,8 +673,8 @@
                                 android:layout_height="35dp"
                                 android:layout_marginRight="2dp"
                                 android:layout_weight="1"
-                                android:focusable="false"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Payment Category"
                                 android:textSize="12dp" />
 
@@ -693,8 +693,8 @@
                                 android:layout_marginLeft="2dp"
                                 android:layout_marginRight="2dp"
                                 android:layout_weight="1"
-                                android:focusable="false"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Smocking Habit"
                                 android:textSize="12dp" />
 
@@ -705,8 +705,8 @@
                                 android:layout_marginLeft="2dp"
                                 android:layout_marginRight="2dp"
                                 android:layout_weight="1"
-                                android:focusable="false"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Alcohol Habit"
                                 android:textSize="12dp" />
 
@@ -749,14 +749,14 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:text="No of Travelers"
-                            android:textStyle="italic"
-                            android:textColor="@android:color/white"/>
+                            android:textColor="@android:color/white"
+                            android:textStyle="italic" />
 
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="6dp">
+                            android:layout_marginTop="6dp"
+                            android:orientation="horizontal">
 
                             <TextView
                                 android:id="@+id/txtAddHostNoTraveler"
@@ -764,14 +764,14 @@
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:text="1"
-                                android:textStyle="bold"
-                                android:textColor="@android:color/white"/>
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
 
                             <SeekBar
-                                android:layout_weight="1"
                                 android:id="@+id/seekBarNoTravelerHost"
                                 android:layout_width="match_parent"
                                 android:layout_height="match_parent"
+                                android:layout_weight="1"
                                 android:backgroundTint="#FFF"
                                 android:progressBackgroundTint="@android:color/white"/>
 
@@ -780,8 +780,8 @@
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:text="20"
-                                android:textStyle="bold"
-                                android:textColor="@android:color/white"/>
+                                android:textColor="@android:color/white"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <EditText

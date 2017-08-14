@@ -93,8 +93,8 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:visibility="gone"
-                android:layout_below="@+id/linearLayout">
+                android:layout_below="@+id/linearLayout"
+                android:visibility="visible">
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -106,19 +106,19 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <EditText
+                        <AutoCompleteTextView
                             android:id="@+id/inputSComFrom"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:background="@drawable/ic_round"
                             android:hint="Eg. Melbourn, Australia"
                             android:textSize="12dp" />
 
-                        <EditText
+                        <AutoCompleteTextView
                             android:id="@+id/inputSComTo"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:background="@drawable/ic_round"
                             android:hint="Eg. New York, United State"
@@ -137,17 +137,18 @@
                                 android:layout_marginRight="2dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Expected Travel Date"
                                 android:textSize="12dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:text="TO"
                                 android:layout_marginLeft="2dp"
                                 android:layout_marginRight="2dp"
-                                android:textStyle="bold"
-                                android:gravity="center"/>
+                                android:gravity="center"
+                                android:text="TO"
+                                android:textStyle="bold" />
 
                             <EditText
                                 android:id="@+id/inputSComExpectedDate1"
@@ -156,6 +157,7 @@
                                 android:layout_marginLeft="2dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Expected Travel Date"
                                 android:textSize="12dp" />
 
@@ -169,6 +171,7 @@
                             android:layout_marginTop="6dp"
                             android:layout_weight="1"
                             android:background="@drawable/ic_round"
+                            android:focusable="false"
                             android:hint="Gender"
                             android:textSize="12dp" />
 
@@ -210,7 +213,7 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <EditText
+                        <AutoCompleteTextView
                             android:id="@+id/inputSBagFrom"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
@@ -219,7 +222,7 @@
                             android:hint="Eg. New York, United State"
                             android:textSize="12dp" />
 
-                        <EditText
+                        <AutoCompleteTextView
                             android:id="@+id/inputSBagTo"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
@@ -241,17 +244,19 @@
                                 android:layout_marginRight="2dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Travel Date"
                                 android:textSize="12dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:textStyle="bold"
                                 android:layout_marginLeft="2dp"
                                 android:layout_marginRight="2dp"
-                                android:hint="TO" />
+                                android:focusable="true"
+                                android:gravity="center"
+                                android:hint="TO"
+                                android:textStyle="bold" />
 
                             <EditText
                                 android:id="@+id/inputSBagExpectedDate1"
@@ -260,6 +265,7 @@
                                 android:layout_marginLeft="2dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Travel Date"
                                 android:textSize="12dp" />
 
@@ -273,6 +279,7 @@
                             android:layout_marginTop="6dp"
                             android:layout_weight="1"
                             android:background="@drawable/ic_round"
+                            android:focusable="false"
                             android:hint="Gender"
                             android:textSize="12dp" />
 
@@ -314,7 +321,7 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <EditText
+                        <AutoCompleteTextView
                             android:id="@+id/inputSTripFrom"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
@@ -323,7 +330,7 @@
                             android:hint="Eg. New York, United State"
                             android:textSize="12dp" />
 
-                        <EditText
+                        <AutoCompleteTextView
                             android:id="@+id/inputSTripTo"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
@@ -345,17 +352,18 @@
                                 android:layout_marginRight="2dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Travel Date"
                                 android:textSize="12dp" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
-                                android:gravity="center"
-                                android:textStyle="bold"
                                 android:layout_marginLeft="2dp"
                                 android:layout_marginRight="2dp"
-                                android:hint="TO" />
+                                android:gravity="center"
+                                android:hint="TO"
+                                android:textStyle="bold" />
 
                             <EditText
                                 android:id="@+id/inputSTripExpectedDate1"
@@ -364,6 +372,7 @@
                                 android:layout_marginLeft="2dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
                                 android:hint="Travel Date"
                                 android:textSize="12dp" />
 
@@ -377,6 +386,7 @@
                             android:layout_marginTop="6dp"
                             android:layout_weight="1"
                             android:background="@drawable/ic_round"
+                            android:focusable="false"
                             android:hint="Transport Type"
                             android:textSize="12dp" />
 
@@ -405,8 +415,8 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:visibility="visible"
-                android:layout_below="@+id/linearLayout">
+                android:layout_below="@+id/linearLayout"
+                android:visibility="gone">
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -418,7 +428,7 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <EditText
+                        <AutoCompleteTextView
                             android:id="@+id/inputSHostFrom"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
@@ -433,6 +443,7 @@
                             android:layout_height="35dp"
                             android:layout_marginTop="6dp"
                             android:background="@drawable/ic_round"
+                            android:focusable="false"
                             android:hint="Payment Category"
                             android:textSize="12dp" />
 
@@ -441,35 +452,36 @@
                             android:layout_height="wrap_content"
                             android:layout_marginTop="6dp"
                             android:text="No of Travelers"
-                            android:textStyle="italic"
-                            android:textColor="@color/colorAccent"/>
+                            android:textColor="@color/colorAccent"
+                            android:textStyle="italic" />
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:orientation="horizontal"
-                            android:layout_marginTop="6dp">
+                            android:layout_marginTop="6dp"
+                            android:orientation="horizontal">
 
                             <TextView
+                                android:id="@+id/txtSHostNoTraveler"
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:text="1"
-                                android:textStyle="bold"
-                                android:textColor="@color/colorAccent"/>
+                                android:textColor="@color/colorAccent"
+                                android:textStyle="bold" />
 
                             <SeekBar
-                                android:layout_weight="1"
-                                android:id="@+id/seekBar2"
+                                android:id="@+id/seekBarSHostNoTraveler"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent" />
+                                android:layout_height="match_parent"
+                                android:layout_weight="1" />
 
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:text="20"
-                                android:textStyle="bold"
-                                android:textColor="@color/colorAccent"/>
+                                android:textColor="@color/colorAccent"
+                                android:textStyle="bold" />
                         </LinearLayout>
 
                         <Button
