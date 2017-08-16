@@ -13,4 +13,10 @@ public class ApiURL {
     public static String getAllPostDetail = "http://askrambler.com/Android_API/getPostDetail.php?post_id=";
     public static String getLogin = "http://askrambler.com/Android_API/login.php";
 
+    //Advanced Search API Link
+    public static String searchCompanion = "http://askrambler.com/Android_API/searchCompanion.php";
+    public static String searchBaggage = "http://askrambler.com/Android_API/searchBaggage.php";
+    public static String searchHost = "http://askrambler.com/Android_API/searchHost.php";
+    public static String searchTrip = "http://askrambler.com/Android_API/searchTrip.php";
+
 }

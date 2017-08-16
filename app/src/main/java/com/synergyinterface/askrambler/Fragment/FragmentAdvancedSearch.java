@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentActivity;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -26,6 +27,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -154,7 +156,7 @@ public class FragmentAdvancedSearch extends Fragment {
         seekBarSHostNoTraveler = (SeekBar) view.findViewById(R.id.seekBarSHostNoTraveler);
         btnSHostSearchAdd = (Button) view.findViewById(R.id.btnSHostSearchAdd);
 
-        TripEditTextClicked();
+        HostEditTextClicked();
     }
 
     public void ButtonClickedTop(){
@@ -322,10 +324,8 @@ public class FragmentAdvancedSearch extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().length() <= 3) {
-                    resultList = new ArrayList<String>();
-                    SaveFutureProject(s.toString(), inputSComFrom);
-                }
+                resultList = new ArrayList<String>();
+                SaveFutureProject(s.toString(), inputSComFrom);
             }
         });
         inputSComTo.addTextChangedListener(new TextWatcher() {
@@ -341,10 +341,8 @@ public class FragmentAdvancedSearch extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().length() <= 3) {
-                    resultList = new ArrayList<String>();
-                    SaveFutureProject(s.toString(), inputSComTo);
-                }
+                resultList = new ArrayList<String>();
+                SaveFutureProject(s.toString(), inputSComTo);
             }
         });
 
@@ -368,6 +366,36 @@ public class FragmentAdvancedSearch extends Fragment {
                 showGenderList("Select Gender", inputSComGender);
             }
         });
+
+        btnSComSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!inputSComFrom.getText().toString().isEmpty() && !inputSComTo.getText().toString().isEmpty() &&
+                        !inputSConExpectedDate.getText().toString().isEmpty() && !inputSComExpectedDate1.getText().toString().isEmpty() &&
+                        !inputSComGender.getText().toString().isEmpty()){
+                    String comFrom = inputSComFrom.getText().toString();
+                    String comTo = inputSComTo.getText().toString();
+                    String expectedDateFrom = inputSConExpectedDate.getText().toString();
+                    String expectedDateTo = inputSComExpectedDate1.getText().toString();
+                    String gender = inputSComGender.getText().toString();
+
+                    FragmentSearchResult fragmentSearchResult = new FragmentSearchResult();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ad_type", "Companion");
+                    bundle.putString("from_where", comFrom);
+                    bundle.putString("to_where", comTo);
+                    bundle.putString("from_date", expectedDateFrom);
+                    bundle.putString("to_date", expectedDateTo);
+                    bundle.putString("gender", gender);
+                    fragmentSearchResult.setArguments(bundle);
+                    ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().
+                            replace(R.id.main_container, fragmentSearchResult).addToBackStack(null).commit();
+
+                }else {
+                    Toast.makeText(getContext(), "Input field can not be empty!!!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public void BaggageEditTextClicked() {
@@ -385,10 +413,8 @@ public class FragmentAdvancedSearch extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().length() <= 3) {
-                    resultList = new ArrayList<String>();
-                    SaveFutureProject(s.toString(), inputSBagFrom);
-                }
+                resultList = new ArrayList<String>();
+                SaveFutureProject(s.toString(), inputSBagFrom);
             }
         });
         inputSBagTo.addTextChangedListener(new TextWatcher() {
@@ -404,10 +430,8 @@ public class FragmentAdvancedSearch extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().length() <= 3) {
-                    resultList = new ArrayList<String>();
-                    SaveFutureProject(s.toString(), inputSBagTo);
-                }
+                resultList = new ArrayList<String>();
+                SaveFutureProject(s.toString(), inputSBagTo);
             }
         });
 
@@ -448,10 +472,8 @@ public class FragmentAdvancedSearch extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().length() <= 3) {
-                    resultList = new ArrayList<String>();
-                    SaveFutureProject(s.toString(), inputSTripFrom);
-                }
+                resultList = new ArrayList<String>();
+                SaveFutureProject(s.toString(), inputSTripFrom);
             }
         });
         inputSTripTo.addTextChangedListener(new TextWatcher() {
@@ -467,10 +489,8 @@ public class FragmentAdvancedSearch extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().length() <= 3) {
-                    resultList = new ArrayList<String>();
-                    SaveFutureProject(s.toString(), inputSTripTo);
-                }
+                resultList = new ArrayList<String>();
+                SaveFutureProject(s.toString(), inputSTripTo);
             }
         });
 
@@ -511,10 +531,8 @@ public class FragmentAdvancedSearch extends Fragment {
 
             @Override
             public void afterTextChanged(Editable s) {
-                if (s.toString().length() <= 3) {
-                    resultList = new ArrayList<String>();
-                    SaveFutureProject(s.toString(), inputSHostFrom);
-                }
+                resultList = new ArrayList<String>();
+                SaveFutureProject(s.toString(), inputSHostFrom);
             }
         });
 
@@ -546,7 +564,8 @@ public class FragmentAdvancedSearch extends Fragment {
 
     //Google Autocomplete  Adapter
     public ArrayList SaveFutureProject(String place, final AutoCompleteTextView auto) {
-        String url = PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON + "?key=" + API_KEY + "&components=country:bd" + "&input=" + place;
+        //String url = PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON + "?key=" + API_KEY + "&components=country:bd" + "&input=" + place;
+        String url = PLACES_API_BASE + TYPE_AUTOCOMPLETE + OUT_JSON + "?key=" + API_KEY  + "&input=" + place + "&types=geocode";
         StringRequest stringRequest = new StringRequest(Request.Method.GET, url,
                 new Response.Listener<String>() {
                     @Override
@@ -594,7 +613,7 @@ public class FragmentAdvancedSearch extends Fragment {
 
     public void dateSelectFromDatePicker(final EditText editText) {
         Calendar newCalendar = Calendar.getInstance();
-        final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        final SimpleDateFormat dateFormatter = new SimpleDateFormat("MM/dd/yyyy", Locale.US);
         final DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {

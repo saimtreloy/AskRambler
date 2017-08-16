@@ -2,7 +2,6 @@ package com.synergyinterface.askrambler.Fragment;
 
 
 import android.app.ProgressDialog;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,12 +9,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
@@ -29,10 +27,7 @@ import com.daimajia.slider.library.SliderLayout;
 import com.daimajia.slider.library.SliderTypes.BaseSliderView;
 import com.daimajia.slider.library.SliderTypes.TextSliderView;
 import com.daimajia.slider.library.Tricks.ViewPagerEx;
-import com.synergyinterface.askrambler.Activity.HomeActivity;
-import com.synergyinterface.askrambler.Activity.Splash;
 import com.synergyinterface.askrambler.Adapter.AdapterPost;
-import com.synergyinterface.askrambler.Model.ModelPostShort;
 import com.synergyinterface.askrambler.R;
 import com.synergyinterface.askrambler.Util.ApiURL;
 import com.synergyinterface.askrambler.Util.MySingleton;
@@ -43,7 +38,6 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 
 public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSliderClickListener, ViewPagerEx.OnPageChangeListener {
@@ -51,7 +45,7 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
     View view;
 
     ProgressDialog progressDialog;
-    RelativeLayout layoutPostDetailMain;
+    LinearLayout layoutPostDetailMain;
     private SliderLayout mDemoSlider;
     public List<String> bannerImage = new ArrayList<>();
 
@@ -60,8 +54,15 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
             location, travelers, offers_1, offers_2, offers_3, smoking_habit, alcohol_habit, images,
             contacts, details, ad_type, ad_type_id, date, status, user_id, user_photo, vote_count, user_name, user_email, user_phone, user_verify;
 
+    public LinearLayout layoutDetailCompanion, layoutDetailBaggage, layoutDetailTrip, layoutDetailHost;
     public TextView txtPDDetail, txtPDLocation, txtPDService, txtPDHost, txtPDTraveler, txtPDOffering,
             txtPDSmocking, txtPDAlcohol, txtPDUserName, txtPDUserEmail, txtPDUserPhone;
+    //Companion Textview
+    public TextView txtPDCompDestination, txtPDCompTravelDate, txtPDCompServiceType, txtPDCompGender, txtPDCompTravelBy;
+    //Baggage Textview
+    public TextView txtPDBagDestination, txtPDBagTravelDate, txtPDBagServiceType, txtPDBagBaggage, txtPDBagBaggageType, txtPDBagBaggageWeight;
+    //Baggage Textview
+    public TextView txtPDTripDestination, txtPDTripTravelDate, txtPDTripServiceType, txtPDTripTrip, txtPDTripCategory, txtPDTripType, txtPDTripDuration;
     public ImageView imgPDStatus, imgPDUser;
     public RatingBar ratingBar;
 
@@ -84,8 +85,13 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
 
-        layoutPostDetailMain = (RelativeLayout) view.findViewById(R.id.layoutPostDetailMain);
+        layoutPostDetailMain = (LinearLayout) view.findViewById(R.id.layoutPostDetailMain);
         mDemoSlider = (SliderLayout) view.findViewById(R.id.slider);
+
+        layoutDetailCompanion = (LinearLayout) view.findViewById(R.id.layoutDetailCompanion);
+        layoutDetailBaggage = (LinearLayout) view.findViewById(R.id.layoutDetailBaggage);
+        layoutDetailTrip = (LinearLayout) view.findViewById(R.id.layoutDetailTrip);
+        layoutDetailHost = (LinearLayout) view.findViewById(R.id.layoutDetailHost);
 
         txtPDDetail = (TextView) view.findViewById(R.id.txtPDDetail);
         txtPDLocation = (TextView) view.findViewById(R.id.txtPDLocation);
@@ -102,10 +108,144 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
         imgPDStatus = (ImageView) view.findViewById(R.id.imgPDStatus);
         imgPDUser = (ImageView) view.findViewById(R.id.imgPDUser);
 
+        //Companion
+        txtPDCompDestination = (TextView) view.findViewById(R.id.txtPDCompDestination);
+        txtPDCompTravelDate = (TextView) view.findViewById(R.id.txtPDCompTravelDate);
+        txtPDCompServiceType = (TextView) view.findViewById(R.id.txtPDCompServiceType);
+        txtPDCompGender = (TextView) view.findViewById(R.id.txtPDCompGender);
+        txtPDCompTravelBy = (TextView) view.findViewById(R.id.txtPDCompTravelBy);
+
+        //Baggage
+        txtPDBagDestination = (TextView) view.findViewById(R.id.txtPDBagDestination);
+        txtPDBagTravelDate = (TextView) view.findViewById(R.id.txtPDBagTravelDate);
+        txtPDBagServiceType = (TextView) view.findViewById(R.id.txtPDBagServiceType);
+        txtPDBagBaggage = (TextView) view.findViewById(R.id.txtPDBagBaggage);
+        txtPDBagBaggageType = (TextView) view.findViewById(R.id.txtPDBagBaggageType);
+        txtPDBagBaggageWeight = (TextView) view.findViewById(R.id.txtPDBagBaggageWeight);
+
+        //Trip
+        txtPDTripDestination = (TextView) view.findViewById(R.id.txtPDTripDestination);
+        txtPDTripTravelDate = (TextView) view.findViewById(R.id.txtPDTripTravelDate);
+        txtPDTripServiceType = (TextView) view.findViewById(R.id.txtPDTripServiceType);
+        txtPDTripTrip = (TextView) view.findViewById(R.id.txtPDTripTrip);
+        txtPDTripCategory = (TextView) view.findViewById(R.id.txtPDTripCategory);
+        txtPDTripType = (TextView) view.findViewById(R.id.txtPDTripType);
+        txtPDTripDuration = (TextView) view.findViewById(R.id.txtPDTripDuration);
+
+
+
         SaveGetPostInformation();
     }
 
-    public void PopulateInformation(){
+    public void PopulateInformationCompanion(){
+        txtPDDetail.setText(details);
+
+        txtPDCompDestination.setText(to_where);
+        txtPDCompTravelDate.setText(from_date);
+        txtPDCompServiceType.setText(payment_category);
+        txtPDCompGender.setText(gender);
+        txtPDCompTravelBy.setText(traveling_by);
+
+        txtPDUserName.setText(user_name);
+        txtPDUserEmail.setText(user_email);
+        txtPDUserPhone.setText(user_phone);
+
+        if (user_verify.equals("1")){
+            imgPDStatus.setImageResource(R.drawable.ic_verified_user);
+        }else if (user_verify.equals("0")){
+            imgPDStatus.setImageResource(R.drawable.ic_not_varified_user);
+        }
+
+        Glide.with(getContext())
+                .load(user_photo)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(imgPDUser);
+    }
+
+    public void PopulateInformationBaggage(){
+        txtPDDetail.setText(details);
+
+        txtPDBagDestination.setText(to_where);
+        txtPDBagTravelDate.setText(from_date);
+        txtPDBagServiceType.setText(payment_category);
+        txtPDBagBaggage.setText(isType);
+        txtPDBagBaggageType.setText(baggage_type);
+        txtPDBagBaggageWeight.setText(baggage_weight);
+
+        txtPDUserName.setText(user_name);
+        txtPDUserEmail.setText(user_email);
+        txtPDUserPhone.setText(user_phone);
+
+        if (user_verify.equals("1")){
+            imgPDStatus.setImageResource(R.drawable.ic_verified_user);
+        }else if (user_verify.equals("0")){
+            imgPDStatus.setImageResource(R.drawable.ic_not_varified_user);
+        }
+
+        Glide.with(getContext())
+                .load(user_photo)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(imgPDUser);
+    }
+
+    public void PopulateInformationTrip(){
+        txtPDDetail.setText(details);
+
+        txtPDTripDestination.setText(to_where);
+        txtPDTripTravelDate.setText(from_date);
+        txtPDTripServiceType.setText(payment_category);
+        txtPDTripTrip.setText(isType);
+        txtPDTripCategory.setText(trip_category);
+        txtPDTripType.setText(transport_type);
+        txtPDTripDuration.setText(trip_duration);
+
+        txtPDUserName.setText(user_name);
+        txtPDUserEmail.setText(user_email);
+        txtPDUserPhone.setText(user_phone);
+
+        if (user_verify.equals("1")){
+            imgPDStatus.setImageResource(R.drawable.ic_verified_user);
+        }else if (user_verify.equals("0")){
+            imgPDStatus.setImageResource(R.drawable.ic_not_varified_user);
+        }
+
+        Glide.with(getContext())
+                .load(user_photo)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .into(imgPDUser);
+    }
+
+    public void PopulateInformationHost(){
         txtPDDetail.setText(details);
         txtPDLocation.setText(to_where);
         txtPDService.setText(payment_category);
@@ -145,11 +285,6 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
         for (int i = 0; i < bannerImage.size(); i++) {
             url_maps.put("Image " + i + 1, bannerImage.get(i));
         }
-        /*url_maps.put("Hannibal", "https://static2.hypable.com/wp-content/uploads/2013/12/hannibal-season-2-release-date.jpg");
-        url_maps.put("Big Bang Theory", "http://tvfiles.alphacoders.com/100/hdclearart-10.png");
-        url_maps.put("House of Cards", "http://cdn3.nflximg.net/images/3093/2043093.jpg");
-        url_maps.put("Game of Thrones", "http://images.boomsbeat.com/data/images/full/19640/game-of-thrones-season-4-jpg.jpg");*/
-
         for (String name : url_maps.keySet()) {
             TextSliderView textSliderView = new TextSliderView(getContext());
             textSliderView.description(name).image(url_maps.get(name)).setScaleType(BaseSliderView.ScaleType.Fit).setOnSliderClickListener(this);
@@ -250,7 +385,31 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
                                 user_verify = jsonObjectList.getString("user_verify");
                             }
                             PopulateSlider();
-                            PopulateInformation();
+                            if (ad_type.equals("Companion")){
+                                layoutDetailCompanion.setVisibility(View.VISIBLE);
+                                layoutDetailBaggage.setVisibility(View.GONE);
+                                layoutDetailTrip.setVisibility(View.GONE);
+                                layoutDetailHost.setVisibility(View.GONE);
+                                PopulateInformationCompanion();
+                            } else if (ad_type.equals("Host")){
+                                layoutDetailCompanion.setVisibility(View.GONE);
+                                layoutDetailBaggage.setVisibility(View.GONE);
+                                layoutDetailTrip.setVisibility(View.GONE);
+                                layoutDetailHost.setVisibility(View.VISIBLE);
+                                PopulateInformationHost();
+                            } else if (ad_type.equals("Baggage")){
+                                layoutDetailCompanion.setVisibility(View.GONE);
+                                layoutDetailBaggage.setVisibility(View.VISIBLE);
+                                layoutDetailTrip.setVisibility(View.GONE);
+                                layoutDetailHost.setVisibility(View.GONE);
+                                PopulateInformationBaggage();
+                            } else if (ad_type.equals("Trip")){
+                                layoutDetailCompanion.setVisibility(View.GONE);
+                                layoutDetailBaggage.setVisibility(View.GONE);
+                                layoutDetailTrip.setVisibility(View.VISIBLE);
+                                layoutDetailHost.setVisibility(View.GONE);
+                                PopulateInformationTrip();
+                            }
                         } catch (Exception e) {
 
                         }
