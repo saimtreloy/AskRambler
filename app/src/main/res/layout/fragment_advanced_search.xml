@@ -94,7 +94,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/linearLayout"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -201,7 +201,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/linearLayout"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -272,7 +272,7 @@
                         </LinearLayout>
 
                         <EditText
-                            android:id="@+id/inputSBagGender"
+                            android:id="@+id/inputSBagBaggageType"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:layout_marginRight="2dp"
@@ -280,7 +280,7 @@
                             android:layout_weight="1"
                             android:background="@drawable/ic_round"
                             android:focusable="false"
-                            android:hint="Gender"
+                            android:hint="Baggage Type"
                             android:textSize="12dp" />
 
                         <Button

@@ -67,7 +67,7 @@ public class FragmentAdvancedSearch extends Fragment {
 
     //Baggage Advanced Search
     AutoCompleteTextView inputSBagFrom, inputSBagTo;
-    EditText inputSBagExpectedDate, inputSBagExpectedDate1, inputSBagGender;
+    EditText inputSBagExpectedDate, inputSBagExpectedDate1, inputSBagBaggageType;
     Button btnSBagSearchAdd;
 
     //Trip Advanced Search
@@ -130,7 +130,7 @@ public class FragmentAdvancedSearch extends Fragment {
 
         inputSBagExpectedDate = (EditText) view.findViewById(R.id.inputSBagExpectedDate);
         inputSBagExpectedDate1 = (EditText) view.findViewById(R.id.inputSBagExpectedDate1);
-        inputSBagGender = (EditText) view.findViewById(R.id.inputSBagGender);
+        inputSBagBaggageType = (EditText) view.findViewById(R.id.inputSBagBaggageType);
 
         btnSBagSearchAdd = (Button) view.findViewById(R.id.btnSBagSearchAdd);
 
@@ -449,10 +449,42 @@ public class FragmentAdvancedSearch extends Fragment {
             }
         });
 
-        inputSBagGender.setOnClickListener(new View.OnClickListener() {
+        inputSBagBaggageType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                showGenderList("Select Gender", inputSBagGender);
+                showBaggageTypeList("Select baggage type", inputSBagBaggageType);
+            }
+        });
+
+        btnSBagSearchAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!inputSBagFrom.getText().toString().isEmpty() && !inputSBagTo.getText().toString().isEmpty() &&
+                        !inputSBagExpectedDate.getText().toString().isEmpty() &&
+                        !inputSBagExpectedDate1.getText().toString().isEmpty() &&
+                        !inputSBagBaggageType.getText().toString().isEmpty()){
+
+                    String comFrom = inputSBagFrom.getText().toString();
+                    String comTo = inputSBagTo.getText().toString();
+                    String from_date = inputSBagExpectedDate.getText().toString();
+                    String to_date = inputSBagExpectedDate1.getText().toString();
+                    String baggage_type = inputSBagBaggageType.getText().toString();
+
+                    FragmentSearchResult fragmentSearchResult = new FragmentSearchResult();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ad_type", "Baggage");
+                    bundle.putString("from_where", comFrom);
+                    bundle.putString("to_where", comTo);
+                    bundle.putString("from_date", from_date);
+                    bundle.putString("to_date", to_date);
+                    bundle.putString("baggage_type", baggage_type);
+                    fragmentSearchResult.setArguments(bundle);
+                    ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().
+                            replace(R.id.main_container, fragmentSearchResult).addToBackStack(null).commit();
+
+                }else {
+                    Toast.makeText(getContext(), "Input field can not be empty!!!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -514,6 +546,38 @@ public class FragmentAdvancedSearch extends Fragment {
                 showTravelByList("Select Transport type", inputSTripTransportType);
             }
         });
+
+        btnSTripSearchAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!inputSTripFrom.getText().toString().isEmpty() && !inputSTripTo.getText().toString().isEmpty() &&
+                        !inputSTripExpectedDate.getText().toString().isEmpty() &&
+                        !inputSTripExpectedDate1.getText().toString().isEmpty() &&
+                        !inputSTripTransportType.getText().toString().isEmpty()){
+
+                    String comFrom = inputSTripFrom.getText().toString();
+                    String comTo = inputSTripTo.getText().toString();
+                    String from_date = inputSTripExpectedDate.getText().toString();
+                    String to_date = inputSTripExpectedDate1.getText().toString();
+                    String transport_type = inputSTripTransportType.getText().toString();
+
+                    FragmentSearchResult fragmentSearchResult = new FragmentSearchResult();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ad_type", "Trip");
+                    bundle.putString("from_where", comFrom);
+                    bundle.putString("to_where", comTo);
+                    bundle.putString("from_date", from_date);
+                    bundle.putString("to_date", to_date);
+                    bundle.putString("transport_type", transport_type);
+                    fragmentSearchResult.setArguments(bundle);
+                    ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().
+                            replace(R.id.main_container, fragmentSearchResult).addToBackStack(null).commit();
+
+                }else {
+                    Toast.makeText(getContext(), "Input field can not be empty!!!", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     public void HostEditTextClicked() {
@@ -557,6 +621,33 @@ public class FragmentAdvancedSearch extends Fragment {
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
 
+            }
+        });
+
+        btnSHostSearchAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!inputSHostFrom.getText().toString().isEmpty() && !inputSHostPaymentCategory.getText().toString().isEmpty() &&
+                        !txtSHostNoTraveler.getText().toString().isEmpty() ){
+
+                    String location = inputSHostFrom.getText().toString();
+                    String travelers = txtSHostNoTraveler.getText().toString();
+                    String payment_category = inputSHostPaymentCategory.getText().toString();
+
+                    FragmentSearchResult fragmentSearchResult = new FragmentSearchResult();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("ad_type", "Host");
+                    bundle.putString("location", location);
+                    bundle.putString("travelers", travelers);
+                    bundle.putString("payment_category", payment_category);
+                    fragmentSearchResult.setArguments(bundle);
+
+                    ((FragmentActivity) v.getContext()).getSupportFragmentManager().beginTransaction().
+                            replace(R.id.main_container, fragmentSearchResult).addToBackStack(null).commit();
+
+                }else {
+                    Toast.makeText(getContext(), "Input field can not be empty!!!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
     }
@@ -691,6 +782,30 @@ public class FragmentAdvancedSearch extends Fragment {
 
         ListView listDialog = (ListView) infoDialogView.findViewById(R.id.listDialog);
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.payment_category));
+        listDialog.setAdapter(arrayAdapter);
+        listDialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                editText.setText((String) parent.getItemAtPosition(position));
+                infoDialog.dismiss();
+            }
+        });
+        infoDialog.show();
+    }
+
+    public void showBaggageTypeList(String title, final EditText editText) {
+
+        LayoutInflater factory = LayoutInflater.from(getContext());
+        final View infoDialogView = factory.inflate(R.layout.dialog_list, null);
+        final AlertDialog infoDialog = new AlertDialog.Builder(getContext()).create();
+        infoDialog.setView(infoDialogView);
+        infoDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        TextView txtDialog = (TextView) infoDialogView.findViewById(R.id.txtDialog);
+        txtDialog.setText(title);
+
+        ListView listDialog = (ListView) infoDialogView.findViewById(R.id.listDialog);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(getContext(), android.R.layout.simple_list_item_1, getResources().getStringArray(R.array.baggage_type));
         listDialog.setAdapter(arrayAdapter);
         listDialog.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
