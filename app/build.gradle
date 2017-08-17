@@ -19,6 +19,7 @@ android {
     }
 }
 repositories {
+    jcenter()
     maven { url "https://jitpack.io" }
     mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
@@ -44,5 +45,6 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'com.daimajia.slider:library:1.1.5@aar'
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
+    compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
     testCompile 'junit:junit:4.12'
 }

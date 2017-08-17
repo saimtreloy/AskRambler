@@ -636,7 +636,8 @@ public class FragmentAdvancedSearch extends Fragment {
 
                     FragmentSearchResult fragmentSearchResult = new FragmentSearchResult();
                     Bundle bundle = new Bundle();
-                    bundle.putString("ad_type", "Host");
+                    bundle.putString("ad_type", "Host" +
+                            "");
                     bundle.putString("location", location);
                     bundle.putString("travelers", travelers);
                     bundle.putString("payment_category", payment_category);

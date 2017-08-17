@@ -199,10 +199,11 @@
                         <EditText
                             android:id="@+id/inputAddComImage"
                             android:layout_width="match_parent"
-                            android:layout_height="35dp"
+                            android:layout_height="wrap_content"
                             android:layout_marginRight="2dp"
                             android:layout_marginTop="6dp"
                             android:layout_weight="1"
+                            android:focusable="false"
                             android:background="@drawable/ic_round"
                             android:drawableRight="@drawable/ic_image"
                             android:hint="Select Image"

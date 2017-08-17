@@ -1,16 +1,26 @@
 package com.synergyinterface.askrambler.Fragment;
 
 
+import android.Manifest;
 import android.animation.Animator;
 import android.app.DatePickerDialog;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,11 +33,13 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.Response;
@@ -38,14 +50,20 @@ import com.daimajia.androidanimations.library.YoYo;
 import com.synergyinterface.askrambler.Activity.HomeActivity;
 import com.synergyinterface.askrambler.R;
 import com.synergyinterface.askrambler.Util.MySingleton;
+import com.theartofdev.edmodo.cropper.CropImage;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Locale;
+
+import static android.app.Activity.RESULT_OK;
 
 public class FragmentAddPost extends Fragment {
 
@@ -54,6 +72,8 @@ public class FragmentAddPost extends Fragment {
     private static final String TYPE_AUTOCOMPLETE = "/autocomplete";
     private static final String OUT_JSON = "/json";
     private static final String API_KEY = "AIzaSyCBrJXQuoQXATq461rT-WoaO5Sd0c9aqTQ";
+    private static final int PICK_IMAGE_REQUEST=1001;
+
     View view;
     Button btnAddPostCom, btnAddPostBag, btnAddPostTrip, btnAddPostHost;
     RelativeLayout layoutAddPostCompanion, layoutAddPostBaggage, layoutAddPostTrip, layoutAddPostHost;
@@ -90,6 +110,9 @@ public class FragmentAddPost extends Fragment {
     Button btnAddHostPostAdd;
 
 
+    //Image Uploading
+    List<Uri> images = new ArrayList<>();
+
     public FragmentAddPost() {
 
     }
@@ -106,6 +129,8 @@ public class FragmentAddPost extends Fragment {
 
     public void init(){
         HomeActivity.toolbar.setTitle("Add Post");
+
+        haveStoragePermission();
 
         btnAddPostCom = (Button) view.findViewById(R.id.btnAddPostCom);
         btnAddPostBag = (Button) view.findViewById(R.id.btnAddPostBag);
@@ -411,6 +436,13 @@ public class FragmentAddPost extends Fragment {
             @Override
             public void onClick(View v) {
                 showTravelByList("Select transport type", inputAddComTravelBy);
+            }
+        });
+        inputAddComImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = CropImage.activity().setAspectRatio(16,9).getIntent(getContext());
+                startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
             }
         });
     }
@@ -887,4 +919,51 @@ public class FragmentAddPost extends Fragment {
         });
     }
 
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                try {
+                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), resultUri);
+                    String s = getStringImage(bitmap);
+                    Log.d("Saim Image BASE64", s);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                String s = resultUri.toString().substring(resultUri.toString().lastIndexOf("/")+1,resultUri.toString().length());
+                inputAddComImage.setText(s);
+
+                Toast.makeText(getContext(), resultUri.toString(), Toast.LENGTH_SHORT).show();
+            } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
+                Exception error = result.getError();
+            }
+        }
+    }
+
+    public boolean haveStoragePermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (getContext().checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED &&
+                    getContext().checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED) {
+                return true;
+            } else {
+                ActivityCompat.requestPermissions(getActivity() , new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.READ_EXTERNAL_STORAGE}, 1);
+                return false;
+            }
+        }
+        else {
+            return true;
+        }
+    }
+
+    public String getStringImage(Bitmap bmp){
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+        byte[] imageBytes = baos.toByteArray();
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
+        return encodedImage;
+    }
 }

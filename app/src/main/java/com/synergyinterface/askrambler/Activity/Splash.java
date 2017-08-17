@@ -30,6 +30,11 @@ public class Splash extends AppCompatActivity {
     public static ArrayList<ModelPostShort> modelPostsList = new ArrayList<>();
     public static ModelUser modelUser = new ModelUser();
 
+    public static String user_id, nationality, full_name, email, password, agreement, status, roll,
+            first_name, last_name, gander, address, city, zip, state, country, mobile, phone, birth_date,
+            user_photo, document, verify, website, facebook, instagram, youtube, code1, cornjob,
+            like_to, details, server_date;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -115,37 +120,37 @@ public class Splash extends AppCompatActivity {
                                 JSONArray jsonArray = jsonObject.getJSONArray("list");
                                 JSONObject jsonObjectList = jsonArray.getJSONObject(0);
 
-                                String user_id = jsonObjectList.getString("user_id");
-                                String nationality = jsonObjectList.getString("nationality");
-                                String full_name = jsonObjectList.getString("full_name");
-                                String email = jsonObjectList.getString("email");
-                                String password = jsonObjectList.getString("password");
-                                String agreement = jsonObjectList.getString("agreement");
-                                String status = jsonObjectList.getString("status");
-                                String roll = jsonObjectList.getString("roll");
-                                String first_name = jsonObjectList.getString("first_name");
-                                String last_name = jsonObjectList.getString("last_name");
-                                String gander = jsonObjectList.getString("gander");
-                                String address = jsonObjectList.getString("address");
-                                String city = jsonObjectList.getString("city");
-                                String zip = jsonObjectList.getString("zip");
-                                String state = jsonObjectList.getString("state");
-                                String country = jsonObjectList.getString("country");
-                                String mobile = jsonObjectList.getString("mobile");
-                                String phone = jsonObjectList.getString("phone");
-                                String birth_date = jsonObjectList.getString("birth_date");
-                                String user_photo = jsonObjectList.getString("user_photo");
-                                String document = jsonObjectList.getString("document");
-                                String verify = jsonObjectList.getString("verify");
-                                String website = jsonObjectList.getString("website");
-                                String facebook = jsonObjectList.getString("facebook");
-                                String instagram = jsonObjectList.getString("instagram");
-                                String youtube = jsonObjectList.getString("youtube");
-                                String code1 = jsonObjectList.getString("code");
-                                String cornjob = jsonObjectList.getString("cornjob");
-                                String like_to = jsonObjectList.getString("like_to");
-                                String details = jsonObjectList.getString("details");
-                                String server_date = jsonObjectList.getString("server_date");
+                                user_id = jsonObjectList.getString("user_id");
+                                nationality = jsonObjectList.getString("nationality");
+                                full_name = jsonObjectList.getString("full_name");
+                                email = jsonObjectList.getString("email");
+                                password = jsonObjectList.getString("password");
+                                agreement = jsonObjectList.getString("agreement");
+                                status = jsonObjectList.getString("status");
+                                roll = jsonObjectList.getString("roll");
+                                first_name = jsonObjectList.getString("first_name");
+                                last_name = jsonObjectList.getString("last_name");
+                                gander = jsonObjectList.getString("gander");
+                                address = jsonObjectList.getString("address");
+                                city = jsonObjectList.getString("city");
+                                zip = jsonObjectList.getString("zip");
+                                state = jsonObjectList.getString("state");
+                                country = jsonObjectList.getString("country");
+                                mobile = jsonObjectList.getString("mobile");
+                                phone = jsonObjectList.getString("phone");
+                                birth_date = jsonObjectList.getString("birth_date");
+                                user_photo = jsonObjectList.getString("user_photo");
+                                document = jsonObjectList.getString("document");
+                                verify = jsonObjectList.getString("verify");
+                                website = jsonObjectList.getString("website");
+                                facebook = jsonObjectList.getString("facebook");
+                                instagram = jsonObjectList.getString("instagram");
+                                youtube = jsonObjectList.getString("youtube");
+                                code1 = jsonObjectList.getString("code");
+                                cornjob = jsonObjectList.getString("cornjob");
+                                like_to = jsonObjectList.getString("like_to");
+                                details = jsonObjectList.getString("details");
+                                server_date = jsonObjectList.getString("server_date");
 
                                 new SharedPrefDatabase(getApplicationContext()).StoreLogin("Yes");
                                 new SharedPrefDatabase(getApplicationContext()).StoreUserFullName(full_name);
