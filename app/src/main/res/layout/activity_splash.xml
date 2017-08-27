@@ -6,6 +6,8 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:padding="26dp"
+    android:fitsSystemWindows="true"
+    android:background="@drawable/ic_back_signin"
     tools:context="com.synergyinterface.askrambler.Activity.Splash">
 
     <pl.droidsonroids.gif.GifImageView
