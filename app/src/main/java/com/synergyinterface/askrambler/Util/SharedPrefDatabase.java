@@ -10,6 +10,8 @@ public class SharedPrefDatabase {
 
     public static final String KEY_USER_FULLNAME = "KEY_USER_FULLNAME";
     public static final String KEY_USER_PHOTO = "KEY_USER_PHOTO";
+    public static final String KEY_LAT = "KEY_LAT";
+    public static final String KEY_LON = "KEY_LON";
 
 
     SharedPreferences sharedPreferences;
@@ -45,6 +47,25 @@ public class SharedPrefDatabase {
     }
     public String RetriveUserPhoto(){
         String text = sharedPreferences.getString(KEY_USER_PHOTO, null);
+        return text;
+    }
+
+
+    public void StoreLat(String data){
+        editor.putString(KEY_LAT, data);
+        editor.commit();
+    }
+    public String RetriveLat(){
+        String text = sharedPreferences.getString(KEY_LAT, null);
+        return text;
+    }
+
+    public void StoreLon(String data){
+        editor.putString(KEY_LON, data);
+        editor.commit();
+    }
+    public String RetriveLon(){
+        String text = sharedPreferences.getString(KEY_LON, null);
         return text;
     }
 }
