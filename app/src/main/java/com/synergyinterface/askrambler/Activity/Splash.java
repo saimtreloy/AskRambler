@@ -14,6 +14,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.synergyinterface.askrambler.Model.ModelPostShort;
 import com.synergyinterface.askrambler.Model.ModelUser;
 import com.synergyinterface.askrambler.R;
+import com.synergyinterface.askrambler.Service.MyService;
 import com.synergyinterface.askrambler.Util.ApiURL;
 import com.synergyinterface.askrambler.Util.MySingleton;
 import com.synergyinterface.askrambler.Util.SharedPrefDatabase;
@@ -50,19 +51,17 @@ public class Splash extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("SAIM SPLASH 1", response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String code = jsonObject.getString("code");
-                            Log.d("SAIM SPLASH C", code);
                             if (code.equals("success")) {
-                                Log.d("SAIM SPLASH 2", response);
                                 JSONArray jsonArray = jsonObject.getJSONArray("list");
                                 for (int i = 0; i < jsonArray.length(); i++) {
 
                                     JSONObject jsonObjectList = jsonArray.getJSONObject(i);
                                     String ads_id = jsonObjectList.getString("add_id");
                                     String to_where = jsonObjectList.getString("to_where");
+                                    Log.d("Saim Khan", to_where);
                                     String to_date = jsonObjectList.getString("to_date");
                                     String ad_type = jsonObjectList.getString("ad_type");
                                     String details = jsonObjectList.getString("details");
@@ -112,7 +111,6 @@ public class Splash extends AppCompatActivity {
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
-                        Log.d("SAIM LOGIN INFO", response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String code = jsonObject.getString("code");

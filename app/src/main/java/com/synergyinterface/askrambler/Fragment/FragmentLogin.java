@@ -52,7 +52,7 @@ public class FragmentLogin extends Fragment {
 
     //Signup Layout Attributes
     TextView txtRegSignin;
-    EditText inputRegFullName, inputRegEmail, inputRegMobile, inputRegPassword;
+    EditText inputRegFirstName, inputRegLastName, inputRegEmail, inputRegMobile, inputRegPassword, inputRegPasswordC;
     Button btnRegSignUp;
 
     public FragmentLogin() {
@@ -85,14 +85,16 @@ public class FragmentLogin extends Fragment {
 
         //Signup Layout
         txtRegSignin = (TextView) view.findViewById(R.id.txtRegSignin);
-        inputRegFullName = (EditText) view.findViewById(R.id.inputRegFullName);
+        inputRegFirstName = (EditText) view.findViewById(R.id.inputRegFirstName);
+        inputRegLastName = (EditText) view.findViewById(R.id.inputRegLastName);
         inputRegEmail = (EditText) view.findViewById(R.id.inputRegEmail);
         inputRegMobile = (EditText) view.findViewById(R.id.inputRegMobile);
         inputRegPassword = (EditText) view.findViewById(R.id.inputRegPassword);
+        inputRegPasswordC = (EditText) view.findViewById(R.id.inputRegPasswordC);
         btnRegSignUp = (Button) view.findViewById(R.id.btnRegSignUp);
 
         ButtonAction();
-        SaveUserLogin("asasa", "sasa");
+        //SaveUserLogin("asasa", "sasa");
     }
 
 
@@ -114,7 +116,22 @@ public class FragmentLogin extends Fragment {
         btnRegSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                String fname = inputRegFirstName.getText().toString();
+                String lname = inputRegLastName.getText().toString();
+                String email = inputRegEmail.getText().toString();
+                String phone = inputRegMobile.getText().toString();
+                String password = inputRegPassword.getText().toString();
+                String passwordC = inputRegPassword.getText().toString();
 
+                if (fname.isEmpty() || lname.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || passwordC.isEmpty()){
+                    Toast.makeText(getContext(), "Input field can not be empty!", Toast.LENGTH_SHORT).show();
+                }else {
+                    if (password.equals(passwordC) && password.length()>6){
+                        UserRegistration(fname, lname, email, phone, password);
+                    }else {
+                        Toast.makeText(getContext(), "Password not matched or short!", Toast.LENGTH_SHORT).show();
+                    }
+                }
             }
         });
 
@@ -177,7 +194,6 @@ public class FragmentLogin extends Fragment {
         });
 
     }
-
 
     public void SaveUserLogin(final String email, final String pass) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.getLogin,
@@ -249,6 +265,51 @@ public class FragmentLogin extends Fragment {
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("email", email);
                 params.put("password", pass);
+
+                return params;
+            }
+        };
+        stringRequest.setShouldCache(false);
+        MySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
+    }
+
+
+    public void UserRegistration(final String first_name, final String last_name, final String email, final String phone, final String password){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.getLogin,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String code = jsonObject.getString("code");
+                            if (code.equals("success")){
+                                JSONArray jsonArray = jsonObject.getJSONArray("list");
+                                JSONObject jsonObjectList = jsonArray.getJSONObject(0);
+
+
+                            }else {
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }catch (Exception e){
+                            Log.d("HDHD 1", e.toString() + "\n" + response);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("first_name", first_name);
+                params.put("last_name", last_name);
+                params.put("email", email);
+                params.put("phone", phone);
+                params.put("password", password);
 
                 return params;
             }

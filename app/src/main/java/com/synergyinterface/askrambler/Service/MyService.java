@@ -39,7 +39,7 @@ public class MyService extends Service {
             String lon = location.getLongitude() +"";
             new SharedPrefDatabase(getApplicationContext()).StoreLat(lat);
             new SharedPrefDatabase(getApplicationContext()).StoreLon(lon);
-            mLastLocation.set(location);
+            //mLastLocation.set(location);
         }
 
         @Override

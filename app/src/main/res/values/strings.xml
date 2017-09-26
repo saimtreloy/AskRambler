@@ -65,4 +65,5 @@
         <item>Any</item>
     </string-array>
     <string name="title_activity_post_maps">Map</string>
+    <string name="title_activity_maps">Map</string>
 </resources>

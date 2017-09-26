@@ -48,5 +48,6 @@ dependencies {
     compile 'pl.droidsonroids.gif:android-gif-drawable:1.2.+'
     compile 'com.theartofdev.edmodo:android-image-cropper:2.4.+'
     compile 'com.google.android.gms:play-services-maps:10.2.1'
+    compile 'com.google.android.gms:play-services-location:10.2.1'
     testCompile 'junit:junit:4.12'
 }
