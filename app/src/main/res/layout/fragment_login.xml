@@ -22,7 +22,7 @@
             android:layout_height="match_parent"
             android:layout_marginTop="16dp"
             android:layout_marginBottom="26dp"
-            android:visibility="gone"
+            android:visibility="visible"
             android:gravity="center">
 
             <ImageView
@@ -151,7 +151,7 @@
         android:gravity="center"
         android:orientation="vertical"
         app:cardCornerRadius="6dp"
-        android:visibility="visible"
+        android:visibility="gone"
         app:cardBackgroundColor="#66F6B81F">
 
         <RelativeLayout
@@ -167,6 +167,7 @@
                 android:layout_height="60dp"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/ic_round_reg_logo"
+                android:visibility="gone"
                 android:src="@drawable/ic_person"/>
 
 
@@ -211,7 +212,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginTop="6dp"
-                    android:hint="Full Name"
+                    android:hint="First Name"
                     android:textSize="12dp"
                     android:background="@drawable/ic_round"/>
 
@@ -220,7 +221,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="35dp"
                     android:layout_marginTop="6dp"
-                    android:hint="Email"
+                    android:hint="Last Name"
                     android:textSize="12dp"
                     android:background="@drawable/ic_round"/>
 

@@ -16,11 +16,54 @@
 
         <ImageView
             android:id="@+id/imgProfileImage"
-            android:layout_width="80dp"
-            android:layout_height="80dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:scaleType="fitXY"
-            android:background="#AAFFFFFF"
             android:src="@drawable/ic_person" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_vertical"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp">
+
+            <TextView
+                android:id="@+id/inputProFullName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="User fullname"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="14dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/inputProEmail"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="User email"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="14dp"
+                android:textStyle="italic" />
+
+            <TextView
+                android:id="@+id/inputProMobile"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="User Mobile"
+                android:textAllCaps="false"
+                android:textColor="@android:color/white"
+                android:textSize="14dp"
+                android:textStyle="italic" />
+
+
+        </LinearLayout>
 
     </LinearLayout>
 
@@ -95,66 +138,6 @@
                         android:orientation="vertical"
                         android:padding="16dp">
 
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="2dp"
-                            android:layout_marginTop="6dp"
-                            android:gravity="center"
-                            android:text="User fullname"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/white"
-                            android:textSize="12dp"
-                            android:textStyle="italic" />
-                        <EditText
-                            android:id="@+id/inputProFullName"
-                            android:layout_width="match_parent"
-                            android:layout_height="35dp"
-                            android:background="@drawable/ic_round"
-                            android:hint="Full Name"
-                            android:textSize="12dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="2dp"
-                            android:layout_marginTop="6dp"
-                            android:gravity="center"
-                            android:text="User email"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/white"
-                            android:textSize="12dp"
-                            android:textStyle="italic" />
-                        <EditText
-                            android:id="@+id/inputProEmail"
-                            android:layout_width="match_parent"
-                            android:layout_height="35dp"
-                            android:background="@drawable/ic_round"
-                            android:enabled="false"
-                            android:hint="Email or Mobile"
-                            android:textSize="12dp" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginBottom="2dp"
-                            android:layout_marginTop="6dp"
-                            android:gravity="center"
-                            android:text="Gender"
-                            android:textAllCaps="false"
-                            android:textColor="@android:color/white"
-                            android:textSize="12dp"
-                            android:textStyle="italic" />
-                        <EditText
-                            android:id="@+id/inputProGender"
-                            android:layout_width="match_parent"
-                            android:layout_height="35dp"
-                            android:layout_marginRight="2dp"
-                            android:layout_weight="1"
-                            android:background="@drawable/ic_round"
-                            android:hint="Gender"
-                            android:textSize="12dp" />
-
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -199,6 +182,8 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/ic_round"
                                 android:hint="Country"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
                                 android:textSize="12dp" />
 
                             <EditText
@@ -322,6 +307,8 @@
                                 android:layout_marginLeft="2dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/ic_round"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
                                 android:hint="Birthday"
                                 android:textSize="12dp" />
 
@@ -339,7 +326,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="center|left"
-                                android:text="Mobile number"
+                                android:text="Gender"
                                 android:textAllCaps="false"
                                 android:textColor="@android:color/white"
                                 android:textSize="12dp"
@@ -363,13 +350,15 @@
                             android:orientation="horizontal">
 
                             <EditText
-                                android:id="@+id/inputProMobile"
+                                android:id="@+id/inputProGender"
                                 android:layout_width="match_parent"
                                 android:layout_height="35dp"
                                 android:layout_marginRight="2dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/ic_round"
-                                android:hint="Mobile"
+                                android:focusable="false"
+                                android:focusableInTouchMode="false"
+                                android:hint="Gender"
                                 android:textSize="12dp" />
 
                             <EditText

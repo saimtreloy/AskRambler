@@ -19,4 +19,7 @@ public class ApiURL {
     public static String searchHost = "http://askrambler.com/Android_API/searchHost.php";
     public static String searchTrip = "http://askrambler.com/Android_API/searchTrip.php";
 
+    //Country List
+    public static String countryList = "http://askrambler.com/Android_API/countryList.php";
+
 }

@@ -35,6 +35,7 @@ import com.synergyinterface.askrambler.Fragment.FragmentLogin;
 import com.synergyinterface.askrambler.Fragment.FragmentProfile;
 import com.synergyinterface.askrambler.R;
 import com.synergyinterface.askrambler.Service.MyService;
+import com.synergyinterface.askrambler.Util.CircleTransform;
 import com.synergyinterface.askrambler.Util.SharedPrefDatabase;
 
 import org.w3c.dom.Text;
@@ -153,7 +154,7 @@ public class HomeActivity extends AppCompatActivity {
         new SharedPrefDatabase(getApplicationContext()).RetriveUserPhoto());
 
         Glide.with(getApplicationContext())
-                .load(new SharedPrefDatabase(getApplicationContext()).RetriveUserPhoto())
+                .load(new SharedPrefDatabase(getApplicationContext()).RetriveUserPhoto()).transform(new CircleTransform(getApplicationContext()))
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {

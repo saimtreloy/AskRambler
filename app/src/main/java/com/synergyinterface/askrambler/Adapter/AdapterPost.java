@@ -21,6 +21,7 @@ import com.synergyinterface.askrambler.Fragment.FragmentProfile;
 import com.synergyinterface.askrambler.Model.ModelPost;
 import com.synergyinterface.askrambler.Model.ModelPostShort;
 import com.synergyinterface.askrambler.R;
+import com.synergyinterface.askrambler.Util.CircleTransform;
 
 import java.security.PublicKey;
 import java.util.ArrayList;
@@ -60,7 +61,7 @@ public class AdapterPost extends RecyclerView.Adapter<AdapterPost.PostViewHolder
         holder.txtToWhere.setText(adapterList.get(position).getTo_where());
         holder.txtToDate.setText(adapterList.get(position).getTo_date());
         Glide.with(holder.txtToWhere.getContext())
-                .load(adapterList.get(position).getUser_photo())
+                .load(adapterList.get(position).getUser_photo()).transform(new CircleTransform(holder.imgAllPostList.getContext()))
                 .listener(new RequestListener<String, GlideDrawable>() {
                     @Override
                     public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
