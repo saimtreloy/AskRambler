@@ -121,7 +121,7 @@ public class FragmentLogin extends Fragment {
                 String email = inputRegEmail.getText().toString();
                 String phone = inputRegMobile.getText().toString();
                 String password = inputRegPassword.getText().toString();
-                String passwordC = inputRegPassword.getText().toString();
+                String passwordC = inputRegPasswordC.getText().toString();
 
                 if (fname.isEmpty() || lname.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || passwordC.isEmpty()){
                     Toast.makeText(getContext(), "Input field can not be empty!", Toast.LENGTH_SHORT).show();
@@ -275,7 +275,7 @@ public class FragmentLogin extends Fragment {
 
 
     public void UserRegistration(final String first_name, final String last_name, final String email, final String phone, final String password){
-        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.getLogin,
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.userRegistration,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
@@ -284,10 +284,8 @@ public class FragmentLogin extends Fragment {
                             JSONObject jsonObject = new JSONObject(response);
                             String code = jsonObject.getString("code");
                             if (code.equals("success")){
-                                JSONArray jsonArray = jsonObject.getJSONArray("list");
-                                JSONObject jsonObjectList = jsonArray.getJSONObject(0);
-
-
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
                             }else {
                                 String message = jsonObject.getString("message");
                                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();

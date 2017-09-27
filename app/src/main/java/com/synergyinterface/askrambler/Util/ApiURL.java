@@ -22,4 +22,9 @@ public class ApiURL {
     //Country List
     public static String countryList = "http://askrambler.com/Android_API/countryList.php";
 
+    //Registration
+    public static String userRegistration = "http://askrambler.com/Android_API/userRegistration.php";
+    public static String confirm = "http://askrambler.com/Android_API/confirm.php";
+    public static String profileUpdate = "http://askrambler.com/Android_API/profileUpdate.php";
+
 }

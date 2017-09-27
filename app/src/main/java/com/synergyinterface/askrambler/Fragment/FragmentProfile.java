@@ -205,20 +205,26 @@ public class FragmentProfile extends Fragment {
     }
 
     public void PopulateProfileInformation(){
-        Glide.with(getContext())
-                .load(Splash.user_photo).transform(new CircleTransform(getContext()))
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        return false;
-                    }
+        Log.d("SAIM TRELOY", Splash.user_photo);
+        if (Splash.user_photo.equals("http://askrambler.com/")){
+            imgProfileImage.setImageResource(R.drawable.ic_person);
+        }else {
+            Glide.with(getContext())
+                    .load(Splash.user_photo).transform(new CircleTransform(getContext()))
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            return false;
+                        }
 
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .into(imgProfileImage);
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    .into(imgProfileImage);
+        }
+
         inputProFullName.setText(Splash.full_name);
         inputProEmail.setText(Splash.email);
         inputProGender.setText(Splash.gander);
