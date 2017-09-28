@@ -153,20 +153,25 @@ public class HomeActivity extends AppCompatActivity {
         Log.d("SAIM INFO CHECK", new SharedPrefDatabase(getApplicationContext()).RetriveUserFullName() + "\n" +
         new SharedPrefDatabase(getApplicationContext()).RetriveUserPhoto());
 
-        Glide.with(getApplicationContext())
-                .load(new SharedPrefDatabase(getApplicationContext()).RetriveUserPhoto()).transform(new CircleTransform(getApplicationContext()))
-                .listener(new RequestListener<String, GlideDrawable>() {
-                    @Override
-                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
-                        return false;
-                    }
+        if (Splash.user_photo.equals("http://askrambler.com/")){
+            imageViewHeader.setImageResource(R.drawable.ic_person);
+        }else {
+            Glide.with(getApplicationContext())
+                    .load(new SharedPrefDatabase(getApplicationContext()).RetriveUserPhoto()).transform(new CircleTransform(getApplicationContext()))
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            return false;
+                        }
 
-                    @Override
-                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
-                        return false;
-                    }
-                })
-                .into(imageViewHeader);
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    .into(imageViewHeader);
+        }
+
 
         txtNameHeader.setText(new SharedPrefDatabase(getApplicationContext()).RetriveUserFullName());
 
@@ -174,6 +179,8 @@ public class HomeActivity extends AppCompatActivity {
         imgLogoutHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                new SharedPrefDatabase(getApplicationContext()).StoreUserEmail("");
+                new SharedPrefDatabase(getApplicationContext()).StoreUserPassword("");
                 new SharedPrefDatabase(getApplicationContext()).StoreLogin("No");
                 new SharedPrefDatabase(getApplicationContext()).StoreUserFullName("Guest User");
                 new SharedPrefDatabase(getApplicationContext()).StoreUserPhoto("");
@@ -193,7 +200,7 @@ public class HomeActivity extends AppCompatActivity {
         TextView txtNameHeader = (TextView) headerView.findViewById(R.id.txtNameHeader);
         TextView txtRatingHeader = (TextView) headerView.findViewById(R.id.txtRatingHeader);
 
-        imageViewHeader.setImageResource(R.drawable.ic_user);
+        imageViewHeader.setImageResource(R.drawable.ic_person);
         imgLogoutHeader.setVisibility(View.GONE);
         txtNameHeader.setText("Guest User");
         txtRatingHeader.setText("5.00");

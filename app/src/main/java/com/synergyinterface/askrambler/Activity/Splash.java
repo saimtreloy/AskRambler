@@ -174,8 +174,8 @@ public class Splash extends AppCompatActivity {
             @Override
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
-                params.put("email", "saim.treloy@gmail.com");
-                params.put("password", "Saim123");
+                params.put("email", new SharedPrefDatabase(getApplicationContext()).RetriveUserEmail());
+                params.put("password", new SharedPrefDatabase(getApplicationContext()).RetriveUserPassword());
 
                 return params;
             }

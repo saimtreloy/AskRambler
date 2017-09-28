@@ -116,6 +116,11 @@ public class FragmentLogin extends Fragment {
         btnRegSignUp.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                progressDialog.setMessage("Please wait...");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
+
                 String fname = inputRegFirstName.getText().toString();
                 String lname = inputRegLastName.getText().toString();
                 String email = inputRegEmail.getText().toString();
@@ -126,6 +131,7 @@ public class FragmentLogin extends Fragment {
                 if (fname.isEmpty() || lname.isEmpty() || email.isEmpty() || phone.isEmpty() || password.isEmpty() || passwordC.isEmpty()){
                     Toast.makeText(getContext(), "Input field can not be empty!", Toast.LENGTH_SHORT).show();
                 }else {
+                    progressDialog.dismiss();
                     if (password.equals(passwordC) && password.length()>6){
                         UserRegistration(fname, lname, email, phone, password);
                     }else {
@@ -195,12 +201,14 @@ public class FragmentLogin extends Fragment {
 
     }
 
+
     public void SaveUserLogin(final String email, final String pass) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.getLogin,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
                         progressDialog.dismiss();
+                        Log.d("SAIM RESPONSE", response);
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String code = jsonObject.getString("code");
@@ -241,6 +249,8 @@ public class FragmentLogin extends Fragment {
                                 Splash.server_date = jsonObjectList.getString("server_date");
 
                                 new SharedPrefDatabase(getContext()).StoreLogin("Yes");
+                                new SharedPrefDatabase((getContext())).StoreUserEmail(email);
+                                new SharedPrefDatabase(getContext()).StoreUserPassword(pass);
                                 new SharedPrefDatabase(getContext()).StoreUserFullName(Splash.full_name);
                                 new SharedPrefDatabase(getContext()).StoreUserPhoto(Splash.user_photo);
 
@@ -280,6 +290,29 @@ public class FragmentLogin extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         progressDialog.dismiss();
+                        YoYo.with(Techniques.SlideOutLeft).duration(250).withListener(new Animator.AnimatorListener() {
+                            @Override
+                            public void onAnimationStart(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                cardSignup.setVisibility(View.GONE);
+                                cardLogin.setVisibility(View.VISIBLE);
+                                YoYo.with(Techniques.SlideInRight).duration(250).playOn(view.findViewById(R.id.cardLogin));
+                            }
+
+                            @Override
+                            public void onAnimationCancel(Animator animation) {
+
+                            }
+
+                            @Override
+                            public void onAnimationRepeat(Animator animation) {
+
+                            }
+                        }).playOn(view.findViewById(R.id.cardSignup));
                         try {
                             JSONObject jsonObject = new JSONObject(response);
                             String code = jsonObject.getString("code");

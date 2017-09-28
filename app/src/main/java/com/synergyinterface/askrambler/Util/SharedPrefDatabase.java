@@ -7,7 +7,8 @@ import android.preference.PreferenceManager;
 public class SharedPrefDatabase {
 
     public static final String KEY_LOGIN = "KEY_LOGIN";
-
+    public static final String KEY_USER_EMAIL = "KEY_USER_EMAIL";
+    public static final String KEY_USER_PASSWORD = "KEY_USER_PASSWORD";
     public static final String KEY_USER_FULLNAME = "KEY_USER_FULLNAME";
     public static final String KEY_USER_PHOTO = "KEY_USER_PHOTO";
     public static final String KEY_LAT = "KEY_LAT";
@@ -29,6 +30,24 @@ public class SharedPrefDatabase {
     }
     public String RetriveLogin(){
         String text = sharedPreferences.getString(KEY_LOGIN, null);
+        return text;
+    }
+
+    public void StoreUserEmail(String data){
+        editor.putString(KEY_USER_EMAIL, data);
+        editor.commit();
+    }
+    public String RetriveUserEmail(){
+        String text = sharedPreferences.getString(KEY_USER_EMAIL, null);
+        return text;
+    }
+
+    public void StoreUserPassword(String data){
+        editor.putString(KEY_USER_PASSWORD, data);
+        editor.commit();
+    }
+    public String RetriveUserPassword(){
+        String text = sharedPreferences.getString(KEY_USER_PASSWORD, null);
         return text;
     }
 
