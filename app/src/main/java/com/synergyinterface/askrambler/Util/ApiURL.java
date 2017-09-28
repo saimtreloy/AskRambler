@@ -27,4 +27,7 @@ public class ApiURL {
     public static String confirm = "http://askrambler.com/Android_API/confirm.php";
     public static String profileUpdate = "http://askrambler.com/Android_API/profileUpdate.php";
 
+    //Image Upload
+    public static String profileImageUpload = "http://askrambler.com/Android_API/profileImageUpload.php";
+
 }

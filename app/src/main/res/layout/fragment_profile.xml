@@ -62,7 +62,6 @@
                 android:textSize="14dp"
                 android:textStyle="italic" />
 
-
         </LinearLayout>
 
     </LinearLayout>
