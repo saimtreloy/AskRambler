@@ -385,7 +385,7 @@ public class FragmentProfile extends Fragment {
 
                     UploadImage(s);
 
-                    imgProfileImage.setImageBitmap(bitmap);
+                    //imgProfileImage.setImageBitmap(bitmap);
                     //Log.d("Saim Image BASE64", s);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -408,13 +408,11 @@ public class FragmentProfile extends Fragment {
                     public void onResponse(String response) {
                         progressDialog.dismiss();
                         try {
-                            Log.d("SAIM RESPONSE IMAGE", response);
                             JSONObject jsonObject = new JSONObject(response);
                             String code = jsonObject.getString("code");
                             if (code.equals("success")){
                                 String message = jsonObject.getString("message");
                                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
-                                Log.d("SAIM IMAGE UPLOAD", message);
 
                             }else {
                                 String message = jsonObject.getString("message");
@@ -427,7 +425,7 @@ public class FragmentProfile extends Fragment {
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-
+                Log.d("HDHD ", error.toString());
             }
         }){
             @Override
@@ -435,7 +433,7 @@ public class FragmentProfile extends Fragment {
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("user_id", Splash.user_id);
                 params.put("user_photo", bitmap);
-
+                Log.d("HDHD ", bitmap);
                 return params;
             }
         };
