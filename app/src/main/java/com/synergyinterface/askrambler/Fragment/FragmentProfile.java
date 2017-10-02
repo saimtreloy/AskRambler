@@ -35,6 +35,7 @@ import android.widget.Toast;
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
@@ -166,6 +167,11 @@ public class FragmentProfile extends Fragment {
             public boolean onLongClick(View v) {
                 Intent intent = CropImage.activity().setAspectRatio(4,4).getIntent(getContext());
                 startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+
+                /*Intent intent = new Intent();
+                intent.setType("image*//*");
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                startActivityForResult(Intent.createChooser(intent, "Select Picture"), 9999);*/
                 return false;
             }
         });
@@ -370,42 +376,46 @@ public class FragmentProfile extends Fragment {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Bitmap bitmap;
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
             CropImage.ActivityResult result = CropImage.getActivityResult(data);
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), resultUri);
+                    bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), resultUri);
+                    bitmap = getResizedBitmap(bitmap, 400, 400);
+                    imgProfileImage.setImageBitmap(bitmap);
 
-                    progressDialog.setMessage("Please wait image is uploading");
+                    progressDialog.setTitle("Please wait...");
                     progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.show();
-
-                    String s = getStringImage(bitmap);
-
-                    UploadImage(s);
-
-                    //imgProfileImage.setImageBitmap(bitmap);
-                    //Log.d("Saim Image BASE64", s);
+                    UploadImage(bitmap);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-
-                String s = resultUri.toString().substring(resultUri.toString().lastIndexOf("/")+1,resultUri.toString().length());
-
-                Toast.makeText(getContext(), resultUri.toString(), Toast.LENGTH_SHORT).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
+            }
+        } else if (requestCode == 9999 && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri filePath = data.getData();
+            try {
+                //Getting the Bitmap from Gallery
+                bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filePath);
+                //Setting the Bitmap to ImageView
+                imgProfileImage.setImageBitmap(bitmap);
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
 
 
-    public void UploadImage(final String bitmap) {
+    public void UploadImage(final Bitmap bitmap) {
         StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.profileImageUpload,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
+                        Log.d("SAIM UPLOAD", response);
                         progressDialog.dismiss();
                         try {
                             JSONObject jsonObject = new JSONObject(response);
@@ -432,11 +442,27 @@ public class FragmentProfile extends Fragment {
             protected Map<String, String> getParams() throws AuthFailureError {
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("user_id", Splash.user_id);
-                params.put("user_photo", bitmap);
-                Log.d("HDHD ", bitmap);
+                params.put("user_photo", getStringImage(bitmap));
                 return params;
             }
         };
+        stringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
         MySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
     }
 
@@ -462,6 +488,11 @@ public class FragmentProfile extends Fragment {
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
+    }
+
+
+    public Bitmap getResizedBitmap(Bitmap image, int bitmapWidth, int bitmapHeight) {
+        return Bitmap.createScaledBitmap(image, bitmapWidth, bitmapHeight, true);
     }
 
 }
