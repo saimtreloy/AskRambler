@@ -165,14 +165,19 @@ public class FragmentProfile extends Fragment {
         imgProfileImage.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Intent intent = CropImage.activity().setAspectRatio(4,4).getIntent(getContext());
-                startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
 
                 /*Intent intent = new Intent();
                 intent.setType("image*//*");
                 intent.setAction(Intent.ACTION_GET_CONTENT);
                 startActivityForResult(Intent.createChooser(intent, "Select Picture"), 9999);*/
                 return false;
+            }
+        });
+
+        imgProfileImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showChatDialogInfo();
             }
         });
     }
@@ -493,6 +498,52 @@ public class FragmentProfile extends Fragment {
 
     public Bitmap getResizedBitmap(Bitmap image, int bitmapWidth, int bitmapHeight) {
         return Bitmap.createScaledBitmap(image, bitmapWidth, bitmapHeight, true);
+    }
+
+
+    public void showChatDialogInfo() {
+
+        LayoutInflater factory = LayoutInflater.from(getContext());
+        final View chatDialogView = factory.inflate(R.layout.dialog_profile, null);
+        final AlertDialog chatDialog = new AlertDialog.Builder(getContext()).create();
+        chatDialog.setView(chatDialogView);
+        chatDialog.setCanceledOnTouchOutside(false);
+        chatDialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+
+        ImageView img = (ImageView) chatDialogView.findViewById(R.id.imgDailogProfile);
+        Glide.with(getContext())
+                .load(Splash.user_photo)
+                .listener(new RequestListener<String, GlideDrawable>() {
+                    @Override
+                    public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                        return false;
+                    }
+                })
+                .placeholder(R.drawable.ic_image)
+                .into(img);
+
+        chatDialogView.findViewById(R.id.txtDialogCancel).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chatDialog.dismiss();
+            }
+        });
+        chatDialogView.findViewById(R.id.txtDialogChangeProfile).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = CropImage.activity().setAspectRatio(4,4).getIntent(getContext());
+                startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+                chatDialog.dismiss();
+            }
+        });
+
+        chatDialog.show();
+
     }
 
 }
