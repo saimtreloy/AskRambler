@@ -124,6 +124,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
+                android:visibility="gone"
                 android:layout_below="@+id/linearLayout">
 
                 <ScrollView
@@ -532,7 +533,7 @@
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:visibility="gone"
+                android:visibility="visible"
                 android:layout_below="@+id/linearLayout">
 
                 <ScrollView
@@ -593,8 +594,9 @@
                             android:text="Upload Passport, Driving License or National/Social ID "/>
 
                         <ImageView
+                            android:id="@+id/imgProUploadDocument"
                             android:layout_width="match_parent"
-                            android:layout_height="100dp"
+                            android:layout_height="150dp"
                             android:scaleType="fitXY"
                             android:src="@drawable/ic_placeholder"/>
                         <Button

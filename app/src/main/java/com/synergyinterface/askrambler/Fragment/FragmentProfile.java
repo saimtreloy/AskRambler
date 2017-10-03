@@ -76,13 +76,15 @@ public class FragmentProfile extends Fragment {
     ProgressDialog progressDialog;
     RelativeLayout layoutProProfile ,layoutProChangePasword;
     TextView txtProProfile, txtProChangePassword, inputProFullName, inputProEmail, inputProMobile;
-    ImageView imgProfileImage;
+    ImageView imgProfileImage, imgProUploadDocument;
     EditText inputProGender, inputProCountry, inputProState, inputProCity,
             inputProZip, inputProAddress, inputProBirthday, inputProPhone, inputProLikeTo, inputProWebsite,
             inputProFacebook, inputProInstagram, inputProYoutube, inputProDetail;
-    Button btnProUpdate;
+    Button btnProUpdate, btnProUpdateDocument;
 
     ArrayList<String> countryList = new ArrayList<>();
+
+    public Bitmap documentUpload;
 
     public FragmentProfile() {
 
@@ -114,6 +116,8 @@ public class FragmentProfile extends Fragment {
 
         //Profile Information
         imgProfileImage = (ImageView) view.findViewById(R.id.imgProfileImage);
+        imgProUploadDocument = (ImageView) view.findViewById(R.id.imgProUploadDocument);
+
 
         inputProFullName = (TextView) view.findViewById(R.id.inputProFullName);
         inputProEmail = (TextView) view.findViewById(R.id.inputProEmail);
@@ -133,7 +137,9 @@ public class FragmentProfile extends Fragment {
         inputProYoutube = (EditText) view.findViewById(R.id.inputProYoutube);
         inputProDetail = (EditText) view.findViewById(R.id.inputProDetail);
 
+
         btnProUpdate = (Button) view.findViewById(R.id.btnProUpdate);
+        btnProUpdateDocument = (Button) view.findViewById(R.id.btnProUpdateDocument);
 
         PopulateProfileInformation();
         InputFieldClicked();
@@ -192,6 +198,26 @@ public class FragmentProfile extends Fragment {
                 progressDialog.show();
 
                 UpdateProfileInfo();
+            }
+        });
+
+        btnProUpdateDocument.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressDialog.setTitle("Profile Document");
+                progressDialog.setMessage("Please wait updating profile.");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
+
+                UploadDocument(documentUpload);
+            }
+        });
+
+        imgProUploadDocument.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = CropImage.activity().setAspectRatio(16,9).getIntent(getContext());
+                startActivityForResult(intent, 9999);
             }
         });
     }
@@ -276,6 +302,26 @@ public class FragmentProfile extends Fragment {
                         }
                     })
                     .into(imgProfileImage);
+        }
+        Log.d("SAIM DOCUMENT", Splash.document);
+        if (Splash.document.equals("http://askrambler.com/")){
+            imgProUploadDocument.setImageResource(R.drawable.ic_person);
+        }else {
+            Glide.with(getContext())
+                    .load("http://askrambler.com/"+Splash.document)
+                    .placeholder(R.drawable.ic_person)
+                    .listener(new RequestListener<String, GlideDrawable>() {
+                        @Override
+                        public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
+                            return false;
+                        }
+
+                        @Override
+                        public boolean onResourceReady(GlideDrawable resource, String model, Target<GlideDrawable> target, boolean isFromMemoryCache, boolean isFirstResource) {
+                            return false;
+                        }
+                    })
+                    .into(imgProUploadDocument);
         }
 
         inputProFullName.setText(Splash.full_name);
@@ -420,15 +466,20 @@ public class FragmentProfile extends Fragment {
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
                 Exception error = result.getError();
             }
-        } else if (requestCode == 9999 && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            Uri filePath = data.getData();
-            try {
-                //Getting the Bitmap from Gallery
-                bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), filePath);
-                //Setting the Bitmap to ImageView
-                imgProfileImage.setImageBitmap(bitmap);
-            } catch (IOException e) {
-                e.printStackTrace();
+        } else if (requestCode == 9999) {
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if (resultCode == RESULT_OK) {
+                Uri resultUri = result.getUri();
+                try {
+                    bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), resultUri);
+                    bitmap = getResizedBitmap(bitmap, 600, 400);
+                    documentUpload = bitmap;
+                    imgProUploadDocument.setImageBitmap(bitmap);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else if (resultCode == 9999) {
+                Exception error = result.getError();
             }
         }
     }
@@ -467,6 +518,63 @@ public class FragmentProfile extends Fragment {
                 Map<String,String> params = new HashMap<String, String>();
                 params.put("user_id", Splash.user_id);
                 params.put("user_photo", getStringImage(bitmap));
+                return params;
+            }
+        };
+        stringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        MySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
+    }
+
+
+    public void UploadDocument(final Bitmap bitmap) {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.documentUpload,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d("SAIM UPLOAD", response);
+                        progressDialog.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String code = jsonObject.getString("code");
+                            if (code.equals("success")){
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+
+                            }else {
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }catch (Exception e){
+                            Log.d("HDHD ", e.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("HDHD ", error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("user_id", Splash.user_id);
+                params.put("image", getStringImage(bitmap));
                 return params;
             }
         };

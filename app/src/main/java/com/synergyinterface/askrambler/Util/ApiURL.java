@@ -29,5 +29,6 @@ public class ApiURL {
 
     //Image Upload
     public static String profileImageUpload = "http://askrambler.com/Android_API/imageUpload.php";
+    public static String documentUpload = "http://askrambler.com/Android_API/documentUpload.php";
 
 }
