@@ -377,7 +377,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
-                            android:text="Like to"
+                            android:text="website"
                             android:layout_marginTop="6dp"
                             android:layout_marginBottom="2dp"
                             android:textAllCaps="false"
@@ -386,13 +386,13 @@
                             android:textStyle="italic" />
 
                         <EditText
-                            android:id="@+id/inputProLikeTo"
+                            android:id="@+id/inputProWebsite"
                             android:layout_width="match_parent"
                             android:layout_height="35dp"
                             android:layout_marginRight="2dp"
                             android:layout_weight="1"
                             android:background="@drawable/ic_round"
-                            android:hint="Like To"
+                            android:hint="Website"
                             android:textSize="12dp" />
 
                         <TextView
@@ -466,6 +466,29 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center|left"
+                            android:text="Like to"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginBottom="2dp"
+                            android:textAllCaps="false"
+                            android:textColor="@android:color/white"
+                            android:textSize="12dp"
+                            android:textStyle="italic" />
+
+                        <EditText
+                            android:id="@+id/inputProLikeTo"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/ic_round"
+                            android:hint="Like To"
+                            android:textSize="12dp" />
+
+                        <TextView
+                            android:layout_weight="1"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="center|left"
                             android:text="User personal detail"
                             android:layout_marginTop="6dp"
                             android:layout_marginBottom="2dp"
@@ -485,7 +508,7 @@
                             android:textSize="12dp" />
 
                         <Button
-                            android:id="@+id/btnLoginLogin"
+                            android:id="@+id/btnProUpdate"
                             android:layout_width="match_parent"
                             android:layout_height="40dp"
                             android:layout_marginTop="8dp"

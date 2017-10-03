@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import com.synergyinterface.askrambler.Activity.HomeActivity;
 import com.synergyinterface.askrambler.Activity.Splash;
 import com.synergyinterface.askrambler.Adapter.AdapterPost;
 import com.synergyinterface.askrambler.R;
@@ -41,6 +42,7 @@ public class FragmentAllPost extends Fragment {
     }
 
     public void init() {
+        HomeActivity.toolbar.setTitle("Ask Rambler");
         recyclerAllPost = (RecyclerView) view.findViewById(R.id.recyclerViewAllPost);
         layoutManagerAllPost = new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false);
         recyclerAllPost.setLayoutManager(layoutManagerAllPost);

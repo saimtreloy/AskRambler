@@ -24,6 +24,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
+import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.RequestListener;
@@ -158,6 +160,7 @@ public class HomeActivity extends AppCompatActivity {
         }else {
             Glide.with(getApplicationContext())
                     .load(new SharedPrefDatabase(getApplicationContext()).RetriveUserPhoto()).transform(new CircleTransform(getApplicationContext()))
+                    .placeholder(R.drawable.ic_person)
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -179,12 +182,29 @@ public class HomeActivity extends AppCompatActivity {
         imgLogoutHeader.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SharedPrefDatabase(getApplicationContext()).StoreUserEmail("");
-                new SharedPrefDatabase(getApplicationContext()).StoreUserPassword("");
-                new SharedPrefDatabase(getApplicationContext()).StoreLogin("No");
-                new SharedPrefDatabase(getApplicationContext()).StoreUserFullName("Guest User");
-                new SharedPrefDatabase(getApplicationContext()).StoreUserPhoto("");
-                sendBroadcast(new Intent("com.synergyinterface.askrambler.Activity.ChangeLayoutOnLogin"));
+
+                new AwesomeWarningDialog(v.getContext())
+                        .setTitle("Logout")
+                        .setMessage("Are you sure want to logout?")
+                        .setColoredCircle(R.color.dialogWarningBackgroundColor)
+                        .setDialogIconAndColor(R.drawable.ic_dialog_warning, R.color.white)
+                        .setCancelable(true)
+                        .setButtonText(getString(R.string.dialog_ok_button))
+                        .setButtonBackgroundColor(R.color.dialogWarningBackgroundColor)
+                        .setButtonText(getString(R.string.dialog_ok_button))
+                        .setWarningButtonClick(new Closure() {
+                            @Override
+                            public void exec() {
+                                new SharedPrefDatabase(getApplicationContext()).StoreUserEmail("");
+                                new SharedPrefDatabase(getApplicationContext()).StoreUserPassword("");
+                                new SharedPrefDatabase(getApplicationContext()).StoreLogin("No");
+                                new SharedPrefDatabase(getApplicationContext()).StoreUserFullName("Guest User");
+                                new SharedPrefDatabase(getApplicationContext()).StoreUserPhoto("");
+                                finish();
+                                startActivity(new Intent(getApplicationContext(), HomeActivity.class));
+                            }
+                        })
+                        .show();
             }
         });
     }

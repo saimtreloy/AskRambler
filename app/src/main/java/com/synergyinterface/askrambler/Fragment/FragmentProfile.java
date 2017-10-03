@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.Space;
 import android.support.v7.app.AlertDialog;
 import android.util.Base64;
 import android.util.Log;
@@ -77,9 +78,9 @@ public class FragmentProfile extends Fragment {
     TextView txtProProfile, txtProChangePassword, inputProFullName, inputProEmail, inputProMobile;
     ImageView imgProfileImage;
     EditText inputProGender, inputProCountry, inputProState, inputProCity,
-            inputProZip, inputProAddress, inputProBirthday, inputProPhone, inputProLikeTo,
+            inputProZip, inputProAddress, inputProBirthday, inputProPhone, inputProLikeTo, inputProWebsite,
             inputProFacebook, inputProInstagram, inputProYoutube, inputProDetail;
-    Button btnLoginLogin;
+    Button btnProUpdate;
 
     ArrayList<String> countryList = new ArrayList<>();
 
@@ -125,13 +126,14 @@ public class FragmentProfile extends Fragment {
         inputProBirthday = (EditText) view.findViewById(R.id.inputProBirthday);
         inputProMobile = (TextView) view.findViewById(R.id.inputProMobile);
         inputProPhone = (EditText) view.findViewById(R.id.inputProPhone);
+        inputProWebsite = (EditText) view.findViewById(R.id.inputProWebsite);
         inputProLikeTo = (EditText) view.findViewById(R.id.inputProLikeTo);
         inputProFacebook = (EditText) view.findViewById(R.id.inputProFacebook);
         inputProInstagram = (EditText) view.findViewById(R.id.inputProInstagram);
         inputProYoutube = (EditText) view.findViewById(R.id.inputProYoutube);
         inputProDetail = (EditText) view.findViewById(R.id.inputProDetail);
 
-        btnLoginLogin = (Button) view.findViewById(R.id.btnLoginLogin);
+        btnProUpdate = (Button) view.findViewById(R.id.btnProUpdate);
 
         PopulateProfileInformation();
         InputFieldClicked();
@@ -178,6 +180,18 @@ public class FragmentProfile extends Fragment {
             @Override
             public void onClick(View v) {
                 showChatDialogInfo();
+            }
+        });
+
+        btnProUpdate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progressDialog.setTitle("Profile Update");
+                progressDialog.setMessage("Please wait updating profile.");
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
+
+                UpdateProfileInfo();
             }
         });
     }
@@ -249,6 +263,7 @@ public class FragmentProfile extends Fragment {
         }else {
             Glide.with(getContext())
                     .load(Splash.user_photo).transform(new CircleTransform(getContext()))
+                    .placeholder(R.drawable.ic_person)
                     .listener(new RequestListener<String, GlideDrawable>() {
                         @Override
                         public boolean onException(Exception e, String model, Target<GlideDrawable> target, boolean isFirstResource) {
@@ -265,20 +280,24 @@ public class FragmentProfile extends Fragment {
 
         inputProFullName.setText(Splash.full_name);
         inputProEmail.setText(Splash.email);
-        inputProGender.setText(Splash.gander);
-        inputProCountry.setText(Splash.country);
-        inputProState.setText(Splash.state);
-        inputProCity.setText(Splash.city);
-        inputProZip.setText(Splash.zip);
-        inputProAddress.setText(Splash.address);
-        inputProBirthday.setText(Splash.birth_date);
-        inputProMobile.setText(Splash.mobile);
-        inputProPhone.setText(Splash.phone);
-        inputProLikeTo.setText(Splash.like_to);
-        inputProFacebook.setText(Splash.facebook);
-        inputProInstagram.setText(Splash.instagram);
-        inputProYoutube.setText(Splash.youtube);
-        inputProDetail.setText(Splash.details);
+        inputProMobile.setText(Splash.mobile.equals("null") ? "" : Splash.mobile);
+
+        Log.d("SAIM PRO CHECK", Splash.gander);
+
+        inputProGender.setText(Splash.gander.equals("null") ? "" : Splash.gander);
+        inputProCountry.setText(Splash.country.equals("null") ? "" : Splash.country);
+        inputProState.setText(Splash.state.equals("null") ? "" : Splash.state);
+        inputProCity.setText(Splash.city.equals("null") ? "" : Splash.city);
+        inputProZip.setText(Splash.zip.equals("null") ? "" : Splash.zip);
+        inputProAddress.setText(Splash.address.equals("null") ? "" : Splash.address);
+        inputProBirthday.setText(Splash.birth_date.equals("null") ? "" : Splash.birth_date);
+        inputProPhone.setText(Splash.phone.equals("null") ? "" : Splash.phone);
+        inputProWebsite.setText(Splash.website.equals("null") ? "" : Splash.website);
+        inputProLikeTo.setText(Splash.like_to.equals("null") ? "" : Splash.like_to);
+        inputProFacebook.setText(Splash.facebook.equals("null") ? "" : Splash.facebook);
+        inputProInstagram.setText(Splash.instagram.equals("null") ? "" : Splash.instagram);
+        inputProYoutube.setText(Splash.youtube.equals("null") ? "" : Splash.youtube);
+        inputProDetail.setText(Splash.details.equals("null") ? "" : Splash.details);
 
     }
 
@@ -544,6 +563,166 @@ public class FragmentProfile extends Fragment {
 
         chatDialog.show();
 
+    }
+
+
+    public void UpdateProfileInfo(){
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.profileUpdate,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.d("SAIM RESPONSE", response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            String code = jsonObject.getString("code");
+                            if (code.equals("Success")){
+                                String message = jsonObject.getString("message");
+                                SaveUserLogin();
+                            }else {
+                                progressDialog.dismiss();
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }catch (Exception e){
+                            Log.d("HDHD ", e.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("HDHD ", error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("user_id", Splash.user_id);
+                params.put("gander", inputProGender.getText().toString());
+                params.put("address", inputProAddress.getText().toString());
+                params.put("city", inputProCity.getText().toString());
+                params.put("zip", inputProZip.getText().toString());
+                params.put("state", inputProState.getText().toString());
+                params.put("country", inputProCountry.getText().toString());
+                params.put("mobile", inputProMobile.getText().toString());
+                params.put("birth_date", inputProBirthday.getText().toString());
+                params.put("website", inputProWebsite.getText().toString());
+                params.put("facebook", inputProFacebook.getText().toString());
+                params.put("instagram", inputProInstagram.getText().toString());
+                params.put("youtube", inputProYoutube.getText().toString());
+                params.put("like_to", inputProLikeTo.getText().toString());
+                params.put("details", inputProDetail.getText().toString());
+                return params;
+            }
+        };
+        stringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        MySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
+    }
+
+
+    public void SaveUserLogin() {
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.getLogin,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        progressDialog.dismiss();
+                        Log.d("SAIM RESPONSE 2", response);
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String code = jsonObject.getString("code");
+                            if (code.equals("success")){
+                                JSONArray jsonArray = jsonObject.getJSONArray("list");
+                                JSONObject jsonObjectList = jsonArray.getJSONObject(0);
+
+                                Splash.user_id = jsonObjectList.getString("user_id");
+                                Splash.nationality = jsonObjectList.getString("nationality");
+                                Splash.full_name = jsonObjectList.getString("full_name");
+                                Splash.email = jsonObjectList.getString("email");
+                                Splash.password = jsonObjectList.getString("password");
+                                Splash.agreement = jsonObjectList.getString("agreement");
+                                Splash.status = jsonObjectList.getString("status");
+                                Splash.roll = jsonObjectList.getString("roll");
+                                Splash.first_name = jsonObjectList.getString("first_name");
+                                Splash.last_name = jsonObjectList.getString("last_name");
+                                Splash.gander = jsonObjectList.getString("gander");
+                                Splash.address = jsonObjectList.getString("address");
+                                Splash.city = jsonObjectList.getString("city");
+                                Splash.zip = jsonObjectList.getString("zip");
+                                Splash.state = jsonObjectList.getString("state");
+                                Splash.country = jsonObjectList.getString("country");
+                                Splash.mobile = jsonObjectList.getString("mobile");
+                                Splash.phone = jsonObjectList.getString("phone");
+                                Splash.birth_date = jsonObjectList.getString("birth_date");
+                                Splash.user_photo = jsonObjectList.getString("user_photo");
+                                Splash.document = jsonObjectList.getString("document");
+                                Splash.verify = jsonObjectList.getString("verify");
+                                Splash.website = jsonObjectList.getString("website");
+                                Splash.facebook = jsonObjectList.getString("facebook");
+                                Splash.instagram = jsonObjectList.getString("instagram");
+                                Splash.youtube = jsonObjectList.getString("youtube");
+                                Splash.code1 = jsonObjectList.getString("code");
+                                Splash.cornjob = jsonObjectList.getString("cornjob");
+                                Splash.like_to = jsonObjectList.getString("like_to");
+                                Splash.details = jsonObjectList.getString("details");
+                                Splash.server_date = jsonObjectList.getString("server_date");
+
+                                Toast.makeText(getContext(), "Your profile updated successfully", Toast.LENGTH_SHORT).show();
+                            }else {
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }catch (Exception e){
+                            Log.d("HDHD ", e.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("email", new SharedPrefDatabase(getContext()).RetriveUserEmail());
+                params.put("password", new SharedPrefDatabase(getContext()).RetriveUserPassword());
+
+                return params;
+            }
+        };
+        stringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        MySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
     }
 
 }
