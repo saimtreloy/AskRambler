@@ -31,4 +31,7 @@ public class ApiURL {
     public static String profileImageUpload = "http://askrambler.com/Android_API/imageUpload.php";
     public static String documentUpload = "http://askrambler.com/Android_API/documentUpload.php";
 
+    //Companion Add Post
+    public static String companionAddPost = "http://askrambler.com/Android_API/addPostCompanion.php";
+
 }

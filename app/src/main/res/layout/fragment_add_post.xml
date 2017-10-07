@@ -194,6 +194,7 @@
                             android:background="@drawable/ic_round"
                             android:hint="Eg. +8801711415554"
                             android:inputType="number"
+                            android:enabled="false"
                             android:textSize="12dp" />
 
                         <EditText

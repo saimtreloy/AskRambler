@@ -4,6 +4,7 @@ package com.synergyinterface.askrambler.Fragment;
 import android.Manifest;
 import android.animation.Animator;
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -41,14 +42,18 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.daimajia.androidanimations.library.Techniques;
 import com.daimajia.androidanimations.library.YoYo;
 import com.synergyinterface.askrambler.Activity.HomeActivity;
+import com.synergyinterface.askrambler.Activity.Splash;
 import com.synergyinterface.askrambler.R;
+import com.synergyinterface.askrambler.Util.ApiURL;
 import com.synergyinterface.askrambler.Util.MySingleton;
 import com.theartofdev.edmodo.cropper.CropImage;
 
@@ -57,11 +62,15 @@ import org.json.JSONObject;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -75,6 +84,7 @@ public class FragmentAddPost extends Fragment {
     private static final int PICK_IMAGE_REQUEST=1001;
 
     View view;
+    ProgressDialog progressDialog;
     Button btnAddPostCom, btnAddPostBag, btnAddPostTrip, btnAddPostHost;
     RelativeLayout layoutAddPostCompanion, layoutAddPostBaggage, layoutAddPostTrip, layoutAddPostHost;
     //Google Item
@@ -85,6 +95,8 @@ public class FragmentAddPost extends Fragment {
     EditText inputAddConExpectedDate, inputAddComPayment, inputAddComGender, inputAddComTravelBy, inputAddComContact,
             inputAddComImage, inputAddComDescription;
     Button btnAddComPostAdd;
+
+    public Bitmap bitmapCompanion;
 
     //Baggage
     RadioButton radioAddBagSendBag, radioAddBagCarryBag;
@@ -131,6 +143,8 @@ public class FragmentAddPost extends Fragment {
         HomeActivity.toolbar.setTitle("Add Post");
 
         haveStoragePermission();
+
+        progressDialog = new ProgressDialog(getContext());
 
         btnAddPostCom = (Button) view.findViewById(R.id.btnAddPostCom);
         btnAddPostBag = (Button) view.findViewById(R.id.btnAddPostBag);
@@ -223,6 +237,10 @@ public class FragmentAddPost extends Fragment {
         btnAddHostPostAdd = (Button) view.findViewById(R.id.btnAddHostPostAdd);
 
         HostEditTextClick();
+
+        //Populate some information
+
+        populateEditTextInfo();
     }
 
     public void ButtonClickedTop(){
@@ -375,6 +393,10 @@ public class FragmentAddPost extends Fragment {
 
     }
 
+    public void populateEditTextInfo(){
+        inputAddComContact.setText(Splash.phone);
+    }
+
     public void CompanionEditTextClick(){
         inputAddComFrom.addTextChangedListener(new TextWatcher() {
             @Override
@@ -443,6 +465,44 @@ public class FragmentAddPost extends Fragment {
             public void onClick(View v) {
                 Intent intent = CropImage.activity().setAspectRatio(16,9).getIntent(getContext());
                 startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+            }
+        });
+
+
+        btnAddComPostAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String from_where = inputAddComFrom.getText().toString();
+                String to_where = inputAddComTo.getText().toString();
+                String from_date = inputAddConExpectedDate.getText().toString();
+                String to_date = curretDateAndTime();
+                String payment_category = inputAddComPayment.getText().toString();
+                String gender = inputAddComGender.getText().toString();
+                String traveling_by = inputAddComTravelBy.getText().toString();
+                String contacts = inputAddComContact.getText().toString();
+                String details = inputAddComDescription.getText().toString();
+                String ad_type = "Companion";
+                String ad_type_id = "1";
+                String dates = curretDateAndTime2();
+                String status = "1";
+                String user_id = Splash.user_id;
+
+                if (from_where.isEmpty() || to_where.isEmpty() || from_date.isEmpty() || payment_category.isEmpty() || gender.isEmpty() || traveling_by.isEmpty() || contacts.isEmpty() || inputAddComImage.getText().toString().isEmpty() || details.isEmpty()){
+                    Toast.makeText(getContext(), "Input filed can not be empty!", Toast.LENGTH_SHORT).show();
+                }else {
+                    progressDialog.setTitle("Profile Document");
+                    progressDialog.setMessage("Please wait updating profile.");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.show();
+
+                    String images = getStringImage(bitmapCompanion);
+
+
+                    Log.d("SAIM POST CHECK", from_where + "\n" + to_where + "\n" + from_date + "\n" + to_date + "\n" + payment_category + "\n" + gender + "\n" + traveling_by + "\n" +
+                            contacts + "\n" + images + "\n" + details + "\n" + ad_type + "\n" + ad_type_id + "\n" + dates + "\n" + status + "\n" + user_id);
+
+                    AddPostCompanion(from_where, to_where, from_date, to_date, payment_category, gender, traveling_by, contacts, images, details, ad_type, ad_type_id, dates, status, user_id);
+                }
             }
         });
     }
@@ -927,8 +987,8 @@ public class FragmentAddPost extends Fragment {
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
                 try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), resultUri);
-                    String s = getStringImage(bitmap);
+                    bitmapCompanion = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(), resultUri);
+                    String s = getStringImage(bitmapCompanion);
                     Log.d("Saim Image BASE64", s);
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -936,6 +996,7 @@ public class FragmentAddPost extends Fragment {
 
                 String s = resultUri.toString().substring(resultUri.toString().lastIndexOf("/")+1,resultUri.toString().length());
                 inputAddComImage.setText(s);
+                Log.d("Saim Image BASE642222", s);
 
                 Toast.makeText(getContext(), resultUri.toString(), Toast.LENGTH_SHORT).show();
             } else if (resultCode == CropImage.CROP_IMAGE_ACTIVITY_RESULT_ERROR_CODE) {
@@ -965,5 +1026,88 @@ public class FragmentAddPost extends Fragment {
         byte[] imageBytes = baos.toByteArray();
         String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT);
         return encodedImage;
+    }
+
+    public String curretDateAndTime(){
+        DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM, yyyy HH:mm:ss a");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+    public String curretDateAndTime2(){
+        DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+        Date date = new Date();
+        return dateFormat.format(date);
+    }
+
+
+    public void AddPostCompanion(final String from_where, final String to_where, final String from_date, final String to_date, final String payment_category, final String gender, final String traveling_by, final String contacts, final String images, final String details, final String ad_type, final String ad_type_id, final String dates, final String status, final String user_id ){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.companionAddPost,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.d("SAIM RESPONSE", response);
+                            JSONObject jsonObject = new JSONObject(response);
+                            String code = jsonObject.getString("code");
+                            if (code.equals("Success")){
+                                progressDialog.dismiss();
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }else {
+                                progressDialog.dismiss();
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }catch (Exception e){
+                            Log.d("HDHD ", e.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("HDHD ", error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("from_where", from_where);
+                params.put("to_where", to_where);
+                params.put("from_date", from_date);
+                params.put("to_date", to_date);
+                params.put("payment_category", payment_category);
+                params.put("gender", gender);
+                params.put("traveling_by", traveling_by);
+                params.put("contacts", contacts);
+                params.put("images", images);
+                params.put("details", details);
+                params.put("ad_type", ad_type);
+                params.put("ad_type_id", ad_type_id);
+                params.put("date", dates);
+                params.put("status", status);
+                params.put("user_id", user_id);
+                return params;
+            }
+        };
+        stringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        MySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
     }
 }

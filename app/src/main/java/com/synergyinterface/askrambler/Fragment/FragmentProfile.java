@@ -75,10 +75,10 @@ public class FragmentProfile extends Fragment {
 
     ProgressDialog progressDialog;
     RelativeLayout layoutProProfile ,layoutProChangePasword;
-    TextView txtProProfile, txtProChangePassword, inputProFullName, inputProEmail, inputProMobile;
+    TextView txtProProfile, txtProChangePassword, inputProFullName, inputProEmail, inputProPhone;
     ImageView imgProfileImage, imgProUploadDocument;
     EditText inputProGender, inputProCountry, inputProState, inputProCity,
-            inputProZip, inputProAddress, inputProBirthday, inputProPhone, inputProLikeTo, inputProWebsite,
+            inputProZip, inputProAddress, inputProBirthday, inputProMobile, inputProLikeTo, inputProWebsite,
             inputProFacebook, inputProInstagram, inputProYoutube, inputProDetail;
     Button btnProUpdate, btnProUpdateDocument;
 
@@ -128,8 +128,8 @@ public class FragmentProfile extends Fragment {
         inputProZip = (EditText) view.findViewById(R.id.inputProZip);
         inputProAddress = (EditText) view.findViewById(R.id.inputProAddress);
         inputProBirthday = (EditText) view.findViewById(R.id.inputProBirthday);
-        inputProMobile = (TextView) view.findViewById(R.id.inputProMobile);
-        inputProPhone = (EditText) view.findViewById(R.id.inputProPhone);
+        inputProMobile = (EditText) view.findViewById(R.id.inputProMobile);
+        inputProPhone = (TextView) view.findViewById(R.id.inputProPhone);
         inputProWebsite = (EditText) view.findViewById(R.id.inputProWebsite);
         inputProLikeTo = (EditText) view.findViewById(R.id.inputProLikeTo);
         inputProFacebook = (EditText) view.findViewById(R.id.inputProFacebook);
@@ -338,6 +338,7 @@ public class FragmentProfile extends Fragment {
         inputProAddress.setText(Splash.address.equals("null") ? "" : Splash.address);
         inputProBirthday.setText(Splash.birth_date.equals("null") ? "" : Splash.birth_date);
         inputProPhone.setText(Splash.phone.equals("null") ? "" : Splash.phone);
+        inputProMobile.setText(Splash.mobile.equals("null") ? "" : Splash.mobile);
         inputProWebsite.setText(Splash.website.equals("null") ? "" : Splash.website);
         inputProLikeTo.setText(Splash.like_to.equals("null") ? "" : Splash.like_to);
         inputProFacebook.setText(Splash.facebook.equals("null") ? "" : Splash.facebook);
@@ -675,6 +676,8 @@ public class FragmentProfile extends Fragment {
 
 
     public void UpdateProfileInfo(){
+
+        Log.d("SAIM PHONE MOBILE", inputProPhone.getText() + " : " + inputProMobile.getText());
         StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.profileUpdate,
                 new Response.Listener<String>() {
                     @Override
@@ -712,6 +715,7 @@ public class FragmentProfile extends Fragment {
                 params.put("state", inputProState.getText().toString());
                 params.put("country", inputProCountry.getText().toString());
                 params.put("mobile", inputProMobile.getText().toString());
+                params.put("phone", inputProPhone.getText().toString());
                 params.put("birth_date", inputProBirthday.getText().toString());
                 params.put("website", inputProWebsite.getText().toString());
                 params.put("facebook", inputProFacebook.getText().toString());
