@@ -97,6 +97,8 @@ public class FragmentAddPost extends Fragment {
     Button btnAddComPostAdd;
 
     public Bitmap bitmapCompanion;
+    public static String imageEdittext = "";
+    public static String trip_category_id = "";
 
     //Baggage
     RadioButton radioAddBagSendBag, radioAddBagCarryBag;
@@ -190,7 +192,6 @@ public class FragmentAddPost extends Fragment {
         inputAddBagDescription = (EditText) view.findViewById(R.id.inputAddBagDescription);
 
         btnAddBagPostAdd = (Button) view.findViewById(R.id.btnAddBagPostAdd);
-
         BaggageEditTextClick();
 
 
@@ -395,6 +396,8 @@ public class FragmentAddPost extends Fragment {
 
     public void populateEditTextInfo(){
         inputAddComContact.setText(Splash.phone);
+        inputAddBagContactNo.setText(Splash.phone);
+        inputAddTripContactNo.setText(Splash.phone);
     }
 
     public void CompanionEditTextClick(){
@@ -465,6 +468,7 @@ public class FragmentAddPost extends Fragment {
             public void onClick(View v) {
                 Intent intent = CropImage.activity().setAspectRatio(16,9).getIntent(getContext());
                 startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+                imageEdittext = "Companion";
             }
         });
 
@@ -505,6 +509,7 @@ public class FragmentAddPost extends Fragment {
                 }
             }
         });
+
     }
 
     public void BaggageEditTextClick(){
@@ -580,6 +585,59 @@ public class FragmentAddPost extends Fragment {
             @Override
             public void onClick(View v) {
                 showPaymentCategoryList("Select payment category", inputAddBagPaymentCategory);
+            }
+        });
+
+        inputAddBagImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = CropImage.activity().setAspectRatio(16,9).getIntent(getContext());
+                startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+                imageEdittext = "Baggage";
+            }
+        });
+
+        btnAddBagPostAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String isType = "";
+
+                String from_where = inputAddBagFrom.getText().toString();
+                String to_where = inputAddBagTo.getText().toString();
+                String from_date = inputAddBagExpectedDate.getText().toString();
+                String to_date = curretDateAndTime();
+                String payment_category = inputAddBagPaymentCategory.getText().toString();
+                if (radioAddBagSendBag.isChecked()){
+                    isType = radioAddBagSendBag.getText().toString();
+                }else if (radioAddBagCarryBag.isChecked()){
+                    isType = radioAddBagCarryBag.getText().toString();
+                }
+                String baggage_type = inputAddBagBaggageType.getText().toString();
+                String baggage_weight = inputAddBagBaggageWeight.getText().toString();
+                String contacts = inputAddBagContactNo.getText().toString();
+                String details = inputAddBagDescription.getText().toString();
+                String ad_type = "Baggage";
+                String ad_type_id = "2";
+                String dates = curretDateAndTime2();
+                String status = "1";
+                String user_id = Splash.user_id;
+
+                if (from_where.isEmpty() || to_where.isEmpty() || from_date.isEmpty() || payment_category.isEmpty() || baggage_type.isEmpty() || baggage_weight.isEmpty() || contacts.isEmpty() || inputAddBagImage.getText().toString().isEmpty() || details.isEmpty()){
+                    Toast.makeText(getContext(), "Input filed can not be empty!", Toast.LENGTH_SHORT).show();
+                }else {
+                    progressDialog.setTitle("Profile Document");
+                    progressDialog.setMessage("Please wait updating profile.");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.show();
+
+                    String images = getStringImage(bitmapCompanion);
+
+
+                    Log.d("SAIM POST CHECK", from_where + "\n" + to_where + "\n" + from_date + "\n" + isType + "\n" + to_date + "\n" + payment_category + "\n" + baggage_type + "\n" + baggage_weight + "\n" +
+                            contacts + "\n" + images + "\n" + details + "\n" + ad_type + "\n" + ad_type_id + "\n" + dates + "\n" + status + "\n" + user_id);
+
+                    AddPostBaggage(from_where, to_where, from_date, to_date, payment_category, isType, baggage_type, baggage_weight, contacts, images, details, ad_type, ad_type_id, dates, status, user_id);
+                }
             }
         });
     }
@@ -664,6 +722,61 @@ public class FragmentAddPost extends Fragment {
             @Override
             public void onClick(View v) {
                 showPaymentCategoryList("Select trip payment category", inputAddTripPayment);
+            }
+        });
+
+        inputAddTripImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = CropImage.activity().setAspectRatio(16,9).getIntent(getContext());
+                startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+                imageEdittext = "Trip";
+            }
+        });
+
+        btnAddTripPostAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String isType = "";
+
+                String from_where = inputAddTripFrom.getText().toString();
+                String to_where = inputAddTripTo.getText().toString();
+                String from_date = inputAddTripExpectedDate.getText().toString();
+                String to_date = curretDateAndTime();
+                String payment_category = inputAddTripPayment.getText().toString();
+                if (radioAddTripArrageTrip.isChecked()){
+                    isType = radioAddTripArrageTrip.getText().toString();
+                }else if (radioAddTripGoOn.isChecked()){
+                    isType = radioAddTripGoOn.getText().toString();
+                }
+                String trip_category     = inputAddTripCategory.getText().toString();
+                String trip_type = inputAddTripType.getText().toString();
+                String trip_duration = inputAddTripDuration.getText().toString();
+                String contacts = inputAddTripContactNo.getText().toString();
+                String details = inputAddTripDescription.getText().toString();
+                String ad_type = "Baggage";
+                String ad_type_id = "2";
+                String dates = curretDateAndTime2();
+                String status = "1";
+                String user_id = Splash.user_id;
+
+                if (from_where.isEmpty() || to_where.isEmpty() || from_date.isEmpty() || payment_category.isEmpty() || trip_category.isEmpty() || trip_type.isEmpty() || trip_duration.isEmpty() || contacts.isEmpty() || inputAddTripImage.getText().toString().isEmpty() || details.isEmpty()){
+                    Toast.makeText(getContext(), "Input filed can not be empty!", Toast.LENGTH_SHORT).show();
+                }else {
+                    progressDialog.setTitle("Profile Document");
+                    progressDialog.setMessage("Please wait updating profile.");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.show();
+
+                    String images = getStringImage(bitmapCompanion);
+
+
+                    Log.d("SAIM POST CHECK", from_where + "\n" + to_where + "\n" + from_date + "\n" + isType + "\n" + to_date + "\n" + payment_category + "\n" + trip_category + "\n" + trip_type + "\n" +
+                            contacts + "\n" + images + "\n" + details + "\n" + ad_type + "\n" + ad_type_id + "\n" + dates + "\n" + status + "\n" + user_id);
+
+                    AddPostTrip(from_where, to_where, from_date, to_date, payment_category, isType, trip_category, trip_category_id,
+                            trip_type, trip_duration, contacts, images, details, ad_type, ad_type_id, dates, status, user_id);
+                }
             }
         });
     }
@@ -907,6 +1020,8 @@ public class FragmentAddPost extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 editText.setText((String)parent.getItemAtPosition(position));
                 infoDialog.dismiss();
+                Log.d("SAIM CATEGORY POSITION", (position + 1)+"");
+                trip_category_id = (position + 1)+"";
             }
         });
         infoDialog.show();
@@ -979,7 +1094,6 @@ public class FragmentAddPost extends Fragment {
         });
     }
 
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE) {
@@ -995,7 +1109,15 @@ public class FragmentAddPost extends Fragment {
                 }
 
                 String s = resultUri.toString().substring(resultUri.toString().lastIndexOf("/")+1,resultUri.toString().length());
-                inputAddComImage.setText(s);
+
+                if (imageEdittext.equals("Companion")){
+                    inputAddComImage.setText(s);
+                } else if (imageEdittext.equals("Baggage")){
+                    inputAddBagImage.setText(s);
+                } else if (imageEdittext.equals("Trip")){
+                    inputAddTripImage.setText(s);
+                }
+
                 Log.d("Saim Image BASE642222", s);
 
                 Toast.makeText(getContext(), resultUri.toString(), Toast.LENGTH_SHORT).show();
@@ -1048,13 +1170,14 @@ public class FragmentAddPost extends Fragment {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            Log.d("SAIM RESPONSE", response);
+                            Log.d("SAIM RESPONSE IMAGES", images);
                             JSONObject jsonObject = new JSONObject(response);
                             String code = jsonObject.getString("code");
                             if (code.equals("Success")){
                                 progressDialog.dismiss();
                                 String message = jsonObject.getString("message");
                                 Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                getContext().sendBroadcast(new Intent("com.synergyinterface.askrambler.Activity.receiverPost"));
                             }else {
                                 progressDialog.dismiss();
                                 String message = jsonObject.getString("message");
@@ -1080,6 +1203,155 @@ public class FragmentAddPost extends Fragment {
                 params.put("payment_category", payment_category);
                 params.put("gender", gender);
                 params.put("traveling_by", traveling_by);
+                params.put("contacts", contacts);
+                params.put("images", images);
+                params.put("details", details);
+                params.put("ad_type", ad_type);
+                params.put("ad_type_id", ad_type_id);
+                params.put("date", dates);
+                params.put("status", status);
+                params.put("user_id", user_id);
+                return params;
+            }
+        };
+        stringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        MySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
+    }
+
+
+    public void AddPostBaggage(final String from_where, final String to_where, final String from_date, final String to_date, final String payment_category, final String isType, final String baggage_type, final String baggage_weight, final String contacts, final String images, final String details, final String ad_type, final String ad_type_id, final String dates, final String status, final String user_id ){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.baggageAddPost,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.d("SAIM RESPONSE IMAGES", images);
+                            JSONObject jsonObject = new JSONObject(response);
+                            String code = jsonObject.getString("code");
+                            if (code.equals("Success")){
+                                progressDialog.dismiss();
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                getContext().sendBroadcast(new Intent("com.synergyinterface.askrambler.Activity.receiverPost"));
+                            }else {
+                                progressDialog.dismiss();
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }catch (Exception e){
+                            Log.d("HDHD ", e.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("HDHD ", error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("from_where", from_where);
+                params.put("to_where", to_where);
+                params.put("from_date", from_date);
+                params.put("to_date", to_date);
+                params.put("payment_category", payment_category);
+                params.put("isType", isType);
+                params.put("baggage_type", baggage_type);
+                params.put("baggage_weight", baggage_weight);
+                params.put("contacts", contacts);
+                params.put("images", images);
+                params.put("details", details);
+                params.put("ad_type", ad_type);
+                params.put("ad_type_id", ad_type_id);
+                params.put("date", dates);
+                params.put("status", status);
+                params.put("user_id", user_id);
+                return params;
+            }
+        };
+        stringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        MySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
+    }
+
+
+    public void AddPostTrip(final String from_where, final String to_where, final String from_date, final String to_date, final String payment_category, final String isType, final String trip_category, final String trip_category_id,
+                            final String transport_type, final String trip_duration, final String contacts, final String images, final String details, final String ad_type, final String ad_type_id, final String dates, final String status, final String user_id ){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.tripAddPost,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.d("SAIM RESPONSE IMAGES", images);
+                            JSONObject jsonObject = new JSONObject(response);
+                            String code = jsonObject.getString("code");
+                            if (code.equals("Success")){
+                                progressDialog.dismiss();
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                getContext().sendBroadcast(new Intent("com.synergyinterface.askrambler.Activity.receiverPost"));
+                            }else {
+                                progressDialog.dismiss();
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }catch (Exception e){
+                            Log.d("HDHD ", e.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("HDHD ", error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("from_where", from_where);
+                params.put("to_where", to_where);
+                params.put("from_date", from_date);
+                params.put("to_date", to_date);
+                params.put("payment_category", payment_category);
+                params.put("isType", isType);
+                params.put("trip_category", trip_category);
+                params.put("trip_category_id", trip_category_id);
+                params.put("transport_type", transport_type);
+                params.put("trip_duration", trip_duration);
                 params.put("contacts", contacts);
                 params.put("images", images);
                 params.put("details", details);

@@ -1,6 +1,7 @@
 package com.synergyinterface.askrambler.Activity;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +25,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.StringRequest;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.AwesomeWarningDialog;
 import com.awesomedialog.blennersilva.awesomedialoglibrary.interfaces.Closure;
 import com.bumptech.glide.Glide;
@@ -35,11 +40,16 @@ import com.synergyinterface.askrambler.Fragment.FragmentAdvancedSearch;
 import com.synergyinterface.askrambler.Fragment.FragmentAllPost;
 import com.synergyinterface.askrambler.Fragment.FragmentLogin;
 import com.synergyinterface.askrambler.Fragment.FragmentProfile;
+import com.synergyinterface.askrambler.Model.ModelPostShort;
 import com.synergyinterface.askrambler.R;
 import com.synergyinterface.askrambler.Service.MyService;
+import com.synergyinterface.askrambler.Util.ApiURL;
 import com.synergyinterface.askrambler.Util.CircleTransform;
+import com.synergyinterface.askrambler.Util.MySingleton;
 import com.synergyinterface.askrambler.Util.SharedPrefDatabase;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.w3c.dom.Text;
 
 public class HomeActivity extends AppCompatActivity {
@@ -50,6 +60,8 @@ public class HomeActivity extends AppCompatActivity {
     NavigationView navigationView;
     android.support.v7.app.ActionBarDrawerToggle actionBarDrawerToggle;
     public static android.support.v4.app.FragmentTransaction fragmentTransaction;
+
+    ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,6 +79,8 @@ public class HomeActivity extends AppCompatActivity {
     public void Initialization() {
         toolbar = (Toolbar) findViewById(R.id.toolbarHome);
         setSupportActionBar(toolbar);
+
+        progressDialog = new ProgressDialog(this);
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawerLayout);
         actionBarDrawerToggle = new android.support.v7.app.ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.drawer_open, R.string.drawer_close) {
@@ -249,17 +263,83 @@ public class HomeActivity extends AppCompatActivity {
         }
     };
 
+    public BroadcastReceiver receiverPost = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            progressDialog.setMessage("Please wait..");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.show();
+            SaveGetAllPost();
+        }
+    };
+
+    public void SaveGetAllPost() {
+        Splash.modelPostsList.clear();
+        StringRequest stringRequest = new StringRequest(Request.Method.GET, ApiURL.getAllPostShort,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                        progressDialog.dismiss();
+                        try {
+                            JSONObject jsonObject = new JSONObject(response);
+                            String code = jsonObject.getString("code");
+                            if (code.equals("success")) {
+                                JSONArray jsonArray = jsonObject.getJSONArray("list");
+                                for (int i = 0; i < jsonArray.length(); i++) {
+
+                                    JSONObject jsonObjectList = jsonArray.getJSONObject(i);
+                                    String ads_id = jsonObjectList.getString("add_id");
+                                    String to_where = jsonObjectList.getString("to_where");
+                                    Log.d("Saim Khan", to_where);
+                                    String to_date = jsonObjectList.getString("to_date");
+                                    String ad_type = jsonObjectList.getString("ad_type");
+                                    String details = jsonObjectList.getString("details");
+                                    String full_name = jsonObjectList.getString("full_name");
+                                    String user_photo = jsonObjectList.getString("user_photo");
+
+                                    ModelPostShort modelPostShort = new ModelPostShort(ads_id, to_where, to_date,ad_type, details, full_name, user_photo);
+                                    Splash.modelPostsList.add(modelPostShort);
+                                }
+
+                            }else {
+                                Log.d("SAIM SPLASH 3", response);
+                            }
+
+                            fragmentTransaction = getSupportFragmentManager().beginTransaction();
+                            fragmentTransaction.add(R.id.main_container, new FragmentAllPost());
+                            fragmentTransaction.commit();
+
+                        } catch (Exception e) {
+
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        MySingleton.getInstance(this).addToRequestQueue(stringRequest);
+
+    }
+
     @Override
     protected void onStart() {
         super.onStart();
         IntentFilter intentFilter = new IntentFilter("com.synergyinterface.askrambler.Activity.ChangeLayoutOnLogin");
         registerReceiver(receiverChangeLayoutOnLogin, intentFilter);
+
+        IntentFilter intentFilter2 = new IntentFilter("com.synergyinterface.askrambler.Activity.receiverPost");
+        registerReceiver(receiverPost, intentFilter2);
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         unregisterReceiver(receiverChangeLayoutOnLogin);
+        unregisterReceiver(receiverPost);
     }
 
 

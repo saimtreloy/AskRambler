@@ -94,7 +94,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/linearLayout"
-                android:visibility="visible">
+                android:visibility="gone">
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -200,7 +200,7 @@
                         <EditText
                             android:id="@+id/inputAddComImage"
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="35dp"
                             android:layout_marginRight="2dp"
                             android:layout_marginTop="6dp"
                             android:layout_weight="1"
@@ -272,7 +272,8 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:checked="true"
-                                android:text="Send Baggage"
+                                android:textSize="10sp"
+                                android:text="Want to send baggage"
                                 android:textColor="#FFF" />
 
                             <RadioButton
@@ -280,7 +281,8 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
-                                android:text="Carry Baggage"
+                                android:textSize="10sp"
+                                android:text="Want to carry baggage"
                                 android:textColor="#FFF" />
                         </LinearLayout>
 
@@ -302,6 +304,19 @@
                             android:hint="Eg. New York, United State"
                             android:textSize="12dp" />
 
+                        <EditText
+                            android:id="@+id/inputAddBagBaggageType"
+                            android:layout_width="match_parent"
+                            android:layout_height="35dp"
+                            android:layout_marginTop="6dp"
+                            android:layout_marginLeft="2dp"
+                            android:layout_marginRight="2dp"
+                            android:layout_weight="1"
+                            android:background="@drawable/ic_round"
+                            android:focusable="false"
+                            android:hint="Baggage Type"
+                            android:textSize="12dp" />
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
@@ -320,25 +335,13 @@
                                 android:textSize="12dp" />
 
                             <EditText
-                                android:id="@+id/inputAddBagBaggageType"
-                                android:layout_width="match_parent"
-                                android:layout_height="35dp"
-                                android:layout_marginLeft="2dp"
-                                android:layout_marginRight="2dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/ic_round"
-                                android:focusable="false"
-                                android:hint="Baggage Type"
-                                android:textSize="12dp" />
-
-                            <EditText
                                 android:id="@+id/inputAddBagBaggageWeight"
                                 android:layout_width="match_parent"
                                 android:layout_height="35dp"
                                 android:layout_marginLeft="2dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/ic_round"
-                                android:hint="Weight"
+                                android:hint="Baggage Weight"
                                 android:textSize="12dp" />
 
                         </LinearLayout>
@@ -366,6 +369,7 @@
                                 android:layout_height="35dp"
                                 android:layout_marginLeft="2dp"
                                 android:layout_weight="1"
+                                android:enabled="false"
                                 android:background="@drawable/ic_round"
                                 android:hint="Contact No"
                                 android:inputType="number"
@@ -423,7 +427,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/linearLayout"
-                android:visibility="gone">
+                android:visibility="visible">
 
                 <ScrollView
                     android:layout_width="match_parent"
@@ -446,6 +450,7 @@
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
                                 android:checked="true"
+                                android:textSize="10sp"
                                 android:text="Arraging trip"
                                 android:textColor="#FFF" />
 
@@ -454,6 +459,7 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:layout_weight="1"
+                                android:textSize="10sp"
                                 android:text="Want to go on a trip"
                                 android:textColor="#FFF" />
                         </LinearLayout>
@@ -502,18 +508,40 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/ic_round"
                                 android:focusable="false"
-                                android:hint="Category"
+                                android:hint="Trip Category"
                                 android:textSize="12dp" />
+
+
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="6dp"
+                            android:orientation="horizontal">
 
                             <EditText
                                 android:id="@+id/inputAddTripType"
                                 android:layout_width="match_parent"
                                 android:layout_height="35dp"
                                 android:layout_marginLeft="2dp"
+                                android:layout_marginRight="2dp"
                                 android:layout_weight="1"
                                 android:background="@drawable/ic_round"
                                 android:focusable="false"
-                                android:hint="Type"
+                                android:hint="Transport Type"
+                                android:textSize="12dp" />
+
+                            <EditText
+                                android:id="@+id/inputAddTripDuration"
+                                android:layout_width="match_parent"
+                                android:layout_height="35dp"
+                                android:layout_marginLeft="2dp"
+                                android:layout_marginRight="2dp"
+                                android:layout_weight="1"
+                                android:background="@drawable/ic_round"
+                                android:hint="Trip Duration"
                                 android:textSize="12dp" />
 
                         </LinearLayout>
@@ -525,16 +553,6 @@
                             android:orientation="horizontal">
 
                             <EditText
-                                android:id="@+id/inputAddTripDuration"
-                                android:layout_width="match_parent"
-                                android:layout_height="35dp"
-                                android:layout_marginRight="2dp"
-                                android:layout_weight="1"
-                                android:background="@drawable/ic_round"
-                                android:hint="Duration"
-                                android:textSize="12dp" />
-
-                            <EditText
                                 android:id="@+id/inputAddTripPayment"
                                 android:layout_width="match_parent"
                                 android:layout_height="35dp"
@@ -543,7 +561,7 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/ic_round"
                                 android:focusable="false"
-                                android:hint="Payment"
+                                android:hint="Payment category"
                                 android:textSize="12dp" />
 
                             <EditText
@@ -555,6 +573,7 @@
                                 android:layout_weight="1"
                                 android:background="@drawable/ic_round"
                                 android:hint="Contact"
+                                android:enabled="false"
                                 android:textSize="12dp" />
 
                         </LinearLayout>
