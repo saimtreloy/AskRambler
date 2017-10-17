@@ -760,7 +760,7 @@ public class FragmentAddPost extends Fragment {
                 String status = "1";
                 String user_id = Splash.user_id;
 
-                if (from_where.isEmpty() || to_where.isEmpty() || from_date.isEmpty() || payment_category.isEmpty() || trip_category.isEmpty() || trip_type.isEmpty() || trip_duration.isEmpty() || contacts.isEmpty() || inputAddTripImage.getText().toString().isEmpty() || details.isEmpty()){
+                if (from_where.isEmpty() || to_where.isEmpty() || from_date.isEmpty() || payment_category.isEmpty() || trip_category.isEmpty() || trip_type.isEmpty() || trip_duration.isEmpty() || contacts.isEmpty() || inputAddTripImage .getText().toString().isEmpty() || details.isEmpty()){
                     Toast.makeText(getContext(), "Input filed can not be empty!", Toast.LENGTH_SHORT).show();
                 }else {
                     progressDialog.setTitle("Profile Document");
