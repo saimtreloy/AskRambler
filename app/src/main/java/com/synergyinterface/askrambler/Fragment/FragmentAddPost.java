@@ -83,6 +83,9 @@ public class FragmentAddPost extends Fragment {
     private static final String API_KEY = "AIzaSyCBrJXQuoQXATq461rT-WoaO5Sd0c9aqTQ";
     private static final int PICK_IMAGE_REQUEST=1001;
 
+
+    android.support.v4.app.FragmentTransaction fragmentTransaction;
+
     View view;
     ProgressDialog progressDialog;
     Button btnAddPostCom, btnAddPostBag, btnAddPostTrip, btnAddPostHost;
@@ -141,12 +144,15 @@ public class FragmentAddPost extends Fragment {
         return view;
     }
 
+
     public void init(){
         HomeActivity.toolbar.setTitle("Add Post");
 
         haveStoragePermission();
 
         progressDialog = new ProgressDialog(getContext());
+
+        fragmentTransaction = FragmentAddPost.this.getFragmentManager().beginTransaction();
 
         btnAddPostCom = (Button) view.findViewById(R.id.btnAddPostCom);
         btnAddPostBag = (Button) view.findViewById(R.id.btnAddPostBag);
@@ -243,6 +249,7 @@ public class FragmentAddPost extends Fragment {
 
         populateEditTextInfo();
     }
+
 
     public void ButtonClickedTop(){
 
@@ -394,11 +401,14 @@ public class FragmentAddPost extends Fragment {
 
     }
 
+
     public void populateEditTextInfo(){
         inputAddComContact.setText(Splash.phone);
         inputAddBagContactNo.setText(Splash.phone);
         inputAddTripContactNo.setText(Splash.phone);
+        inputAddHostContactNo.setText(Splash.phone);
     }
+
 
     public void CompanionEditTextClick(){
         inputAddComFrom.addTextChangedListener(new TextWatcher() {
@@ -511,6 +521,7 @@ public class FragmentAddPost extends Fragment {
         });
 
     }
+
 
     public void BaggageEditTextClick(){
         inputAddBagFrom.addTextChangedListener(new TextWatcher() {
@@ -641,6 +652,7 @@ public class FragmentAddPost extends Fragment {
             }
         });
     }
+
 
     public void TripEditTextClick(){
         inputAddTripFrom.addTextChangedListener(new TextWatcher() {
@@ -781,6 +793,7 @@ public class FragmentAddPost extends Fragment {
         });
     }
 
+
     public void HostEditTextClick(){
         inputAddHostLocation.addTextChangedListener(new TextWatcher() {
             @Override
@@ -854,6 +867,69 @@ public class FragmentAddPost extends Fragment {
 
             }
         });
+
+        inputAddHostImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = CropImage.activity().setAspectRatio(16,9).getIntent(getContext());
+                startActivityForResult(intent, CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE);
+                imageEdittext = "Host";
+            }
+        });
+
+        btnAddHostPostAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String isType = "";
+
+                String to_date = curretDateAndTime();
+                String payment_category = inputAddHostPayment.getText().toString();
+                if (radioAddHostWantTo.isChecked()){
+                    isType = radioAddHostWantTo.getText().toString();
+                }else if (radioAddHostNeedHost.isChecked()){
+                    isType = radioAddHostNeedHost.getText().toString();
+                }
+                String location = inputAddHostLocation.getText().toString();
+                String travelers = seekBarNoTravelerHost.getProgress() + "";
+                String offer = "";
+                if (checkBoxFood.isChecked()){
+                    offer = offer + ", " + checkBoxFood.getText().toString();
+                }
+                if (checkBoxInternet.isChecked()){
+                    offer = offer + ", " + checkBoxInternet.getText().toString();
+                }
+                if (checkBoxTransport.isChecked()){
+                    offer = offer + ", " + checkBoxTransport.getText().toString();
+                }
+                String smoking_habit = inputAddHostHabitSmocking.getText().toString();
+                String alcohol_habit = inputAddHostHabitAlcohol.getText().toString();
+                String contacts = inputAddHostContactNo.getText().toString();
+                String details = inputAddHostDescription.getText().toString();
+                String ad_type = "Host";
+                String ad_type_id = "4";
+                String dates = curretDateAndTime2();
+                String status = "1";
+                String user_id = Splash.user_id;
+
+                if (payment_category.isEmpty() || isType.isEmpty() || location.isEmpty() || travelers.isEmpty() || offer.isEmpty() || smoking_habit.isEmpty() || alcohol_habit.isEmpty()
+                        || inputAddHostImage.getText().toString().isEmpty() || details.isEmpty()){
+                    Toast.makeText(getContext(), "Input filed can not be empty!", Toast.LENGTH_SHORT).show();
+                }else {
+                    progressDialog.setTitle("Host");
+                    progressDialog.setMessage("Please wait posting you add.");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.show();
+
+                    String images = getStringImage(bitmapCompanion);
+
+
+                    Log.d("SAIM POST CHECK", to_date + "\n" + isType + "\n" + payment_category + "\n" + location + "\n" + travelers + "\n" + offer + "\n" + smoking_habit + "\n" + alcohol_habit + "\n" +
+                            contacts + "\n" + images + "\n" + details + "\n" + ad_type + "\n" + ad_type_id + "\n" + dates + "\n" + status + "\n" + user_id);
+
+                    AddPostHost(to_date, payment_category, isType, location, travelers, offer, smoking_habit, alcohol_habit, contacts, images, details, ad_type, ad_type_id, dates, status, user_id);
+                }
+            }
+        });
     }
 
 
@@ -905,6 +981,7 @@ public class FragmentAddPost extends Fragment {
         return resultList;
     }
 
+
     public void showPaymentCategoryList(String title, final EditText editText) {
 
         LayoutInflater factory = LayoutInflater.from(getContext());
@@ -929,6 +1006,7 @@ public class FragmentAddPost extends Fragment {
         infoDialog.show();
     }
 
+    
     public void showGenderList(String title, final EditText editText) {
 
         LayoutInflater factory = LayoutInflater.from(getContext());
@@ -952,6 +1030,7 @@ public class FragmentAddPost extends Fragment {
         });
         infoDialog.show();
     }
+
 
     public void showTravelByList(String title, final EditText editText) {
 
@@ -977,6 +1056,7 @@ public class FragmentAddPost extends Fragment {
         infoDialog.show();
     }
 
+
     public void showBaggageTypeList(String title, final EditText editText) {
 
         LayoutInflater factory = LayoutInflater.from(getContext());
@@ -1000,6 +1080,7 @@ public class FragmentAddPost extends Fragment {
         });
         infoDialog.show();
     }
+
 
     public void showTripCategoryList(String title, final EditText editText) {
 
@@ -1027,6 +1108,7 @@ public class FragmentAddPost extends Fragment {
         infoDialog.show();
     }
 
+
     public void showSmockingHabitList(String title, final EditText editText) {
 
         LayoutInflater factory = LayoutInflater.from(getContext());
@@ -1050,6 +1132,7 @@ public class FragmentAddPost extends Fragment {
         });
         infoDialog.show();
     }
+
 
     public void showAlcoholHabitList(String title, final EditText editText) {
 
@@ -1075,6 +1158,7 @@ public class FragmentAddPost extends Fragment {
         infoDialog.show();
     }
 
+
     public void dateSelectFromDatePicker(final EditText editText){
         Calendar newCalendar = Calendar.getInstance();
         final SimpleDateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
@@ -1093,6 +1177,7 @@ public class FragmentAddPost extends Fragment {
             }
         });
     }
+
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -1116,6 +1201,8 @@ public class FragmentAddPost extends Fragment {
                     inputAddBagImage.setText(s);
                 } else if (imageEdittext.equals("Trip")){
                     inputAddTripImage.setText(s);
+                } else if (imageEdittext.equals("Host")){
+                    inputAddHostImage.setText(s);
                 }
 
                 Log.d("Saim Image BASE642222", s);
@@ -1126,6 +1213,7 @@ public class FragmentAddPost extends Fragment {
             }
         }
     }
+
 
     public boolean haveStoragePermission() {
         if (Build.VERSION.SDK_INT >= 23) {
@@ -1142,6 +1230,7 @@ public class FragmentAddPost extends Fragment {
         }
     }
 
+
     public String getStringImage(Bitmap bmp){
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         bmp.compress(Bitmap.CompressFormat.JPEG, 100, baos);
@@ -1150,11 +1239,13 @@ public class FragmentAddPost extends Fragment {
         return encodedImage;
     }
 
+
     public String curretDateAndTime(){
         DateFormat dateFormat = new SimpleDateFormat("EEE, d MMM, yyyy HH:mm:ss a");
         Date date = new Date();
         return dateFormat.format(date);
     }
+
 
     public String curretDateAndTime2(){
         DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
@@ -1352,6 +1443,81 @@ public class FragmentAddPost extends Fragment {
                 params.put("trip_category_id", trip_category_id);
                 params.put("transport_type", transport_type);
                 params.put("trip_duration", trip_duration);
+                params.put("contacts", contacts);
+                params.put("images", images);
+                params.put("details", details);
+                params.put("ad_type", ad_type);
+                params.put("ad_type_id", ad_type_id);
+                params.put("date", dates);
+                params.put("status", status);
+                params.put("user_id", user_id);
+                return params;
+            }
+        };
+        stringRequest.setRetryPolicy(new RetryPolicy() {
+            @Override
+            public int getCurrentTimeout() {
+                return 50000;
+            }
+
+            @Override
+            public int getCurrentRetryCount() {
+                return 50000;
+            }
+
+            @Override
+            public void retry(VolleyError error) throws VolleyError {
+
+            }
+        });
+        stringRequest.setShouldCache(false);
+        MySingleton.getInstance(getContext()).addToRequestQueue(stringRequest);
+    }
+
+
+    public void AddPostHost(final String to_date, final String payment_category, final String isType, final String location, final String travelers,
+                            final String offers_1, final String smoking_habit, final String alcohol_habit, final String contacts, final String images, final String details, final String ad_type,
+                            final String ad_type_id, final String dates, final String status, final String user_id ){
+
+        StringRequest stringRequest = new StringRequest(Request.Method.POST, ApiURL.hostAddPost,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        try {
+                            Log.d("SAIM RESPONSE IMAGES", images);
+                            JSONObject jsonObject = new JSONObject(response);
+                            String code = jsonObject.getString("code");
+                            if (code.equals("Success")){
+                                progressDialog.dismiss();
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                                getContext().sendBroadcast(new Intent("com.synergyinterface.askrambler.Activity.receiverPost"));
+                            }else {
+                                progressDialog.dismiss();
+                                String message = jsonObject.getString("message");
+                                Toast.makeText(getContext(), message, Toast.LENGTH_SHORT).show();
+                            }
+                        }catch (Exception e){
+                            Log.d("HDHD ", e.toString());
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d("HDHD ", error.toString());
+            }
+        }){
+            @Override
+            protected Map<String, String> getParams() throws AuthFailureError {
+                Map<String,String> params = new HashMap<String, String>();
+                params.put("to_date", to_date);
+                params.put("payment_category", payment_category);
+                params.put("isType", isType);
+                params.put("location", location);
+                params.put("travelers", travelers);
+                params.put("offers_1", offers_1);
+                params.put("smoking_habit", smoking_habit);
+                params.put("alcohol_habit", alcohol_habit);
                 params.put("contacts", contacts);
                 params.put("images", images);
                 params.put("details", details);

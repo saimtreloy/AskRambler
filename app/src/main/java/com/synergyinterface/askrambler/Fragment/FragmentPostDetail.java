@@ -284,6 +284,7 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
         HashMap<String, String> url_maps = new HashMap<String, String>();
         for (int i = 0; i < bannerImage.size(); i++) {
             url_maps.put("Image " + i + 1, bannerImage.get(i));
+            Log.d("IMAGE LINK", bannerImage.get(i));
         }
         for (String name : url_maps.keySet()) {
             TextSliderView textSliderView = new TextSliderView(getContext());
@@ -296,7 +297,7 @@ public class FragmentPostDetail extends Fragment implements BaseSliderView.OnSli
         mDemoSlider.setPresetTransformer(SliderLayout.Transformer.Fade);
         mDemoSlider.setPresetIndicator(SliderLayout.PresetIndicators.Center_Bottom);
         mDemoSlider.setCustomAnimation(new DescriptionAnimation());
-        mDemoSlider.setDuration(4000);
+        mDemoSlider.setDuration(8000);
         mDemoSlider.addOnPageChangeListener(this);
     }
 

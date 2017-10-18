@@ -35,5 +35,6 @@ public class ApiURL {
     public static String companionAddPost = "http://askrambler.com/Android_API/addPostCompanion.php";
     public static String baggageAddPost = "http://askrambler.com/Android_API/addPostBaggage.php";
     public static String tripAddPost = "http://askrambler.com/Android_API/addPostTrip.php";
+    public static String hostAddPost = "http://askrambler.com/Android_API/addPostHost.php";
 
 }
